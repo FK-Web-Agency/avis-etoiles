@@ -10,15 +10,16 @@ const MobileNav = () => {
         <SheetTrigger className="align-middle">
           <Icons.BurgerMenu className="cursor-pointer" />
         </SheetTrigger>
-        <SheetContent className="flex flex-col gap-6 bg-white md:hidden">
-          <Icons.Logo hrefNull color="text-slate-900" />
-          <Separator className="border border-gray-50" />
-          <NavItems />
+        <SheetContent className="flex flex-col justify-between gap-6 bg-gray-800  md:hidden">
+          <div className='flex flex-col gap-5'>
+            <Icons.Logo hrefNull  />
+            <Separator className="border border-gray-50" />
+            <NavItems />
+          </div>
 
-          <Separator className="border border-gray-50" />
           <Link
             href="#"
-            className="text-sm font-semibold leading-6 text-slate-50">
+            className="text-sm font-semibold leading-6 text-slate-50 bottom-5">
             Demander une demo <span aria-hidden="true">&rarr;</span>
           </Link>
         </SheetContent>
