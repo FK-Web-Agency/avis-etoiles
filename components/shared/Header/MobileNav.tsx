@@ -1,6 +1,7 @@
 import { Sheet, SheetContent, Separator, SheetTrigger } from '@/components/ui';
 import NavItems from './NavItems';
 import Icons from '../Icons';
+import Link from 'next/link';
 
 const MobileNav = () => {
   return (
@@ -13,6 +14,13 @@ const MobileNav = () => {
           <Icons.Logo hrefNull color="text-slate-900" />
           <Separator className="border border-gray-50" />
           <NavItems />
+
+          <Separator className="border border-gray-50" />
+          <Link
+            href="#"
+            className="text-sm font-semibold leading-6 text-slate-50">
+            Demander une demo <span aria-hidden="true">&rarr;</span>
+          </Link>
         </SheetContent>
       </Sheet>
     </nav>

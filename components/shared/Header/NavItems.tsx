@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
 
 const navigation = [
   { label: 'Accueil', route: '/' },
@@ -12,7 +11,7 @@ const navigation = [
   { label: 'Contact', route: '/contact' },
 ];
 
-export default function NavItems() {
+const NavItems = () => {
   const pathname = usePathname();
 
   return (
@@ -25,7 +24,7 @@ export default function NavItems() {
             key={link.route}
             className={`${
               isActive && 'text-primary'
-            } flex-center p-medium-16 whitespace-nowrap`}>
+            } flex-center p-medium-16 whitespace-nowrap `}>
             <Link href={link.route}>{link.label}</Link>
           </li>
         );
@@ -33,3 +32,6 @@ export default function NavItems() {
     </ul>
   );
 }
+
+
+export default  NavItems;
