@@ -10,7 +10,7 @@ const MobileNav = () => {
           <Icons.BurgerMenu className="cursor-pointer" />
         </SheetTrigger>
         <SheetContent className="flex flex-col gap-6 bg-white md:hidden">
-          <Icons.Logo hrefNull />
+          <Icons.Logo hrefNull color="text-slate-900" />
           <Separator className="border border-gray-50" />
           <NavItems />
         </SheetContent>
