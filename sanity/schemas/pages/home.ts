@@ -2,19 +2,32 @@ import { defineField, defineType } from 'sanity';
 
 const groups = [
   {
+    name: 'seo',
+    title: 'SEO',
+    icon: () => '🔍',
+  },
+  {
     name: 'banner_content',
     title: "Bannière de la page d'accueil",
     icon: () => '🏞️',
-    default: true,
   },
 ];
 
 export default defineType({
   name: 'home',
-  title: 'Page d\'accueil',
+  title: "Page d'accueil",
   type: 'document',
   groups,
   fields: [
+    // SEO
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      description: 'Configuration SEO de la page',
+      type: 'seo',
+      group: 'seo',
+    }),
+    // Banner
     defineField({
       name: 'banner',
       title: "Bannière d'accueil",
@@ -39,11 +52,12 @@ export default defineType({
       ],
     }),
   ],
+  // Preview
   preview: {
     select: {
       title: 'banner.title',
       subtitle: 'banner.subtitle',
       media: 'banner.image',
     },
-  }
+  },
 });
