@@ -5,12 +5,12 @@ import Link from 'next/link';
 
 const MobileNav = () => {
   return (
-    <nav className="md:hidden">
+    <nav className="lg:hidden">
       <Sheet>
         <SheetTrigger className="align-middle">
           <Icons.BurgerMenu className="cursor-pointer" />
         </SheetTrigger>
-        <SheetContent className="flex flex-col justify-between gap-6 bg-gray-800  md:hidden">
+        <SheetContent className="flex flex-col justify-between gap-6 bg-gray-800  lg:hidden">
           <div className='flex flex-col gap-5'>
             <Icons.Logo hrefNull  />
             <Separator className="border border-gray-50" />

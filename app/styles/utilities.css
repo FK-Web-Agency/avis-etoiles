@@ -122,28 +122,8 @@
     @apply text-[12px] font-medium leading-[20px];
   }
 
-  /* SHADCN OVERRIDES */
-  .select-field {
-    @apply w-full bg-grey-50 h-[54px] placeholder:text-grey-500 rounded-full p-regular-16 px-5 py-3 border-none focus-visible:ring-transparent focus:ring-transparent !important;
-  }
-
-  .input-field {
-    @apply bg-grey-50 h-[54px] focus-visible:ring-offset-0 placeholder:text-grey-500 rounded-full p-regular-16 px-4 py-3 border-none focus-visible:ring-transparent !important;
-  }
-
-  .textarea {
-    @apply bg-grey-50 flex flex-1 placeholder:text-grey-500 p-regular-16 px-5 py-3 border-none focus-visible:ring-transparent !important;
-  }
-
-  .button {
-    @apply rounded-full h-[54px] p-regular-16;
-  }
-
-  .select-item {
-    @apply py-3 cursor-pointer  focus:bg-primary-50;
-  }
-
-  .toggle-switch {
-    @apply bg-gray-300 !important;
+  /* BACKGROUND */
+  .bg-gradient {
+    @apply bg-gradient-to-r from-yellow-500 to-yellow-300 hover:bg-gradient-to-br text-white font-semibold  focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50;
   }
 }
