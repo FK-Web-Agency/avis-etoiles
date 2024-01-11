@@ -1,7 +1,8 @@
-import React from 'react'
+import { getHomePageData } from '@/sanity/lib/queries';
+import React from 'react';
 
-export default function Home() {
-  return (
-    <div>Home</div>
-  )
+export default async function Home() {
+  const { title } = await getHomePageData();
+
+  return <div>{title}</div>;
 }

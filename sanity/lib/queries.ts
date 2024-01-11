@@ -1,9 +1,17 @@
-import { client } from "./client"
+import { groq } from 'next-sanity';
+import { client } from './client';
 
-export async function getTitle() {
-    const query = `*[_type == "home"][0]{
-        title
-    }`
-    const result = await client.fetch(query)
-    return result.title
+// Function for getting data from Sanity
+async function sanityQuery(query: string) {
+  const result = await client.fetch(query);
+  return result;
+}
+
+// Get home page data
+export async function getHomePageData() {
+  // Query for home page data
+  const query = groq`*[_type == "home"][0]`;
+
+  const data = await sanityQuery(query);
+  return data;
 }
