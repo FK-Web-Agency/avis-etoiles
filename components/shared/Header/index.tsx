@@ -10,7 +10,7 @@ export default function Header() {
     <header>
       {/* -------------------- Desktop, laptop, and tablet view -------------------- */}
       <nav
-        className="wrapper flex items-center justify-between p-6 lg:px-8"
+        className="wrapper flex items-center justify-between"
         aria-label="Global">
         <div className="flex lg:flex-1">
           <Icons.Logo />

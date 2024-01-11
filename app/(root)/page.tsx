@@ -13,8 +13,8 @@ export default async function Home() {
   const { banner } = await client.fetch<SanityDocument>(queries.GET_HOME_PAGE);
 
   return (
-    <main className='wrapper'>
-      <Banner />
+    <main className="wrapper">
+      <Banner {...{ banner }} />
     </main>
   );
 }

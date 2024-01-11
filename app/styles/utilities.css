@@ -126,4 +126,9 @@
   .bg-gradient {
     @apply bg-gradient-to-r from-yellow-500 to-yellow-300 hover:bg-gradient-to-br text-white font-semibold  focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50;
   }
+
+  /* OVERWRITE SHADCN */
+  .button {
+    @apply  h-[54px] p-regular-16;
+  }
 }
