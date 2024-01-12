@@ -52,6 +52,11 @@
     @apply border-border;
   }
   body {
+    font-family: 'Poppins', sans-serif;
     @apply bg-background text-foreground;
+  }
+
+  p {
+    @apply text-gray-400;
   }
 }

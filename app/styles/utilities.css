@@ -91,6 +91,10 @@
     @apply text-[18px] font-normal leading-[28px] tracking-[2%];
   }
 
+
+  .p-light-18 {
+    @apply text-[18px] font-light leading-[28px] tracking-[2%];
+  }
   /* 16 */
   .p-bold-16 {
     @apply text-[16px] font-bold leading-[24px];
@@ -103,6 +107,11 @@
   .p-regular-16 {
     @apply text-[16px] font-normal leading-[24px];
   }
+
+  .p-light-16 {
+    @apply text-[16px] font-light leading-[24px];
+  }
+
 
   /* 14 */
   .p-semibold-14 {
