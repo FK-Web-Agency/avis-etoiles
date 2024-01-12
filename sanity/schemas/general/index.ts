@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'general',
-  title: 'Informations Generales (logo, mentions légales, etc)',
+  title: 'ℹ️ Informations Generales (logo, mentions légales, etc)',
   type: 'document',
   fields: [
     defineField({
