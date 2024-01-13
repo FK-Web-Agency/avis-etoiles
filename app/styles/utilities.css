@@ -18,6 +18,10 @@
     @apply items-start;
   }
 
+  .flex-justify-start {
+    @apply justify-start;
+  }
+
   .yellow-section {
     background: linear-gradient(to top, transparent, #e3d3b5) #decaa6;
     background-color: #e5c281;

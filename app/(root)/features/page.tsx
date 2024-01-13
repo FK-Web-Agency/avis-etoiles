@@ -1,17 +1,18 @@
 import { Metadata } from 'next';
 
-import { TextGradient } from '@/components/ui';
+import { Button, TextGradient } from '@/components/ui';
 import { ItemFeature } from '@/components/pages/features';
 import { generateMetadataWithSanity } from '@/helper';
 import { client, queries } from '@/sanity/lib';
 import { HowItWorksProps } from '@/Type';
+import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataWithSanity('GET_FEATURES_PAGE');
 }
 
 export default async function Features() {
-  const { introduction_section, how_it_works_section } = await client.fetch(
+  const { introduction_section, how_it_works_section, cta } = await client.fetch(
     queries.GET_FEATURES_PAGE
   );
 
@@ -27,19 +28,29 @@ export default async function Features() {
       <section>
         <div className="pl-8 px-4 mx-auto max-w-screen-xl">
           <ol className="relative border-l border-gray-200">
-            {how_it_works_section?.map(({ title, description, icon }: HowItWorksProps, index: number) => (
-              <ItemFeature key={index} {...{title, description, icon, index}} />
-            ))}
+            {how_it_works_section?.map(
+              ({ title, description, icon }: HowItWorksProps, index: number) => (
+                <ItemFeature key={index} {...{ title, description, icon, index }} />
+              )
+            )}
           </ol>
         </div>
       </section>
 
       {/* ------------------------------ CTA ------------------------------ */}
-      <section>
-        <h2 className="h2-bold"></h2>
-        <p></p>
+      <section className='flex flex-col gap-5'>
+        <h2 className="h2-bold">{cta?.title}</h2>
+        <p>{cta?.subtitle} </p>
 
-        
+        <div className='flex-center flex-justify-start gap-5'>
+          <Button variant={"outline"} asChild>
+            <Link href="#">Voir une demo</Link>
+          </Button>
+
+          <Button asChild>
+            <Link href="/prices">S'abonner maintenant</Link>
+          </Button>
+        </div>
       </section>
     </main>
   );
