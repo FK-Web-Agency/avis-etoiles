@@ -19,16 +19,13 @@ export default function InformationFooter({ informations }: any) {
 
   return (
     <Dialog>
-      {informations?.map(
-        (information: any) =>
-          (
-            <li className='p-5-regular'>
-              <DialogTrigger className='text-left' onClick={() => setContentSelected(information)}>
-                {information?.title}
-              </DialogTrigger>
-            </li>
-          )
-      )}
+      {informations?.map((information: any, index: number) => (
+        <li key={index} className="p-5-regular">
+          <DialogTrigger className="text-left" onClick={() => setContentSelected(information)}>
+            {information?.title}
+          </DialogTrigger>
+        </li>
+      ))}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{contentSelected?.title} </DialogTitle>
