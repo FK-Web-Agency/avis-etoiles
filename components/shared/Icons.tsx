@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BsGrid } from 'react-icons/bs';
 import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
+import { IoMdCheckmark } from 'react-icons/io';
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -31,9 +32,7 @@ const Icons = {
       </Link>
     );
   },
-  BurgerMenu: (props: IconProps) => (
-    <BsGrid className="w-6 h-6 text-slate-50" />
-  ),
+  BurgerMenu: (props: IconProps) => <BsGrid className="w-6 h-6 text-slate-50" />,
   BuildingOffice: (props: IconProps) => (
     <HiOutlineBuildingOffice2 className="h-7 w-6 text-gray-400" aria-hidden="true" />
   ),
@@ -43,6 +42,6 @@ const Icons = {
   Phone: (props: IconProps) => (
     <HiOutlinePhone className="h-7 w-6 text-gray-400" aria-hidden="true" />
   ),
-  
+  Checked: (props: IconProps) => <IoMdCheckmark {...props}  />,
 };
 export default Icons;

@@ -2,6 +2,10 @@
 
 /* -------------------------------- Utilities ------------------------------- */
 @layer utilities {
+  .main {
+    @apply flex flex-col gap-20;
+  }
+
   .wrapper {
     @apply max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full;
   }

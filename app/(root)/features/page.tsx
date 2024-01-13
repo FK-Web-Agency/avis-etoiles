@@ -17,7 +17,7 @@ export default async function Features() {
   );
 
   return (
-    <main className="wrapper flex flex-col gap-12">
+    <main className="wrapper main">
       {/* ------------------------------ Introduction ------------------------------ */}
       <section>
         <TextGradient component="h1" className="h1-bold" segments={introduction_section?.title} />
