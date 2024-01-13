@@ -1,8 +1,10 @@
+import { Metadata } from 'next';
+
 import { TextGradient } from '@/components/ui';
+import { ItemFeature } from '@/components/pages/features';
 import { generateMetadataWithSanity } from '@/helper';
 import { client, queries } from '@/sanity/lib';
-import { PortableText } from '@portabletext/react';
-import { Metadata } from 'next';
+import { HowItWorksProps } from '@/Type';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataWithSanity('GET_FEATURES_PAGE');
@@ -25,22 +27,8 @@ export default async function Features() {
       <section>
         <div className="pl-8 px-4 mx-auto max-w-screen-xl">
           <ol className="relative border-l border-gray-200">
-            {how_it_works_section?.map(({ title, description }, index:number) => (
-              <li className="mb-10 ml-6 relative" key={index}>
-                <time className="block mb-2 text-sm font-normal leading-none text-gray-500">
-                  Etape {index + 1}
-                </time>
-
-                <span className="absolute -left-[2.8rem] -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-gradient ">
-                  {/* ICON */}
-                </span>
-                <h3 className="mb-1 text-lg font-semibold text-white">{title}</h3>
-                <div className="text">
-                  {description?.map((item: any, index: number) => (
-                    <PortableText key={index} value={item} />
-                  ))}
-                </div>
-              </li>
+            {how_it_works_section?.map(({ title, description, icon }: HowItWorksProps, index: number) => (
+              <ItemFeature key={index} {...{title, description, icon, index}} />
             ))}
           </ol>
         </div>

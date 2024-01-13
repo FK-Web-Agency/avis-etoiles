@@ -109,6 +109,13 @@ const informationFooterSchema = z.object({
   content: z.array(z.any()),
 });
 
+// How it works section
+const HowItWorksSchema = DefaultSchema.merge({
+  title: z.string(),
+  description: z.string(),
+  icon: z.array(IconManagerSchema),
+});
+
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
 
@@ -136,3 +143,6 @@ type InformationFooterProps = z.infer<typeof informationFooterSchema>;
 /* -------------------------------------------------------------------------- */
 // Type Intro section
 type IntroSectionProps = z.infer<typeof IntroSectionSchema>;
+
+// Type How it works section
+type HowItWorksProps = z.infer<typeof HowItWorksSchema>;

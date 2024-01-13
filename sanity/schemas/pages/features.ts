@@ -11,6 +11,11 @@ const groups = [
     title: "Section d'introduction",
     icon: () => '🏞️',
   },
+  {
+    name: 'how_it_works_section',
+    title: 'Comment ça marche',
+    icon: () => '🎯',
+  },
 ];
 
 export default defineType({
@@ -49,8 +54,51 @@ export default defineType({
         }),
       ],
     }),
+
+    // How it works Section
+    defineField({
+      name: 'how_it_works_section',
+      title: 'Section Comment ça marche',
+      type: 'array',
+      of: [
+        defineField({
+          type: 'object',
+          name: 'how_it_works',
+          fields: [
+            defineField({
+              name: 'icon',
+              type: 'array',
+              title: 'Icône',
+              validation: (Rule: any) => Rule.required(),
+              of: [
+                {
+                  type: 'block',
+                  of: [{ type: 'icon.manager', title: 'Inline Icon' }],
+                },
+                {
+                  type: 'icon.manager',
+                  title: 'Block Icon',
+                },
+              ],
+            }),
+            defineField({
+              name: 'title',
+              title: 'Titre',
+              type: 'string',
+              validation: (Rule: any) => Rule.required(),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              validation: (Rule: any) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
   ],
-// Preview
+  // Preview
   preview: {
     select: {
       title: 'seo.meta_title',
