@@ -1,3 +1,4 @@
+'use client';
 import { useId } from 'react';
 import z from 'zod';
 
@@ -11,7 +12,7 @@ const gridPatternSchema = z.object({
 // Pattern props
 const patternSchema = z.array(
   z.object({
-    x: z.string().default("50%"),
+    x: z.string().default('50%'),
     y: z.number().default(0),
     squares: z.array(z.array(z.number())).optional(),
   })
@@ -24,7 +25,7 @@ type PatternProps = z.infer<typeof patternSchema>;
 // Patterns to choose from  (x, y, squares)
 const patterns: PatternProps = [
   {
-    x: "50%",
+    x: '50%',
     y: 16,
     squares: [
       [0, 1],
@@ -32,7 +33,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 18,
     squares: [
       [1, 2],
@@ -40,7 +41,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 20,
     squares: [
       [0, 2],
@@ -48,7 +49,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 22,
     squares: [
       [1, 1],
@@ -56,7 +57,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 24,
     squares: [
       [0, 3],
@@ -64,7 +65,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 26,
     squares: [
       [2, 1],
@@ -72,15 +73,15 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
-    y: 28,
+    x: '50%',
+    y: 30,
     squares: [
       [1, 4],
       [4, 7],
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 30,
     squares: [
       [0, 5],
@@ -88,7 +89,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 32,
     squares: [
       [3, 2],
@@ -96,7 +97,7 @@ const patterns: PatternProps = [
     ],
   },
   {
-    x: "50%",
+    x: '50%',
     y: 34,
     squares: [
       [2, 3],
@@ -105,7 +106,7 @@ const patterns: PatternProps = [
   },
 ];
 
-export default function GridPattern({ width, height, className}: GridPatternProps) {
+export default function GridPattern({ width, height, className }: GridPatternProps) {
   const patternId = useId();
 
   // Get a random pattern

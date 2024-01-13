@@ -21,6 +21,11 @@ const groups = [
     title: 'Call to action',
     icon: () => '📣',
   },
+  {
+    name: 'story_section',
+    title: 'Notre histoire',
+    icon: () => '📖',
+  },
 ];
 
 export default defineType({
@@ -142,6 +147,7 @@ export default defineType({
         "C'est la section qui présente le call to action de la plateforme section 3 après les avantages",
       type: 'object',
       group: 'call_to_action_section',
+      // @ts-ignore
       fields: [
         defineField({
           name: 'title',
@@ -160,6 +166,50 @@ export default defineType({
           title: 'Image',
           type: 'image',
           validation: (Rule: any) => Rule.required(),
+        }),
+      ],
+    }),
+
+    // Story Section
+    defineField({
+      name: 'story_section',
+      title: 'Notre histoire',
+      description:
+        "C'est la section qui présente l'histoire de la plateforme section 4 après le call to action",
+      type: 'object',
+      group: 'story_section',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Titre',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'subtitle',
+          title: 'Sous-titre',
+          type: 'text',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'images',
+          title: 'Images',
+          type: 'array',
+          of: [
+            {
+              type: 'image',
+            },
+          ],
+          validation: (Rule) =>
+            Rule.required()
+              .custom((field: any) => {
+                if (field?.length <= 2) {
+                  return true;
+                } else {
+                  return "Pour le bon fonctionnement du site merci d'ajouter que 2 images"; // Allow undefined values
+                }
+              })
+              .error(),
         }),
       ],
     }),

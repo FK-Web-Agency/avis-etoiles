@@ -81,6 +81,15 @@ const CallToActionSchema = DefaultSchema.merge(
   })
 );
 
+// Story section
+const StorySchema = DefaultSchema.merge(
+  z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    images: z.array(z.instanceof(Image)),
+  })
+);
+
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
 
@@ -96,3 +105,6 @@ type AdvantagesProps = z.infer<typeof AdvantagesSchema>;
 
 // Type Call to action section
 type CallToActionProps = z.infer<typeof CallToActionSchema>;
+
+// Type Story section
+type StoryProps = z.infer<typeof StorySchema>;
