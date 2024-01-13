@@ -11,7 +11,7 @@ type BannerType = {
 
 export default function Banner({ banner }: BannerType) {
   return (
-    <section className="bg-contain w-full h-full">
+    <section className="bg-contain w-full h-full wrapper">
       <div className=" grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0 w-full h-full">
         <div className="flex flex-col justify-center gap-8   animate-fade-left animate-duration-[1000ms] animate-delay-[100ms]">
           <h1 className="h1-bold">{banner?.title}</h1>

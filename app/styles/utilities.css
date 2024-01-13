@@ -14,8 +14,19 @@
     @apply flex justify-between items-center;
   }
 
-  .flex-align-start{
-    @apply  items-start;
+  .flex-align-start {
+    @apply items-start;
+  }
+
+  .yellow-section {
+    background: linear-gradient(to top, transparent, #e3d3b5) #decaa6;
+    background-color: #e5c281;
+    color: #2b2b2b;
+  }
+
+  .yellow-section dd,
+  .yellow-section p {
+    color: #71717a;
   }
 
   /* TYPOGRAPHY */
@@ -95,7 +106,6 @@
     @apply text-[18px] font-normal leading-[28px] tracking-[2%];
   }
 
-
   .p-light-18 {
     @apply text-[18px] font-light leading-[28px] tracking-[2%];
   }
@@ -115,7 +125,6 @@
   .p-light-16 {
     @apply text-[16px] font-light leading-[24px];
   }
-
 
   /* 14 */
   .p-semibold-14 {
@@ -142,6 +151,6 @@
 
   /* OVERWRITE SHADCN */
   .button {
-    @apply  h-[54px] p-regular-16;
+    @apply h-[54px] p-regular-16;
   }
 }
