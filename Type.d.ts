@@ -90,13 +90,24 @@ const StorySchema = DefaultSchema.merge(
   })
 );
 
+/* -------------------------------------------------------------------------- */
+/*                                Features Page                               */
+/* -------------------------------------------------------------------------- */
+const IntroSectionSchema = z.object({
+  title: z.array(
+    z.object({
+      text: z.string(),
+      gradient: z.boolean(),
+    })
+  ),
+  subtitle: z.string(),
+});
 
 // Information Footer
 const informationFooterSchema = z.object({
   title: z.string(),
-  content: z.array(z.any())
-})
-
+  content: z.array(z.any()),
+});
 
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
@@ -119,3 +130,9 @@ type StoryProps = z.infer<typeof StorySchema>;
 
 // Type Information Footer
 type InformationFooterProps = z.infer<typeof informationFooterSchema>;
+
+/* -------------------------------------------------------------------------- */
+/*                                Features Page                               */
+/* -------------------------------------------------------------------------- */
+// Type Intro section
+type IntroSectionProps = z.infer<typeof IntroSectionSchema>;

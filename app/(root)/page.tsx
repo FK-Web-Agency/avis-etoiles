@@ -6,7 +6,7 @@ import { Advantages, Banner, CallToAction, Story } from '@/components/pages/home
 
 // Generate title and description from Sanity
 export async function generateMetadata(): Promise<Metadata> {
-  return generateMetadataWithSanity();
+  return generateMetadataWithSanity('GET_HOME_PAGE');
 }
 
 export default async function Home() {

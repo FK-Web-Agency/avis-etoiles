@@ -30,7 +30,7 @@ export default defineType({
     }),
     // Intro Section
     defineField({
-      name: 'intro',
+      name: 'introduction_section',
       title: "Section d'introduction",
       type: 'object',
       group: 'intro_section',
