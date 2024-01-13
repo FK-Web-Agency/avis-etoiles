@@ -7,3 +7,6 @@
 /* Import utilities file */
 @import './utilities.css';
 
+#faqs a {
+    @apply text-primary
+}

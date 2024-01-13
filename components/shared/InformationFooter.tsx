@@ -15,8 +15,6 @@ import { PortableText } from '@portabletext/react';
 export default function InformationFooter({ informations }: any) {
   const [contentSelected, setContentSelected] = useState<InformationFooterProps | null>(null);
 
-  console.log(informations);
-
   return (
     <Dialog>
       {informations?.map((information: any, index: number) => (

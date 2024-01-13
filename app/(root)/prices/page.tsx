@@ -1,12 +1,17 @@
+import { PortableText } from '@portabletext/react';
+
 import { PricesProps } from '@/Type';
 import { Icons } from '@/components/shared';
-import { TextGradient } from '@/components/ui';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button, TextGradient } from '@/components/ui';
 import { ContainerCard } from '@/components/ui/custom-card';
 import { client, queries } from '@/sanity/lib';
-import React from 'react';
+
+/* TODO Add Stripe for payment */
 
 export default async function Prices() {
-  const { introduction_section, prices_list_section } = await client.fetch(queries.GET_PRICES_PAGE);
+  const { introduction_section, prices_list_section, faqs__section } = await client.fetch(
+    queries.GET_PRICES_PAGE
+  );
 
   return (
     <main className="wrapper main">
@@ -42,10 +47,40 @@ export default async function Prices() {
                       </li>
                     ))}
                   </ul>
+
+                  <Button>Commencer</Button>
                 </div>
               </ContainerCard>
             )
           )}
+        </div>
+      </section>
+
+      {/* ---------------------------------- FAQs ---------------------------------- */}
+      <section id="faqs">
+        <div className="grid lg:grid-cols-2 lg:gap-10 gap-5">
+          {/* ------------------------------ Text content ------------------------------ */}
+          <div>
+            <h2 className="h1-bold mb-5">{faqs__section?.title} </h2>
+
+            {faqs__section?.description.map((item: any, index: number) => (
+              <PortableText key={index} value={item} />
+            ))}
+          </div>
+
+          {/* ------------------------------ Questions list ----------------------------- */}
+          <Accordion type="single" collapsible>
+            {faqs__section?.faqs?.map(({question, answer}: {question:string; answer: string}) => (
+              <AccordionItem key={question} value={question}>
+                <AccordionTrigger>
+                  <h3 className='text-white'>{question}</h3>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className='text-gray-400'>{answer} </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
     </main>

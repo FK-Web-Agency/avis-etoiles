@@ -16,6 +16,11 @@ const groups = [
     title: 'Section liste des tarifications',
     icon: () => '💸',
   },
+  {
+    name: 'faq_section',
+    title: 'Section FAQ',
+    icon: () => '❓',
+  },
 ];
 
 export default defineType({
@@ -89,6 +94,57 @@ export default defineType({
               title: 'Fonctionnalités',
               type: 'array',
               of: [{ type: 'string' }],
+            }),
+          ],
+        }),
+      ],
+    }),
+
+    // FAQs
+    defineField({
+      name: 'faqs__section',
+      title: 'Section FAQ',
+      type: 'object',
+      group: 'faq_section',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Titre',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'description',
+          title: 'Sous-titre',
+          type: 'array',
+          validation: (Rule: any) => Rule.required(),
+          of: [{ type: 'block' }],
+        }),
+        defineField({
+          name: 'faqs',
+          title: 'FAQs',
+          description: 'Liste des questions fréquentes',
+          type: 'array',
+          validation: (Rule: any) => Rule.required(),
+          of: [
+            defineField({
+              name: 'faq',
+              title: 'FAQ',
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'question',
+                  title: 'Question',
+                  type: 'string',
+                  validation: (Rule: any) => Rule.required(),
+                }),
+                defineField({
+                  name: 'answer',
+                  title: 'Réponse',
+                  type: 'text',
+                  validation: (Rule: any) => Rule.required(),
+                }),
+              ],
             }),
           ],
         }),
