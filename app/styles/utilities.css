@@ -14,6 +14,10 @@
     @apply flex justify-between items-center;
   }
 
+  .flex-align-start{
+    @apply  items-start;
+  }
+
   /* TYPOGRAPHY */
   /* 64 */
   .h1-bold {
@@ -45,7 +49,7 @@
 
   /* 28 */
   .h5-bold {
-    @apply font-bold text-[28px] leading-[36px];
+    @apply font-bold text-xl leading-[36px];
   }
 
   /* 24 */

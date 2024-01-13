@@ -31,6 +31,7 @@ export default defineType({
       description: 'Configuration SEO de la page',
       type: 'seo',
       group: 'seo',
+      validation: (Rule: any) => Rule.required(),
     }),
     // Banner Section
     defineField({
@@ -43,23 +44,29 @@ export default defineType({
           name: 'title',
           title: 'Titre',
           type: 'string',
+          validation: (Rule: any) => Rule.required(),
         }),
         defineField({
           name: 'subtitle',
           title: 'Sous-titre',
           type: 'text',
+          validation: (Rule: any) => Rule.required(),
         }),
         defineField({
           name: 'image',
           title: 'Image',
           type: 'image',
+          validation: (Rule: any) => Rule.required(),
         }),
       ],
     }),
+
+    // Advantages Section
     defineField({
       name: 'advantages_section',
       title: 'Les avantages',
-      description: "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
+      description:
+        "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
       type: 'object',
       group: 'advantages_section',
       fields: [
@@ -67,11 +74,13 @@ export default defineType({
           name: 'title',
           title: 'Titre',
           type: 'string',
+          validation: (Rule: any) => Rule.required(),
         }),
         defineField({
           name: 'subtitle',
           title: 'Sous-titre',
           type: 'text',
+          validation: (Rule: any) => Rule.required(),
         }),
         defineField({
           name: 'advantages',
@@ -79,6 +88,7 @@ export default defineType({
           description:
             "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
           type: 'array',
+          validation: (Rule: any) => Rule.required(),
           of: [
             {
               type: 'object',
@@ -88,16 +98,19 @@ export default defineType({
                   name: 'title',
                   title: 'Titre',
                   type: 'string',
+                  validation: (Rule: any) => Rule.required(),
                 }),
                 defineField({
                   name: 'description',
                   title: 'Description',
                   type: 'text',
+                  validation: (Rule: any) => Rule.required().max(150),
                 }),
                 defineField({
                   name: 'icon',
                   type: 'array',
                   title: 'Icône',
+                  validation: (Rule: any) => Rule.required(),
                   of: [
                     {
                       type: 'block',
@@ -115,7 +128,6 @@ export default defineType({
         }),
       ],
     }),
-    // Advantages Section
   ],
   // Preview
   preview: {

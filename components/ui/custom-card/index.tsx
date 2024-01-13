@@ -42,19 +42,26 @@ export function ContainerCard({
 export default function CustomCard({ children }: PropsWithChildren) {
   return (
     <ContainerCard>
-      <div className="relative rounded-2xl px-4 pb-4 pt-8 cursor-default">{children}</div>
+      <div className="relative rounded-2xl px-4 pb-6 pt-10 cursor-default flex-center flex-col flex-align-start space-y-4">{children}</div>
     </ContainerCard>
   );
 }
 
 CustomCard.Title = function CardTitle({ children }: PropsWithChildren) {
-  return <h3 className="h3-regular mb-5">{children}</h3>;
+  return <h5 className="h5-bold mb-5">{children}</h5>;
 };
 
 CustomCard.Description = function CardDescription({ children }: PropsWithChildren) {
-  return <div>{children}</div>;
+  return <p className="p-light-16">{children}</p>;
 };
 
 CustomCard.Icon = function CardIcon({ children }: PropsWithChildren) {
-  return <div>{children}</div>;
+  return (
+    <div
+      className={`flex h-10 w-10 p-2 items-center justify-center rounded-full  ring-1  backdrop-blur-[2px] transition duration-300  bg-[#ffffff13] ring-[#ffffff26]
+          group-hover:ring-zinc-900/25 group-hover:bg-yellow-300/20 group-hover:ring-yellow-400
+      `}>
+      {children}
+    </div>
+  );
 };
