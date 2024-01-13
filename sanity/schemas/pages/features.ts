@@ -97,6 +97,29 @@ export default defineType({
         }),
       ],
     }),
+
+    // CTA
+    defineField({
+      name: 'cta',
+      title: 'CTA',
+      description: 'Call to action section avant le pied de page',
+      validation: (Rule: any) => Rule.required(),
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Titre',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'subtitle',
+          title: 'Description',
+          type: 'text',
+          validation: (Rule: any) => Rule.required(),
+        }),
+      ],
+    }),
   ],
   // Preview
   preview: {

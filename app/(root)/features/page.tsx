@@ -33,6 +33,14 @@ export default async function Features() {
           </ol>
         </div>
       </section>
+
+      {/* ------------------------------ CTA ------------------------------ */}
+      <section>
+        <h2 className="h2-bold"></h2>
+        <p></p>
+
+        
+      </section>
     </main>
   );
 }
