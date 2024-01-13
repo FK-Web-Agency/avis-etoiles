@@ -1,4 +1,4 @@
-import type { Image } from 'sanity';
+import type { BlockEditor, Image } from 'sanity';
 import { z } from 'zod';
 
 // Default schema
@@ -90,6 +90,14 @@ const StorySchema = DefaultSchema.merge(
   })
 );
 
+
+// Information Footer
+const informationFooterSchema = z.object({
+  title: z.string(),
+  content: z.array(z.any())
+})
+
+
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
 
@@ -108,3 +116,6 @@ type CallToActionProps = z.infer<typeof CallToActionSchema>;
 
 // Type Story section
 type StoryProps = z.infer<typeof StorySchema>;
+
+// Type Information Footer
+type InformationFooterProps = z.infer<typeof informationFooterSchema>;

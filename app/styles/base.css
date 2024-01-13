@@ -56,6 +56,9 @@
     @apply bg-background text-foreground;
   }
 
+  footer li {
+    @apply text-sm font-normal leading-[20px];
+  }
   p {
     @apply text-gray-400;
   }

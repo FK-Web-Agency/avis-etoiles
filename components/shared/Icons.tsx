@@ -1,9 +1,9 @@
-import React from 'react';
-import { SanityImageAssetDocument } from 'next-sanity';
+import Link from 'next/link';
 import Image from 'next/image';
 import { BsGrid } from 'react-icons/bs';
+import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
+
 import { client, queries, urlForImage } from '@/sanity/lib';
-import Link from 'next/link';
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -34,5 +34,15 @@ const Icons = {
   BurgerMenu: (props: IconProps) => (
     <BsGrid className="w-6 h-6 text-slate-50" />
   ),
+  BuildingOffice: (props: IconProps) => (
+    <HiOutlineBuildingOffice2 className="h-7 w-6 text-gray-400" aria-hidden="true" />
+  ),
+  Envelope: (props: IconProps) => (
+    <HiOutlineEnvelope className="h-7 w-6 text-gray-400" aria-hidden="true" />
+  ),
+  Phone: (props: IconProps) => (
+    <HiOutlinePhone className="h-7 w-6 text-gray-400" aria-hidden="true" />
+  ),
+  
 };
 export default Icons;
