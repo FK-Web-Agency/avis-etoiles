@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
-      },
-    ],
+    domains: ['cdn.sanity.io'],
+    formats: ['image/avif', 'image/webp'],
+    loader: 'default',
+    path: '/_next/image',
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
   },
 };
 

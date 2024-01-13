@@ -1,72 +1,98 @@
 import type { Image } from 'sanity';
+import { z } from 'zod';
 
-type DefaultProps = {
-  _ref: string;
-  _type: string;
-  _id: string;
-};
+// Default schema
+const DefaultSchema = z.object({
+  _ref: z.string(),
+  _type: z.string(),
+  _id: z.string(),
+});
 
 // Type Banner section
-interface BannerProps extends DefaultProps {
-  image: Image;
-  subtitle: string;
-  title: string;
-}
+const BannerSchema = DefaultSchema.merge(
+  z.object({
+    subtitle: z.string(),
+    title: z.string(),
+    image: z.instanceof(Image),
+  })
+);
 
-type IconManager = {
-  _type: 'icon.manager';
-  icon: string;
-  metadata: {
-    iconName: string;
-    collectionId: string;
-    collectionName: string;
-    url: string;
-    downloadUrl: string;
-    inlineSvg: string;
-    hFlip: boolean;
-    vFlip: boolean;
-    flip: 'horizontal' | 'vertical' | 'horizontal,vertical';
-    rotate: 0 | 1 | 2 | 3;
-    size: {
-      width: number;
-      height: number;
-    };
-    color: {
-      hex: string;
-      rgba: {
-        r: number;
-        g: number;
-        b: number;
-        a: number;
-      };
-    };
-    palette: boolean;
-    author: {
-      name: string;
-      url: string;
-    };
-    license: {
-      name: string;
-      url: string;
-    };
-  };
-};
+const IconManagerSchema = z.object({
+  _type: z.literal('icon.manager'),
+  icon: z.string(),
+  metadata: z.object({
+    iconName: z.string(),
+    collectionId: z.string(),
+    collectionName: z.string(),
+    url: z.string(),
+    downloadUrl: z.string(),
+    inlineSvg: z.string(),
+    hFlip: z.boolean(),
+    vFlip: z.boolean(),
+    flip: z.string(),
+    rotate: z.number(),
+    size: z.object({
+      width: z.number(),
+      height: z.number(),
+    }),
+    color: z.object({
+      hex: z.string(),
+      rgba: z.object({
+        r: z.number(),
+        g: z.number(),
+        b: z.number(),
+        a: z.number(),
+      }),
+    }),
+    palette: z.boolean(),
+    author: z.object({
+      name: z.string(),
+      url: z.string(),
+    }),
+  }),
+  license: z.object({
+    name: z.string(),
+    url: z.string(),
+  }),
+});
 
+const AdvantageSchema = DefaultSchema.merge(
+  z.object({
+    title: z.string(),
+    description: z.string(),
+    icon: z.array(IconManagerSchema),
+  })
+);
+
+const AdvantagesSchema = DefaultSchema.merge(
+  z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    advantages: z.array(AdvantageSchema),
+  })
+);
+
+const CallToActionSchema = DefaultSchema.merge(
+  z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    // Svg
+    image: z.any(),
+  })
+);
+
+// Default props
+type DefaultProps = z.infer<typeof DefaultSchema>;
+
+// Type Banner section
+type BannerProps = z.infer<typeof BannerSchema>;
+
+// Type Icon manager
+type IconManagerProps = z.infer<typeof IconManagerSchema>;
 
 // Type Advantage section
+type Advantage = z.infer<typeof AdvantageSchema>;
+type AdvantagesProps = z.infer<typeof AdvantagesSchema>;
 
-
-type Advantage = {
-  _key: string;
-  title: string;
-  description: string;
-  icon: Array<IconManager>;
-};
-
-interface AdvantagesProps extends DefaultProps {
-  title: string;
-  subtitle: string;
-  advantages: Array<Advantage>;
-}
-
-
+// Type Call to action section
+type CallToActionProps = z.infer<typeof CallToActionSchema>;

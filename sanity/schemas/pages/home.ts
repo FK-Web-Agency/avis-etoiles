@@ -16,6 +16,11 @@ const groups = [
     title: 'Les avantages de la plateforme',
     icon: () => '🎯',
   },
+  {
+    name: 'call_to_action_section',
+    title: 'Call to action',
+    icon: () => '📣',
+  },
 ];
 
 export default defineType({
@@ -125,6 +130,36 @@ export default defineType({
               ],
             },
           ],
+        }),
+      ],
+    }),
+
+    // Call to action section
+    defineField({
+      name: 'call_to_action_section',
+      title: 'Call to action',
+      description:
+        "C'est la section qui présente le call to action de la plateforme section 3 après les avantages",
+      type: 'object',
+      group: 'call_to_action_section',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Titre',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'subtitle',
+          title: 'Sous-titre',
+          type: 'text',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'image',
+          title: 'Image',
+          type: 'image',
+          validation: (Rule: any) => Rule.required(),
         }),
       ],
     }),

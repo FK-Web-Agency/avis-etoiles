@@ -1,8 +1,9 @@
 'use client';
 
-import { AdvantagesProps } from '@/Type';
-import CustomCard from '@/components/ui/custom-card';
 import { Icon } from '@iconify/react';
+
+import { AdvantagesProps } from '@/Type';
+import { CustomCard } from '@/components/ui';
 
 type AdvantagesType = {
   advantages_section: AdvantagesProps;

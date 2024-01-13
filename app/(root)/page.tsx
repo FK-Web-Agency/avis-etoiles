@@ -10,13 +10,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const { banner, advantages_section } = await client.fetch<SanityDocument>(queries.GET_HOME_PAGE);
+  const { banner, advantages_section, call_to_action_section } = await client.fetch<SanityDocument>(
+    queries.GET_HOME_PAGE
+  );
 
   return (
-    <main >
+    <main>
       <Banner {...{ banner }} />
-      <Advantages {...{advantages_section}}  />
-      <CallToAction />
+      <Advantages {...{ advantages_section }} />
+      <CallToAction {...{ call_to_action_section }} />
     </main>
   );
 }

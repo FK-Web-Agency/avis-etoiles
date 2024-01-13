@@ -1,9 +1,10 @@
-import { BannerProps } from '@/Type';
-import { Button } from '@/components/ui/button';
-import { urlForImage } from '@/sanity/lib';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+
+import { BannerProps } from '@/Type';
+import { Button } from '@/components/ui';
+import { urlForImage } from '@/sanity/lib';
+
 
 type BannerType = {
   banner: BannerProps;
