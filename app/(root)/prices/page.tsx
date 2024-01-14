@@ -39,7 +39,7 @@ export default async function Prices() {
                   </div>
 
                   {/* -------------------------------- Features -------------------------------- */}
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-2 mb-8">
                     {features?.map((feature: string, index: number) => (
                       <li key={index} className="flex gap-2">
                         <Icons.Checked className="w-5 h-5 text-primary" />
