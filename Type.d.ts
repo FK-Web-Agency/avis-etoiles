@@ -116,7 +116,6 @@ const HowItWorksSchema = DefaultSchema.merge({
   icon: z.array(IconManagerSchema),
 });
 
-
 /* -------------------------------------------------------------------------- */
 /*                                 Prices Page                                */
 /* -------------------------------------------------------------------------- */
@@ -128,6 +127,12 @@ const PricesSchema = DefaultSchema.merge({
   features: z.array(z.string()),
 });
 
+const OrderSchema = DefaultSchema.merge({
+  title: z.string(),
+  description: z.string(),
+  price: z.number(),
+  features: z.array(z.string()),
+});
 
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
@@ -159,7 +164,6 @@ type IntroSectionProps = z.infer<typeof IntroSectionSchema>;
 
 // Type How it works section
 type HowItWorksProps = z.infer<typeof HowItWorksSchema>;
-
 
 /* -------------------------------------------------------------------------- */
 /*                                 Prices Page                                */
