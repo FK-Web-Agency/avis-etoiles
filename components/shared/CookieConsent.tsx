@@ -25,9 +25,9 @@ export default function CookieConsent() {
 
   return (
     <section className="fixed max-w-md p-4 mx-auto bg-gray-900 border border-gray-600 right-12 lg:right-4 lg:bottom-4 bottom-16 rounded-2xl">
-      <h2 className="font-semibold text-gray-800 dark:text-white">🍪 Activer les cookies</h2>
+      <h2 className="p-medium-14">🍪 Activer les cookies</h2>
 
-      <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+      <p className="mt-4 p-medium-12">
         Ce site web utilise des cookies pour améliorer votre expérience. En continuant à naviguer sur le site, vous
         acceptez notre utilisation des cookies. Veuillez consulter notre{' '}
         <Link href="/policies.txt">politique de confidentialité </Link> pour en savoir plus sur la manière dont nous
@@ -39,7 +39,7 @@ export default function CookieConsent() {
           Gérez vos préférences
         </button> */}
 
-        <Button onClick={consentHandler}> Accepter</Button>
+        <Button className='text-xs' onClick={consentHandler}> Accepter</Button>
       </div>
     </section>
   );
