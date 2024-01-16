@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "email": "email dev --port 3001"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -24,6 +25,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toggle": "^1.0.3",
+    "@react-email/components": "0.0.13",
     "@sanity/image-url": "^1.0.2",
     "@sanity/preview-kit": "^5.0.11",
     "@sanity/vision": "^3.24.1",
@@ -38,6 +40,7 @@
     "react": "^18",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
+    "react-email": "1.10.1",
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.49.3",
     "react-icons": "^4.12.0",
