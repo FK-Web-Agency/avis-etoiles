@@ -4,7 +4,7 @@ import { Button, TextGradient } from '@/components/ui';
 import { ItemFeature } from '@/components/pages/features';
 import { generateMetadataWithSanity } from '@/helper';
 import { client, queries } from '@/sanity/lib';
-import { HowItWorksProps } from '@/Type';
+import { HowItWorksProps } from '@/interfaces/sanity';
 import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {

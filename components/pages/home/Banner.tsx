@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { BannerProps } from '@/Type';
+import { BannerProps } from '@/interfaces/sanity';
 import { Button } from '@/components/ui';
 import { urlForImage } from '@/sanity/lib';
 

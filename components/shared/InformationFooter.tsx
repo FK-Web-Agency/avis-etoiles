@@ -1,6 +1,6 @@
 'use client';
 
-import { InformationFooterProps } from '@/Type';
+import { InformationFooterProps } from '@/interfaces/sanity';
 import {
   Dialog,
   DialogContent,

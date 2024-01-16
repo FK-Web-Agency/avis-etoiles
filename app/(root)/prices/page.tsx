@@ -1,18 +1,23 @@
+import { Metadata } from 'next';
 import { PortableText } from '@portabletext/react';
 
-import { PricesProps } from '@/Type';
-import { Icons } from '@/components/shared';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
   TextGradient,
 } from '@/components/ui';
-import { ContainerCard } from '@/components/ui/custom-card';
 import { client, queries } from '@/sanity/lib';
-import CheckoutButton from '@/components/shared/CheckButton';
+import { ListPrices } from '@/components/pages/prices';
+import { generateMetadataWithSanity } from '@/helper';
+
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  return generateMetadataWithSanity('GET_PRICES_PAGE');
+}
+
 
 
 export default async function Prices() {
@@ -30,37 +35,9 @@ export default async function Prices() {
 
       {/* ------------------------------- List Prices ------------------------------ */}
       <section>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-          {prices_list_section?.map(
-            ({ title, description, price, features, _id }: PricesProps, index: number) => (
-              <ContainerCard className="max-w-sm mx-auto" key={index}>
-                <div className="p-5 flex flex-col gap-5 animate-fade-left animate-once animate-duration-1000 group h-full max-w-sm mx-auto ">
-                  <h3 className="h4-medium">{title}</h3>
-                  <p>{description}</p>
-
-                  {/* ---------------------------------- Price --------------------------------- */}
-                  <div className="flex justify-center items-baseline my-8">
-                    <span className="mr-2 text-5xl font-extrabold text-zinc-200">
-                      {price ? `${price} €` : 'Custom'}{' '}
-                    </span>
-                  </div>
-
-                  {/* -------------------------------- Features -------------------------------- */}
-                  <ul className="flex flex-col gap-2 mb-8">
-                    {features?.map((feature: string, index: number) => (
-                      <li key={index} className="flex gap-2">
-                        <Icons.Checked className="w-5 h-5 text-primary" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <CheckoutButton plan={{title, price, _id: 8}} />
-                </div>
-              </ContainerCard>
-            )
-          )}
-        </div>
+        <ListPrices {...{prices_list_section}} />
+        {/*         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0"></div>
+         */}{' '}
       </section>
 
       {/* ---------------------------------- FAQs ---------------------------------- */}

@@ -1,7 +1,17 @@
-import React from 'react'
+import { Metadata } from 'next';
+
+import { generateMetadataWithSanity } from '@/helper';
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  return generateMetadataWithSanity('GET_FEATURES_PAGE');
+}
+
 
 export default function About() {
   return (
-    <div>About</div>
+    <main>
+      
+    </main>
   )
 }

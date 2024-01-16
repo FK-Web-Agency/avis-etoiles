@@ -36,10 +36,9 @@ export default function CheckoutButton({ plan }: any) {
 
   return (
     <form action={onCheckout} method="POST">
-      <Button type="submit" role="link">
-        CheckButton
+      <Button className='w-full' type="submit" role="link">
+        Commander
       </Button>
-      ;
     </form>
   );
 }

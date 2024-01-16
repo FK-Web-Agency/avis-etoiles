@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui';
 import { urlForImage } from '@/sanity/lib';
 
-import { CallToActionProps } from '@/Type';
+import { CallToActionProps } from '@/interfaces/sanity';
 import Image from 'next/image';
 
 type CallToActionType = {

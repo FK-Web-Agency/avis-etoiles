@@ -2,7 +2,7 @@
 
 import { Icon } from '@iconify/react';
 
-import { AdvantagesProps } from '@/Type';
+import { AdvantagesProps } from '@/interfaces/sanity';
 import { CustomCard } from '@/components/ui';
 
 type AdvantagesType = {

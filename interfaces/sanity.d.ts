@@ -120,12 +120,16 @@ const HowItWorksSchema = DefaultSchema.merge({
 /*                                 Prices Page                                */
 /* -------------------------------------------------------------------------- */
 
-const PricesSchema = DefaultSchema.merge({
+
+const PriceSchema = DefaultSchema.merge({
   title: z.string(),
   description: z.string(),
   price: z.number(),
   features: z.array(z.string()),
 });
+
+
+const PricesSchema = z.array(PriceSchema);
 
 const OrderSchema = DefaultSchema.merge({
   title: z.string(),
@@ -168,4 +172,5 @@ type HowItWorksProps = z.infer<typeof HowItWorksSchema>;
 /* -------------------------------------------------------------------------- */
 /*                                 Prices Page                                */
 /* -------------------------------------------------------------------------- */
+type PriceProps = z.infer<typeof PriceSchema>;
 type PricesProps = z.infer<typeof PricesSchema>;

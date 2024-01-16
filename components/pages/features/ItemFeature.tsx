@@ -1,6 +1,6 @@
 'use client';
 
-import { HowItWorksProps } from '@/Type';
+import { HowItWorksProps } from '@/interfaces/sanity';
 import { Icon } from '@iconify/react';
 
 interface ItemFeatureProps extends HowItWorksProps {

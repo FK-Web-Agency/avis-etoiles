@@ -1,4 +1,4 @@
-import { StoryProps } from '@/Type';
+import { StoryProps } from '@/interfaces/sanity';
 import { urlForImage } from '@/sanity/lib';
 import Image from 'next/image';
 
