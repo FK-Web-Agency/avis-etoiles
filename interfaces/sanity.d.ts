@@ -120,14 +120,12 @@ const HowItWorksSchema = DefaultSchema.merge({
 /*                                 Prices Page                                */
 /* -------------------------------------------------------------------------- */
 
-
 const PriceSchema = DefaultSchema.merge({
   title: z.string(),
   description: z.string(),
   price: z.number(),
   features: z.array(z.string()),
 });
-
 
 const PricesSchema = z.array(PriceSchema);
 
@@ -136,6 +134,20 @@ const OrderSchema = DefaultSchema.merge({
   description: z.string(),
   price: z.number(),
   features: z.array(z.string()),
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                 About Page                                 */
+/* -------------------------------------------------------------------------- */
+const BannerAboutSchema = z.object({
+  title_gradient: z.array(
+    z.object({
+      text: z.string(),
+      gradient: z.boolean(),
+    })
+  ),
+  subtitle: z.string(),
+  images: z.array(Image),
 });
 
 // Default props
@@ -174,3 +186,8 @@ type HowItWorksProps = z.infer<typeof HowItWorksSchema>;
 /* -------------------------------------------------------------------------- */
 type PriceProps = z.infer<typeof PriceSchema>;
 type PricesProps = z.infer<typeof PricesSchema>;
+
+/* -------------------------------------------------------------------------- */
+/*                                 About Page                                 */
+/* -------------------------------------------------------------------------- */
+type BannerAboutProps = z.infer<typeof BannerAboutSchema>;

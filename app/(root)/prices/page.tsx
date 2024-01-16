@@ -12,13 +12,9 @@ import { client, queries } from '@/sanity/lib';
 import { ListPrices } from '@/components/pages/prices';
 import { generateMetadataWithSanity } from '@/helper';
 
-
-
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataWithSanity('GET_PRICES_PAGE');
 }
-
-
 
 export default async function Prices() {
   const { introduction_section, prices_list_section, faqs__section } = await client.fetch(
@@ -35,9 +31,7 @@ export default async function Prices() {
 
       {/* ------------------------------- List Prices ------------------------------ */}
       <section>
-        <ListPrices {...{prices_list_section}} />
-        {/*         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0"></div>
-         */}{' '}
+        <ListPrices {...{ prices_list_section }} />
       </section>
 
       {/* ---------------------------------- FAQs ---------------------------------- */}
