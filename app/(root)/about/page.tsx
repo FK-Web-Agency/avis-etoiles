@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import { generateMetadataWithSanity } from '@/helper';
-import { Banner } from '@/components/pages/about';
+import { Banner, OurMission, OurStory, OurValues } from '@/components/pages/about';
 import { client, queries } from '@/sanity/lib';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -9,11 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function About() {
-  const {banner} = await client.fetch(queries.GET_ABOUT_PAGE);
+  const {banner, story_section, mission_section, values_section} = await client.fetch(queries.GET_ABOUT_PAGE);
 
   return (
-    <main className='wrapper'>
+    <main >
       <Banner {...{banner}} />
+      <OurStory {...{story_section}} />
+      <OurMission {...{mission_section}} />
+      <OurValues {...{values_section}} />
     </main>
   );
 }

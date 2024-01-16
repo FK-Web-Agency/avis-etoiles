@@ -8,6 +8,16 @@ const DefaultSchema = z.object({
   _id: z.string(),
 });
 
+const BlockEditorSchema = z.array(z.object({
+  type: z.string(),
+  children: z.array(z.object({
+    text: z.string(),
+    marks: z.array(z.object({
+      type: z.string(),
+    })),
+  })),
+}))
+
 // Type Banner section
 const BannerSchema = DefaultSchema.merge(
   z.object({
@@ -150,6 +160,37 @@ const BannerAboutSchema = z.object({
   images: z.array(Image),
 });
 
+const StorySectionSchema = z.object({
+  title: z.string(),
+  subtitle: z.any(),
+  stats: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
+  image: Image,
+});
+
+
+const MissionSectionSchema = z.object({
+  title: z.string(),
+  subtitle: z.any(),
+  values: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
+});
+
+
+const ValuesSectionSchema = z.object({
+  title: z.string(),
+  subtitle: BlockEditorSchema,
+  images: Image
+});
+
 // Default props
 type DefaultProps = z.infer<typeof DefaultSchema>;
 
@@ -191,3 +232,6 @@ type PricesProps = z.infer<typeof PricesSchema>;
 /*                                 About Page                                 */
 /* -------------------------------------------------------------------------- */
 type BannerAboutProps = z.infer<typeof BannerAboutSchema>;
+type StorySectionProps = z.infer<typeof StorySectionSchema>;
+type MissionSectionProps = z.infer<typeof MissionSectionSchema>;
+type ValuesSectionProps = z.infer<typeof ValuesSectionSchema>;

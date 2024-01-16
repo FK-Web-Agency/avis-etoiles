@@ -9,7 +9,7 @@ type BannerType = {
 
 export default function Banner({ banner }: BannerType) {
   return (
-    <section className="relative isolate -z-10">
+    <section className="relative isolate -z-10 wrapper">
       {/* Background SVG */}
       <svg
         className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-800 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
