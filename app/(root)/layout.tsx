@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import { Footer, Header } from '@/components/shared';
-
+import { Toaster } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Avis Étoiles',
@@ -17,6 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+
+        <Toaster />
       </body>
     </html>
   );
