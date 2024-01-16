@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import { Footer, Header } from '@/components/shared';
+import { CookieConsent, Footer, Header } from '@/components/shared';
 import { Toaster } from '@/components/ui';
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
-
+        <CookieConsent />
         <Toaster />
       </body>
     </html>
