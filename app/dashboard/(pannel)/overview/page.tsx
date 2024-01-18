@@ -1,7 +1,14 @@
-import React from 'react'
+
 
 export default function Overview() {
   return (
-    <div>Overview</div>
+    <>
+    <h1 className="h4-medium text-white">Overview</h1>
+
+    {/* -------------------------- List Pie Charts here -------------------------- */}
+    <section>
+      
+    </section>
+    </>
   )
 }
