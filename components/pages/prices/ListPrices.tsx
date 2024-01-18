@@ -4,6 +4,7 @@ import {  PricesProps } from '@/interfaces/sanity';
 import { Icons } from '@/components/shared';
 import CheckoutButton from '@/components/shared/CheckButton';
 import { useState } from 'react';
+import { classNames } from '@/helper';
 
 
 // Define the frequency options
@@ -12,10 +13,6 @@ const frequencies = [
   { value: 'annually', label: 'Annually', priceSuffix: '/an' },
 ];
 
-// Utility function to concatenate CSS classes
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
-}
 
 type ListPricesType = {
   prices_list_section: PricesProps;

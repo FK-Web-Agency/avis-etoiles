@@ -3,6 +3,11 @@ import Image from 'next/image';
 import { BsGrid } from 'react-icons/bs';
 import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
+import { LuHome , LuUsers, LuPieChart} from 'react-icons/lu';
+import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline } from 'react-icons/io5';
+import {MdDashboard} from 'react-icons/md';
+import { RiMenu4Line } from 'react-icons/ri';
+
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -36,12 +41,17 @@ const Icons = {
   BuildingOffice: (props: IconProps) => (
     <HiOutlineBuildingOffice2 className="h-7 w-6 text-gray-400" aria-hidden="true" />
   ),
-  Envelope: (props: IconProps) => (
-    <HiOutlineEnvelope className="h-7 w-6 text-gray-400" aria-hidden="true" />
-  ),
-  Phone: (props: IconProps) => (
-    <HiOutlinePhone className="h-7 w-6 text-gray-400" aria-hidden="true" />
-  ),
-  Checked: (props: IconProps) => <IoMdCheckmark {...props}  />,
+  Envelope: (props: IconProps) => <HiOutlineEnvelope className="h-7 w-6 text-gray-400" aria-hidden="true" />,
+  Phone: (props: IconProps) => <HiOutlinePhone className="h-7 w-6 text-gray-400" aria-hidden="true" />,
+  Checked: (props: IconProps) => <IoMdCheckmark {...props} />,
+  Home: (props: IconProps) => <LuHome {...props} />,
+  Teams: (props: IconProps) => <LuUsers {...props} />,
+  Settings: (props: IconProps) => <IoSettingsOutline {...props} />,
+  Logout: (props: IconProps) => <IoLogOutOutline {...props} />,
+  Dashboard: (props: IconProps) => <MdDashboard {...props} />,
+  Member: (props: IconProps) => <IoPersonOutline {...props} />,
+  Game: (props: IconProps) => <IoGameControllerOutline {...props} />,
+  Reports: (props: IconProps) => <LuPieChart {...props} />,
+  Menu: (props: IconProps) => <RiMenu4Line {...props} />,
 };
 export default Icons;

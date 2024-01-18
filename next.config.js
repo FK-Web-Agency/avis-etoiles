@@ -8,6 +8,7 @@ const nextConfig = {
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
   },
+  transpilePackages: ["@refinedev/nextjs-router"],
 };
 
 module.exports = nextConfig;
