@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function layout({ children }: PropsWithChildren) {
   return (
-    <html lang="fr" className="h-full">
-      <body className="h-full background-body">
+    <html lang="fr" className="min-h-screen">
+      <body className=" background-body">
         <Sidebar>{children}</Sidebar>
       </body>
     </html>
