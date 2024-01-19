@@ -8,9 +8,9 @@ import Icons from '../Icons';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: Icons.Dashboard, current: true },
-  { name: 'Jeu', href: '#', icon: Icons.Game, current: false },
-  { name: 'Équipe', href: '#', icon: Icons.Teams, current: false },
   { name: 'Membres', href: '#', icon: Icons.Member, current: false },
+  { name: 'Équipe', href: '#', icon: Icons.Teams, current: false },
+  { name: 'Jeu', href: '#', icon: Icons.Game, current: false },
   { name: 'Reports', href: '#', icon: Icons.Reports, current: false },
 ];
 

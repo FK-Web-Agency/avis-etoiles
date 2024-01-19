@@ -36,6 +36,7 @@
     "@sanity/preview-kit": "^5.0.11",
     "@sanity/vision": "^3.24.1",
     "@stripe/stripe-js": "^2.3.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.2.0",

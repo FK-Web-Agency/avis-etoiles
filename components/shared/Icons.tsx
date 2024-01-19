@@ -7,8 +7,7 @@ import { LuHome , LuUsers, LuPieChart} from 'react-icons/lu';
 import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline } from 'react-icons/io5';
 import {MdDashboard} from 'react-icons/md';
 import { RiMenu4Line } from 'react-icons/ri';
-
-
+import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import { client, queries, urlForImage } from '@/sanity/lib';
 
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -53,5 +52,6 @@ const Icons = {
   Game: (props: IconProps) => <IoGameControllerOutline {...props} />,
   Reports: (props: IconProps) => <LuPieChart {...props} />,
   Menu: (props: IconProps) => <RiMenu4Line {...props} />,
+  ArrowUp: (props: IconProps) => <FaRegArrowAltCircleUp {...props} />,
 };
 export default Icons;

@@ -1,4 +1,4 @@
-import { PieChart } from '@/components/charts';
+import { PieChart, TotalRevenue } from '@/components/charts';
 
 export default function Overview() {
   return (
@@ -12,6 +12,9 @@ export default function Overview() {
         <PieChart title="Avis recueillis" value={3000} series={[75, 25]} colors={['#475be8', '#e4e8ef']} />
         <PieChart title="Cadeaux gagnés" value={700} series={[60, 20]} colors={['#475ae8', '#e4b8ef']} />
       </section>
+
+      {/* -------------------------- Total Revenue Charts -------------------------- */}
+      <TotalRevenue />
     </>
   );
 }
