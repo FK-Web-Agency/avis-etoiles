@@ -10,5 +10,4 @@ const nextConfig = {
   },
   transpilePackages: ["@refinedev/nextjs-router"],
 };
-
 module.exports = nextConfig;
