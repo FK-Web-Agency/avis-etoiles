@@ -7,11 +7,11 @@ import { classNames } from '@/helper';
 import Icons from '../Icons';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: Icons.Dashboard, current: true },
-  { name: 'Membres', href: '#', icon: Icons.Member, current: false },
-  { name: 'Équipe', href: '#', icon: Icons.Teams, current: false },
-  { name: 'Jeu', href: '#', icon: Icons.Game, current: false },
-  { name: 'Reports', href: '#', icon: Icons.Reports, current: false },
+  { name: 'Dashboard', href: '/dashboard/overview', icon: Icons.Dashboard, current: true },
+  { name: 'Membres', href: '/dashboard/members', icon: Icons.Member, current: false },
+  { name: 'Équipe', href: '/dashboard/teams', icon: Icons.Teams, current: false },
+  { name: 'Jeu', href: '/dashboard/game', icon: Icons.Game, current: false },
+  { name: 'Reports', href: '/dashboard/report', icon: Icons.Reports, current: false },
 ];
 
 export default function NavItems() {

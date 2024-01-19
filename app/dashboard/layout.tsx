@@ -24,9 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 show: '/posts/show/:id',
               },
               {
-                name: 'categories',
-                list: '/categories',
-                show: '/categories/show/:id',
+                name: 'members',
+                list: '/dashboard/members',
+                create: '/dashboard/members/create',
+                show: '/dashboard/members/:id',
               },
             ]}>
            {children}
