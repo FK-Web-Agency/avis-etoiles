@@ -10,3 +10,9 @@
 #faqs a {
     @apply text-primary
 }
+
+.pie-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 1.5rem;
+}

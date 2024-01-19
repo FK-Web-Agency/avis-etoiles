@@ -19,7 +19,6 @@ type ListPricesType = {
 };
 
 export default function ListPrices({ prices_list_section }: ListPricesType) {
-  console.log(prices_list_section);
 
   const [frequency, setFrequency] = useState(frequencies[0]);
 

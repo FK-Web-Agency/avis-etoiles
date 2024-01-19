@@ -13,6 +13,8 @@ export default function CheckoutButton({ plan }: any) {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
+
+    // TODO - handle success and cancelation
     if (query.get('success')) {
       console.log('Order placed! You will receive an email confirmation.');
     }
@@ -28,8 +30,6 @@ export default function CheckoutButton({ plan }: any) {
       title: plan.title,
       price: plan.price,
     };
-
-    console.log(order);
 
     await checkoutOrder(order);
   };

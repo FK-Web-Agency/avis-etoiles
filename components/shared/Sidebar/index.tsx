@@ -1,17 +1,12 @@
-'use client';
-
-import { Fragment, PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { SignedIn, UserButton } from '@clerk/nextjs';
 
 import Icons from '../Icons';
-import { classNames } from '@/helper';
 import NavItems from './NavItems';
 import MobileNav from './MobileNav';
 import TeamsNav from './TeamsNav';
 
 export default function Sidebar({ children }: PropsWithChildren) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
     <>
       <div>
