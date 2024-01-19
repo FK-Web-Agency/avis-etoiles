@@ -6,11 +6,23 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'name',
+        name: 'clerkId',
+        title: 'id du membre',
+        type: 'number',
+        validation: (Rule) => Rule.required(),
+      }),
+    defineField({
+      name: 'firstName',
       title: 'Nom',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+        name: 'lastName',
+        title: 'Prenom',
+        type: 'string',
+        validation: (Rule) => Rule.required(),
+      }),
     defineField({
       name: 'company_name',
       title: "Nom de l'entreprise",
@@ -35,7 +47,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'image',
+      name: 'logo',
       title: 'Image',
       type: 'image',
       validation: (Rule) => Rule.required(),
