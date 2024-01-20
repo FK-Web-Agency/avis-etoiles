@@ -13,6 +13,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'role',
+      title: 'Rôle',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'firstName',
       title: 'Nom',
       type: 'string',
@@ -28,6 +34,13 @@ export default defineType({
       name: 'companyName',
       title: "Nom de l'entreprise",
       type: 'string',
+      validation: (Rule) => Rule.required()
+    }),
+    defineField({
+      name: 'siret',
+      title: 'Siret',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(9).max(14),
     }),
     defineField({
       name: 'email',
@@ -41,17 +54,11 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
+
     defineField({
-      name: 'role',
-      title: 'Rôle',
+      name: 'photo',
+      title: 'Photo',
       type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'logo',
-      title: 'Logo',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'address',
@@ -76,6 +83,12 @@ export default defineType({
           type: 'string',
           validation: (Rule) => Rule.required(),
         }),
+        defineField({
+          name: 'country',
+          title: 'Pays',
+          type: 'string',
+          validation: (Rule) => Rule.required(),
+        }),
       ],
     }),
     defineField({
@@ -87,6 +100,16 @@ export default defineType({
           name: 'status',
           title: 'Status',
           type: 'boolean',
+        }),
+        defineField({
+          name: 'plan',
+          title: 'Plan',
+          type: 'string',
+        }),
+        defineField({
+          name: 'startDate',
+          title: 'Date',
+          type: 'date',
         }),
         defineField({
           name: 'expirationDate',

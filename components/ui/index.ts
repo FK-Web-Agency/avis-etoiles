@@ -24,7 +24,7 @@ export * from './use-toast'
 export * from './skeleton'
 export * from './table'
 export * from './dropdown-menu'
-
+export {default as AutoForm} from './auto-form'
 
 export { default as CustomCard } from './custom-card';
 export { default as TextGradient } from './text-gradient';

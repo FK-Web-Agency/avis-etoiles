@@ -4,11 +4,12 @@ import { BsGrid } from 'react-icons/bs';
 import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
 import { LuHome , LuUsers, LuPieChart, LuTrash2} from 'react-icons/lu';
-import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline, IoPersonAddOutline } from 'react-icons/io5';
+import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline, IoPersonAddOutline, IoChevronBack } from 'react-icons/io5';
 import {MdDashboard} from 'react-icons/md';
 import { RiMenu4Line } from 'react-icons/ri';
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import { FiEdit3 } from "react-icons/fi";
+import { ImSpinner9 } from "react-icons/im";
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -58,5 +59,7 @@ const Icons = {
   AddMember: (props: IconProps) => <IoPersonAddOutline {...props} />,
   Edit: (props: IconProps) => <FiEdit3 {...props} />,
   Delete: (props: IconProps) => <LuTrash2 {...props} />,
+  Back: (props: IconProps) => <IoChevronBack {...props} />,
+  Spinner: (props: IconProps) => <ImSpinner9 {...props} />,
 };
 export default Icons;

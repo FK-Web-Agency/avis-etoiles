@@ -1,4 +1,4 @@
-import client from '../client';
+import { client } from '@/sanity/lib';
 
 export default async function createUser(user: any) {
   const doc = {
