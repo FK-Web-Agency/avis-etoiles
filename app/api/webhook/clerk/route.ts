@@ -61,17 +61,18 @@ export async function POST(req: Request) {
       firstName: first_name,
       lastName: last_name,
     };
+    console.log('user', user);
 
-    const newUser:any = await createUser(user);
+    const newUser: any = await createUser(user);
+    console.log(newUser);
 
-    if(newUser){
+    if (newUser) {
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
-        }
-      })
+        },
+      });
     }
-    
   }
 
   return new Response('', { status: 200 });
