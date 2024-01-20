@@ -39,7 +39,7 @@ export default defineType({
     defineField({
       name: 'siret',
       title: 'Siret',
-      type: 'number',
+      type: 'string',
       validation: (Rule) => Rule.required().min(9).max(14),
     }),
     defineField({

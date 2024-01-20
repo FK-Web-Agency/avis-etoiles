@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { z } from 'zod';
-import { clerkClient } from '@clerk/nextjs';
 
 import { AutoFormSubmit, AutoForm } from '@/components/ui';
-import { generate } from 'generate-password';
+import { createMember } from '@/lib/actions/clerk.actions';
 
 const MemberSchema = z.object({
   information: z.object({
@@ -16,7 +15,7 @@ const MemberSchema = z.object({
     phone: z.string().describe('Numéro de téléphone'),
     companyName: z.string().describe('Nom de la société'),
     siret: z
-      .number()
+      .string()
       .min(9, {
         message: 'Le numéro SIRET doit contenir 14 chiffres',
       })
@@ -29,7 +28,7 @@ const MemberSchema = z.object({
     .object({
       street: z.string().describe('Rue'),
       city: z.string().describe('Ville'),
-      zipCode: z.number().describe('Code postal').max(5),
+      zipCode: z.string().describe('Code postal').max(5),
       country: z.string().describe('Pays'),
     })
     .describe('Adresse Postale'),
@@ -41,50 +40,24 @@ const MemberSchema = z.object({
   }),
 });
 
-type MemberProps = z.infer<typeof MemberSchema>;
+export type MemberProps = z.infer<typeof MemberSchema>;
 
 export default function CreateMemberForm() {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async function (value: MemberProps) {
+  const handleAction = async function (value: MemberProps) {
+    console.log(value);
+
     setLoading(true);
 
-    await clerkClient.users.createUser({
-      emailAddress: [value.information.email],
-      password: generate({
-        length: 10,
-        numbers: true,
-      }),
-      firstName: value.information.firstName,
-      lastName: value.information.lastName,
-      username: value.information.firstName + value.information.lastName,
-      phoneNumber: [value.information.phone],
-      privateMetadata: {
-        companyName: value.information.companyName,
-        siret: value.information.siret,
-        role: value.information.role,
-        address: {
-          street: value.address.street,
-          city: value.address.city,
-          zipCode: value.address.zipCode,
-          country: value.address.country,
-        },
-        subscription: {
-          free: value.subscription.free,
-          status: value.subscription.expirationDate ? true : false,
-          plan: value.subscription.plan,
-          startDate: value.subscription.startDate,
-          expirationDate: value.subscription.expirationDate,
-        },
-      },
-    });
-
+    await createMember(value);
     setLoading(false);
   };
 
+  /*   */
   return (
     <AutoForm
-      onSubmit={handleSubmit}
+      onAction={handleAction}
       formSchema={MemberSchema}
       fieldConfig={{
         information: {
