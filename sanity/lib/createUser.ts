@@ -1,6 +1,6 @@
 import client from './client';
 
-export default function createUser(user: any) {
+export default function xcreateUser(user: any) {
   const doc = {
     _type: 'users',
     ...user,
