@@ -1,10 +1,11 @@
 'use client';
 
-import { z } from 'zod';
-import { AutoFormSubmit,AutoForm, Button } from '@/components/ui';
-import { clerkClient } from '@clerk/nextjs';
 import { useState } from 'react';
-import { Icons } from '@/components/shared';
+import { z } from 'zod';
+import { clerkClient } from '@clerk/nextjs';
+
+import { AutoFormSubmit, AutoForm } from '@/components/ui';
+import { generate } from 'generate-password';
 
 const MemberSchema = z.object({
   information: z.object({
@@ -32,7 +33,6 @@ const MemberSchema = z.object({
       country: z.string().describe('Pays'),
     })
     .describe('Adresse Postale'),
-  password: z.string().min(8),
   subscription: z.object({
     free: z.boolean().default(false).describe('Abonnement gratuit'),
     plan: z.enum(['essential', 'premium', 'enterprise']).default('essential'),
@@ -51,7 +51,10 @@ export default function CreateMemberForm() {
 
     await clerkClient.users.createUser({
       emailAddress: [value.information.email],
-      password: value.password,
+      password: generate({
+        length: 10,
+        numbers: true,
+      }),
       firstName: value.information.firstName,
       lastName: value.information.lastName,
       username: value.information.firstName + value.information.lastName,
