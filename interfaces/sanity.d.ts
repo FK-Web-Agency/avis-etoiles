@@ -2,7 +2,7 @@ import type { BlockEditor, Image } from 'sanity';
 import { z } from 'zod';
 
 // Default schema
-const DefaultSchema = z.object({
+export const DefaultSchema = z.object({
   _ref: z.string(),
   _type: z.string(),
   _id: z.string(),

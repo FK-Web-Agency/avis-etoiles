@@ -21,7 +21,11 @@ export * from './auto-form';
 export * from './toast';
 export * from './toaster';
 export * from './use-toast'
+export * from './skeleton'
+export * from './table'
+export * from './dropdown-menu'
 
 
 export { default as CustomCard } from './custom-card';
 export { default as TextGradient } from './text-gradient';
+export {default as DataTable} from './data-table'

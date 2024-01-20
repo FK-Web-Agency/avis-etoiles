@@ -3,11 +3,13 @@ import Image from 'next/image';
 import { BsGrid } from 'react-icons/bs';
 import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
-import { LuHome , LuUsers, LuPieChart} from 'react-icons/lu';
+import { LuHome , LuUsers, LuPieChart, LuTrash2} from 'react-icons/lu';
 import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline, IoPersonAddOutline } from 'react-icons/io5';
 import {MdDashboard} from 'react-icons/md';
 import { RiMenu4Line } from 'react-icons/ri';
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
+import { FiEdit3 } from "react-icons/fi";
+
 import { client, queries, urlForImage } from '@/sanity/lib';
 
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -54,5 +56,7 @@ const Icons = {
   Menu: (props: IconProps) => <RiMenu4Line {...props} />,
   ArrowUp: (props: IconProps) => <FaRegArrowAltCircleUp {...props} />,
   AddMember: (props: IconProps) => <IoPersonAddOutline {...props} />,
+  Edit: (props: IconProps) => <FiEdit3 {...props} />,
+  Delete: (props: IconProps) => <LuTrash2 {...props} />,
 };
 export default Icons;

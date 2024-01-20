@@ -6,11 +6,12 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-        name: 'clerkId',
-        title: 'id du membre',
-        type: 'string',
-        validation: (Rule) => Rule.required(),
-      }),
+      name: 'clerkId',
+      title: 'id du membre',
+      type: 'string',
+      readOnly: true,
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'firstName',
       title: 'Nom',
@@ -18,13 +19,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-        name: 'lastName',
-        title: 'Prenom',
-        type: 'string',
-        validation: (Rule) => Rule.required(),
-      }),
+      name: 'lastName',
+      title: 'Prenom',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
-      name: 'company_name',
+      name: 'companyName',
       title: "Nom de l'entreprise",
       type: 'string',
     }),
@@ -78,6 +79,24 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'subscription',
+      title: 'Abonnement',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'status',
+          title: 'Status',
+          type: 'boolean',
+        }),
+        defineField({
+          name: 'expirationDate',
+          title: 'Date',
+          type: 'date',
+        }),
+      ],
+    }),
+
+    defineField({
       name: 'game',
       title: 'Jeu',
       type: 'object',
@@ -89,14 +108,13 @@ export default defineType({
           of: [{ type: 'string' }],
         }),
         defineField({
-          name: 'secret_code',
+          name: 'secretCode',
           title: 'Code secret',
           description: 'Code secret pour confirmer la recupération de la récompense',
           type: 'string',
         }),
       ],
     }),
-
     defineField({
       name: 'analytics',
       title: 'Analytics',
@@ -108,6 +126,12 @@ export default defineType({
             defineField({
               name: 'month',
               title: 'Mois',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'year',
+              title: 'Année',
               type: 'string',
               validation: (Rule) => Rule.required(),
             }),

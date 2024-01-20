@@ -23,17 +23,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               resources={[
                 {
                   name: 'overview',
-                  list: '/dashboard/overview',
-                  show: '/posts/show/:id',
+                  show: '/dashboard/overview',
                 },
                 {
                   name: 'members',
-                  list: '/dashboard/members',
+                  list: '/dashboard/members/list',
+                  show: '/dashboard/members/show/:id',
                   create: '/dashboard/members/create',
-                  show: '/dashboard/members/:id',
+                  edit: '/dashboard/members/edit/:id',
+                  meta: {
+                    canDelete: true,
+                  },
                 },
               ]}
               options={{
+                liveMode: 'auto',
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
                 projectId: 'eT5PSC-Goadjp-dYfdbS',
               }}>
               {children}
