@@ -2,7 +2,7 @@ import { authMiddleware } from '@clerk/nextjs';
 
 // This middleware will run for every request
 export default authMiddleware({
-  publicRoutes: ['/', '/about', '/contact', '/features', '/prices', '/studio(.*)', 'api/send', '/api/webhooks(.*)'],
+  publicRoutes: ['/', '/about', '/contact', '/features', '/prices', '/studio(.*)', 'api/send', '/api/webhook(.*)'],
   ignoredRoutes:['/api/send', '/api/webhook/clerk', '/api/webhook/stripe'],
 });
 
