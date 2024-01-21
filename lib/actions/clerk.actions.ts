@@ -3,6 +3,7 @@
 import { clerkClient } from '@clerk/nextjs';
 import { generate } from 'generate-password';
 import { MemberProps } from '@/components/forms/CreateMemberForm';
+import { formatDate } from '@/helper';
 
 export async function createMember(value: MemberProps) {
   try {
@@ -14,7 +15,7 @@ export async function createMember(value: MemberProps) {
       }),
       firstName: value.information?.firstName,
       lastName: value.information?.lastName,
-     // username: value.information?.firstName + value.information?.lastName,
+      // username: value.information?.firstName + value.information?.lastName,
       publicMetadata: {
         phoneNumber: value.information?.phone,
         companyName: value.information?.companyName,
@@ -30,8 +31,8 @@ export async function createMember(value: MemberProps) {
           free: value.subscription?.free,
           status: value.subscription?.expirationDate ? true : false,
           plan: value.subscription?.plan,
-          startDate: value.subscription?.startDate,
-          expirationDate: value.subscription?.expirationDate,
+          startDate: formatDate(value.subscription?.startDate),
+          expirationDate: formatDate(value.subscription?.expirationDate),
         },
       },
     });
@@ -39,7 +40,7 @@ export async function createMember(value: MemberProps) {
     return true;
   } catch (error: any) {
     console.log(error);
-    
+
     return { status: 'error', message: error.message };
   }
 }

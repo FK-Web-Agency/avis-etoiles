@@ -34,7 +34,7 @@ export default defineType({
       name: 'companyName',
       title: "Nom de l'entreprise",
       type: 'string',
-      validation: (Rule) => Rule.required()
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'siret',
@@ -78,7 +78,7 @@ export default defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
-          name: 'zip',
+          name: 'zipCode',
           title: 'Code postal',
           type: 'string',
           validation: (Rule) => Rule.required(),
@@ -110,11 +110,17 @@ export default defineType({
           name: 'startDate',
           title: 'Date',
           type: 'date',
+          options: {
+            dateFormat: 'DD-MM-YYYY',
+          },
         }),
         defineField({
           name: 'expirationDate',
           title: 'Date',
           type: 'date',
+          options: {
+            dateFormat: 'DD-MM-YYYY',
+          },
         }),
       ],
     }),
