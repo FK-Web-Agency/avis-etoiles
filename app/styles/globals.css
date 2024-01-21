@@ -17,3 +17,7 @@
     grid-gap: 1.5rem;
     @apply mt-8
 }
+
+.PhoneInputInput{
+    @apply bg-transparent px-4 py-1
+}
