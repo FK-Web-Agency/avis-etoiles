@@ -9,11 +9,12 @@ const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY!);
 export default async function sendEmail(data: any) {
   try {
     await resend.emails.send({
-      from: '<Avis Étoiles>admin@avisetoiles.com',
+      from: 'admin@avisetoiles.com',
       to: data.email,
       subject: data.subject,
       react: getEmailTemplate(data.emailTemplate, data),
     });
+    console.log('email sent');
 
     return NextResponse.json({ status: 'success' });
   } catch (err) {

@@ -12,10 +12,27 @@ import { FieldConfig } from './types';
 import { ZodObjectOrWrapped, getDefaultValues, getObjectFormSchema } from './utils';
 import AutoFormObject from './fields/object';
 import { Icons } from '@/components/shared';
+import { classNames } from '@/helper';
 
-export function AutoFormSubmit({ children, loading }: { children?: React.ReactNode; loading?: boolean }) {
+type Variant = 'link' | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'gradient' | null | undefined;
+
+export function AutoFormSubmit({
+  children,
+  loading,
+  variant,
+  className,
+}: {
+  children?: React.ReactNode;
+  loading?: boolean;
+  variant?: Variant;
+  className?: string;
+}) {
   return (
-    <Button type="submit" variant={'gradient'} disabled={loading} className="text-muted">
+    <Button
+      type="submit"
+      variant={variant || 'gradient'}
+      disabled={loading}
+      className={classNames('text-muted', className ? className : '')}>
       {loading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
       {children}
     </Button>
@@ -67,11 +84,10 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
   }
 
   if (onActionProp) {
-
     return (
       <Form {...form}>
         <form
-          action={(e:any) =>  form.handleSubmit(onAction)(e)}
+          action={(e: any) => form.handleSubmit(onAction)(e)}
           onChange={() => {
             const values = form.getValues();
             onValuesChangeProp?.(values);

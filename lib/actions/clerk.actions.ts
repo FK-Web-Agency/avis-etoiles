@@ -55,3 +55,21 @@ export async function createMember(value: MemberProps) {
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
+
+// Update email address
+export async function updateMemberEmail(id: string, user: any) {
+  console.log('use update', user);
+
+
+  try {
+    const params = {  firstName: user.firstName, lastName: user.lastName };
+
+    await clerkClient.users.updateUser('user_2bHw8JQyN9ADzUDNpGS7mwNjI7o', params);
+
+    return { status: 'success', message: "L'adresse email a été modifiée avec succès." };
+  } catch (error: any) {
+    console.log(error);
+
+    return { status: 'error', message: JSON.stringify(error) };
+  }
+}

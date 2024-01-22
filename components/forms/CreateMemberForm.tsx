@@ -73,7 +73,7 @@ const MemberSchema = z.object({
         const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
         return expirationDate;
       }),
-    price: z.number().default(0).describe('Prix'),
+    price: z.string().default('0').describe('Prix'),
   }),
 });
 
@@ -101,9 +101,9 @@ export default function CreateMemberForm() {
       });
 
       setTimeout(() => {
-      /*   go({
+          go({
           to: '/dashboard/members/list',
-        }); */
+        });
       }, 1000);
     }
 

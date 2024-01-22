@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
 import { createUser } from '@/sanity/lib';
 import { clerkClient } from '@clerk/nextjs';
+import updateUserEmail from '@/sanity/lib/members/updateUserEmail';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -80,6 +81,14 @@ export async function POST(req: Request) {
         },
       });
     }
+  }
+
+  if (eventType === 'user.updated') {
+    const {id, email_addresses, public_metadata } = evt.data;
+console.log(id);
+
+    // @ts-ignore
+    await updateUserEmail({ email: email_addresses[0].email_address, id: public_metadata?.userId });
   }
 
   return new Response('', { status: 200 });

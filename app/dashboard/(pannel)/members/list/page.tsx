@@ -6,6 +6,7 @@ import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow }
 import { classNames } from '@/helper';
 import { Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
+import Link from 'next/link';
 
 export default function page() {
   const go = useGo();
@@ -34,7 +35,7 @@ export default function page() {
             <TableRow>
               <TableHead>Profile</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="w-28">Expiration</TableHead>
+              <TableHead className="w-28 hidden sm:table-cell">Expiration</TableHead>
               <TableHead className="text-right sr-only">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -44,11 +45,23 @@ export default function page() {
                 <TableCell className="font-medium">
                   <div className="flex items-center">
                     <div className="h-11 w-11 flex-shrink-0">
-                      <img className="h-11 w-11 rounded-full" src={user.logo} alt="" />
+                      <img className="h-11 w-11 rounded-full" src={user.photo} alt="" />
                     </div>
                     <div className="ml-4">
-                      <div className="font-medium text-gray-100">{user.firstName}</div>
-                      <div className="mt-1 text-gray-500">{user.email}</div>
+                      <div className="font-medium text-gray-100">
+                        {user.firstName} {user.lastName}{' '}
+                      </div>
+                      <div className="font-medium text-gray-100 p-regular-12">{user.companyName} </div>
+                      <div className="mt-1 text-gray-500 flex items-center gap-2">
+                        <Icons.Envelope className="w-2.5 h-2.5 mr-1 inline-block" />
+                        <Link href={`mailto:${user?.email}`}>{user.email}</Link>
+                      </div>
+                      {user.phone && (
+                        <div className="mt-1 text-gray-500 flex items-center gap-2">
+                          <Icons.Phone className="w-2.5 h-2.5 mr-1 inline-block" />
+                          <Link href={`tel:${user?.phone}`}>{user.phone}</Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TableCell>
@@ -67,7 +80,7 @@ export default function page() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className=" hidden sm:block">
                   <p className="text-white">
                     {user?.subscription?.expirationDate ? (
                       user?.subscription?.expirationDate
