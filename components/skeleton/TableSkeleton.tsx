@@ -24,7 +24,7 @@ export default function TableSkeleton() {
       </TableHeader>
       <TableBody>
         {Array.from({ length: 5 }).map((_, index) => (
-          <TableRow className="border-gray-600">
+          <TableRow className="border-gray-600" key={index}>
             <TableCell className="font-medium">
               <div className="flex items-center">
                 <div className="h-11 w-11 flex-shrink-0">

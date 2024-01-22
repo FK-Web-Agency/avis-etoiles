@@ -4,15 +4,18 @@ import { clerkClient } from '@clerk/nextjs';
 import { generate } from 'generate-password';
 import { MemberProps } from '@/components/forms/CreateMemberForm';
 import { formatDate } from '@/helper';
+import sendEmail from './resend.actions';
 
 export async function createMember(value: MemberProps) {
+  const password = generate({
+    length: 10,
+    numbers: true,
+  });
   try {
+    // Create user
     await clerkClient.users.createUser({
       emailAddress: [value.information?.email],
-      password: generate({
-        length: 10,
-        numbers: true,
-      }),
+      password,
       firstName: value.information?.firstName,
       lastName: value.information?.lastName,
       // username: value.information?.firstName + value.information?.lastName,
@@ -37,10 +40,18 @@ export async function createMember(value: MemberProps) {
       },
     });
 
-    return true;
+    // Send email
+    await sendEmail({
+      email: value.information?.email,
+      subject: "Confirmation d'adhesion",
+      emailTemplate: 'welcome',
+      password,
+    });
+
+    return { status: 'success', message: 'Le membre a été créé avec succès.', password };
   } catch (error: any) {
     console.log(error);
 
-    return { status: 'error', message: error.message };
+    return { status: 'error', message: JSON.stringify(error) };
   }
 }

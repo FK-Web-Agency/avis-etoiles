@@ -1,23 +1,15 @@
 'use client';
+// TODO : check if email is sent
 
 import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import { useGo } from '@refinedev/core';
 
-import {
-  AutoFormSubmit,
-  AutoForm,
-  FormItem,
-  FormControl,
-  FormLabel,
-  FormDescription,
-  useToast,
-  ToastAction,
-} from '@/components/ui';
+import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
-import { useGo } from '@refinedev/core';
 
 const MemberSchema = z.object({
   information: z.object({
@@ -25,9 +17,15 @@ const MemberSchema = z.object({
     firstName: z.string().describe('Prénom'),
     lastName: z.string().describe('Nom'),
     email: z.string().email(),
-    phone: z.string().describe('Numéro de téléphone').max(22, {
-      message: 'Le numéro de téléphone est trop long',
-    }),
+    phone: z
+      .string()
+      .describe('Numéro de téléphone')
+      .max(22, {
+        message: 'Le numéro de téléphone est trop long',
+      })
+      .refine((value) => !isNaN(Number(value)), {
+        message: 'Le numéro de téléphone doit être une valeur numérique',
+      }),
     companyName: z.string().describe('Nom de la société'),
     siret: z
       .string()
@@ -37,13 +35,22 @@ const MemberSchema = z.object({
       .max(14, {
         message: 'Le numéro SIRET doit contenir 14 chiffres',
       })
-      .describe('Numéro SIRET ou SIREN'),
+      .describe('Numéro SIRET ou SIREN')
+      .refine((value) => !isNaN(Number(value)), {
+        message: 'Le numéro de SIRET/SIREN doit être une valeur numérique',
+      }),
   }),
   address: z
     .object({
       street: z.string().describe('Rue'),
       city: z.string().describe('Ville'),
-      zipCode: z.string().describe('Code postal').max(5),
+      zipCode: z
+        .string()
+        .describe('Code postal')
+        .max(5)
+        .refine((value) => !isNaN(Number(value)), {
+          message: 'Le numéro de code postal doit être une valeur numérique',
+        }),
       country: z.string().describe('Pays'),
     })
     .describe('Adresse Postale'),
@@ -62,12 +69,10 @@ export default function CreateMemberForm() {
   const { toast } = useToast();
   const go = useGo();
 
-  const handleAction = async function (value: MemberProps) {
-    console.log(value);
-
+  const handleAction = async function (values: MemberProps) {
     setLoading(true);
 
-    const response: any = await createMember(value);
+    const response: any = await createMember(values);
 
     if (response?.status === 'error') {
       toast({
@@ -82,15 +87,13 @@ export default function CreateMemberForm() {
 
       setTimeout(() => {
         go({
-          to: '/members/list',
+          to: '/dashboard/members/list',
         });
       }, 1000);
     }
 
     setLoading(false);
   };
-
-  /*   */
   return (
     <AutoForm
       onAction={handleAction}
