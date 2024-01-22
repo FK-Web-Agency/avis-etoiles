@@ -56,13 +56,13 @@ export default defineType({
       validation: (Rule) =>
         Rule.required()
           .email()
-          .custom(async (email) => {
+          .custom(async (email, schema) => {
             const filter = `*[_type == "users" && email == $email]`;
             const params = { email };
 
             const duplicateEmails = await client.fetch(filter, params);
-
-            if (duplicateEmails.length > 0) {
+            // @ts-ignore
+            if (duplicateEmails.length > 0 && !schema?.document._id.includes(duplicateEmails[0]._id)) {
               return 'Email already exists';
             }
 
