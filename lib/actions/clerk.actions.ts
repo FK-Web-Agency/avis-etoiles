@@ -74,3 +74,19 @@ export async function updateMemberEmail(id: string, user: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
+
+
+// Change password
+export async function changeMemberPassword(id:string, password: string) {
+  try {
+    await clerkClient.users.updateUser(id, { password });
+
+
+    return { status: 'success', message: "Le mot de passe a été modifié avec succès." };
+  } catch (error: any) {
+    console.log(error);
+
+    return { status: 'error', message: JSON.stringify(error) };
+  }
+  
+}

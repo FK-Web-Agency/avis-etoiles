@@ -37,7 +37,7 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
         {/* ------------------------------- Edit email ------------------------------- */}
         <EditEmailAndNameForm {...{ ...editEmailAndNameObject }} />
         {/* ------------------------------- Edit password ------------------------------- */}
-        <EditPasswordForm />
+        <EditPasswordForm clerkId={user?.clerkId} />
         {/* ------------------------------- Edit profile ------------------------------- */}
         <EditProfileForm />
         {/* ------------------------------- Subscription ------------------------------- */}

@@ -19,7 +19,7 @@ export default function EditEmailAndNameForm({ email, firstName, lastName, clerk
   return (
     <AutoForm onAction={handleAction} formSchema={EmailSchema}>
       <AutoFormSubmit variant="secondary" className="text-gray-900">
-        Changer
+        Sauvegarder
       </AutoFormSubmit>
     </AutoForm>
   );
