@@ -53,7 +53,6 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.created') {
     const { id, email_addresses, image_url, first_name, last_name, public_metadata } = evt.data;
-  
 
     const user = {
       clerkId: id,
@@ -80,7 +79,6 @@ export async function POST(req: Request) {
           userId: newUser._id,
         },
       });
-      
     }
   }
 
