@@ -7,6 +7,7 @@ import { apiVersion, dataset, projectId, useCdn, token } from '../env'
   dataset,
   projectId,
   useCdn,
-  token
+  token,
+  perspective: 'published',
 })
 export default client

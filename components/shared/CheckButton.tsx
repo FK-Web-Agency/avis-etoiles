@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { checkoutOrder } from '@/lib/stripe/order';
+import { checkoutOrder } from '@/lib/actions/order.actions';
 import { Button } from '../ui';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid

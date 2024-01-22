@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { client } from '../lib';
 
 export default defineType({
   name: 'users',
@@ -16,6 +17,12 @@ export default defineType({
       name: 'role',
       title: 'Rôle',
       type: 'string',
+      options: {
+        list: [
+          { title: 'Admin', value: 'admin' },
+          { title: 'Membre', value: 'member' },
+        ],
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -46,7 +53,22 @@ export default defineType({
       name: 'email',
       title: 'Email',
       type: 'string',
-      validation: (Rule) => Rule.required().email(),
+      validation: (Rule) =>
+        Rule.required()
+          .email()
+          .custom(async (email) => {
+            const filter = `*[_type == "users" && email == $email]`;
+            const params = { email };
+
+            const duplicateEmails = await client.fetch(filter, params);
+
+            if (duplicateEmails.length > 0) {
+              return 'Email already exists';
+            }
+
+            return true; // Email is unique
+          })
+          .error('Email already exists'),
     }),
     defineField({
       name: 'phone',
