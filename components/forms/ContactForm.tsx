@@ -5,6 +5,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import AutoForm, { AutoFormSubmit } from '../ui/auto-form';
 import { useState } from 'react';
 import { ToastAction, useToast } from '../ui';
+import sendEmail from '@/lib/actions/resend.actions';
 
 type StringProps = { messageError: string; describe: string };
 
@@ -87,18 +88,15 @@ export default function contactForm() {
 
   const onChange = (value: any) => setRecaptchaValue(value);
 
-  const handleSubmit = async function (values: ContactFormProps) {
+  const handleAction = async function (values: ContactFormProps) {
     if (!recaptchaValue) return;
 
-    const response = await fetch('/api/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...values, emailTemplate: 'contact' }),
+    const response: any = await sendEmail({
+      ...values,
+      emailTemplate: 'contact',
     });
 
-    if (response.ok) {
+    if (response.status === 'success') {
       toast({ title: 'Message envoyé', description: 'Votre message a bien été envoyé' });
     } else {
       toast({
@@ -112,7 +110,7 @@ export default function contactForm() {
   return (
     <AutoForm
       className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48"
-      onSubmit={handleSubmit}
+      onAction={handleAction}
       formSchema={ContactSchema}
       fieldConfig={{
         email: {
