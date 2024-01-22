@@ -3,7 +3,7 @@ import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 
 const secret = process.env.SANITY_WEBHOOK_SECRET!;
 
-export default async function POST(req:any, res:any) {
+export async function POST(req:any, res:any) {
   const signature = req.headers[SIGNATURE_HEADER_NAME];
   const body = await readBody(req); // Read the body into a string
   console.log(body);
