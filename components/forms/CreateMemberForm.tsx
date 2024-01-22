@@ -101,9 +101,9 @@ export default function CreateMemberForm() {
       });
 
       setTimeout(() => {
-        go({
+      /*   go({
           to: '/dashboard/members/list',
-        });
+        }); */
       }, 1000);
     }
 

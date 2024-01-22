@@ -147,6 +147,12 @@ export default defineType({
           },
         }),
         defineField({
+          name: 'price',
+          title: 'Prix',
+          type: 'number',
+          hidden: true,
+        }),
+        defineField({
           name: 'startDate',
           title: 'Date',
           type: 'date',
