@@ -105,6 +105,24 @@ export default defineType({
           name: 'plan',
           title: 'Plan',
           type: 'string',
+          options: {
+            list: [
+              { title: 'Essentiel', value: 'basic' },
+              { title: 'Pro', value: 'pro' },
+              { title: 'Entreprise', value: 'enterprise' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'recurring',
+          title: 'Renouvellement',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Mensuel', value: 'monthly' },
+              { title: 'Annuel', value: 'yearly' },
+            ],
+          },
         }),
         defineField({
           name: 'startDate',

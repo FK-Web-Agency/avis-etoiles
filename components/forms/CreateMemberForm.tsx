@@ -11,6 +11,12 @@ import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescrip
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 
+enum Recurring {
+  monthly = 'Mois',
+  yearly = 'Année',
+  punctual = 'Ponctuel',
+}
+
 const MemberSchema = z.object({
   information: z.object({
     role: z.enum(['admin', 'member']).default('member'),
@@ -55,10 +61,19 @@ const MemberSchema = z.object({
     })
     .describe('Adresse Postale'),
   subscription: z.object({
-    free: z.boolean().default(false).describe('Abonnement gratuit'),
+    free: z.boolean().default(false).describe('Abonnement gratuit').optional(),
     plan: z.enum(['essential', 'premium', 'enterprise']).default('essential'),
+    recurring: z.nativeEnum(Recurring).default(Recurring.monthly).describe('Renouvellement'),
     startDate: z.date().describe('Date de début').default(new Date()),
-    expirationDate: z.date().describe('Date de fin'),
+    expirationDate: z
+      .date()
+      .describe('Date de fin')
+      .default(() => {
+        const currentDate = new Date();
+        const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+        return expirationDate;
+      }),
+    price: z.number().default(0).describe('Prix'),
   }),
 });
 
@@ -94,6 +109,7 @@ export default function CreateMemberForm() {
 
     setLoading(false);
   };
+
   return (
     <AutoForm
       onAction={handleAction}
