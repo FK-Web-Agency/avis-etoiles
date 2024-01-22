@@ -17,6 +17,7 @@ import { Icons } from '@/components/shared';
 import { changeMemberPassword } from '@/lib/actions/clerk.actions';
 import { useState } from 'react';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
+import sendEmail from '@/lib/actions/resend.actions';
 
 const EditPasswordSchema = z.object({
   password: z
@@ -31,7 +32,7 @@ const EditPasswordSchema = z.object({
 
 type EditPasswordProps = z.infer<typeof EditPasswordSchema>;
 
-export default function EditPasswordForm({ clerkId }: { clerkId: string }) {
+export default function EditPasswordForm({ clerkId, email }: { clerkId: string; email: string }) {
   const [passwordGenerated, setPasswordGenerated] = useState('');
   const { toast } = useToast();
 
@@ -40,26 +41,33 @@ export default function EditPasswordForm({ clerkId }: { clerkId: string }) {
   // Handle password change using server action
   const handleAction = async function (values: EditPasswordProps) {
     const password = values.password || passwordGenerated;
+    try {
+      await changeMemberPassword(clerkId, password);
 
-    const { status, message } = await changeMemberPassword(clerkId, password);
-
-    if (status === 'success') {
       setPasswordGenerated('');
+
+      await sendEmail({
+        to: email,
+        subject: 'Votre mot de passe a été modifié - Avis Étoiles',
+        emailTemplate: 'reset-password',
+        password,
+      });
+
       toast({
         title: 'Mot de passe changé',
-        description: message,
+        description: "Le mot de passe a été changé avec succès, l'utilisateur a été notifié par email",
       });
-    } else {
+    } catch (error: any) {
       toast({
         title: 'Erreur',
-        description: message,
+        description: error.message,
         variant: 'destructive',
       });
     }
   };
 
   return (
-    <div className="flex flex-col  gap-5 py-8 my-8 border-y border-gray-600">
+    <section className="flex flex-col gap-5 py-8 my-8 border-y border-gray-600">
       <AutoForm
         onAction={handleAction}
         formSchema={EditPasswordSchema}
@@ -95,6 +103,6 @@ export default function EditPasswordForm({ clerkId }: { clerkId: string }) {
           Charger le mot de passe
         </AutoFormSubmit>
       </AutoForm>
-    </div>
+    </section>
   );
 }

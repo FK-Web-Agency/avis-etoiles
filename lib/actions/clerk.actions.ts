@@ -20,7 +20,7 @@ export async function createMember(value: MemberProps) {
       lastName: value.information?.lastName,
       // username: value.information?.firstName + value.information?.lastName,
       publicMetadata: {
-        phoneNumber: value.information?.phone,
+        phoneNumber: value.information?.phoneNumber,
         companyName: value.information?.companyName,
         siret: value.information?.siret,
         role: value.information?.role,
@@ -63,7 +63,7 @@ export async function updateMemberEmail(id: string, user: any) {
   try {
     // primaryEmailAddressID: user?.email,
     // TODO: update email address with clerk : Wait answer from clerk
-    const params = {  firstName: user.firstName, lastName: user.lastName };
+    const params = { firstName: user.firstName, lastName: user.lastName };
 
     await clerkClient.users.updateUser(id, params);
 
@@ -75,18 +75,39 @@ export async function updateMemberEmail(id: string, user: any) {
   }
 }
 
-
 // Change password
-export async function changeMemberPassword(id:string, password: string) {
+export async function changeMemberPassword(id: string, password: string) {
   try {
     await clerkClient.users.updateUser(id, { password });
 
-
-    return { status: 'success', message: "Le mot de passe a été modifié avec succès." };
+    return { status: 'success', message: 'Le mot de passe a été modifié avec succès.' };
   } catch (error: any) {
     console.log(error);
 
     return { status: 'error', message: JSON.stringify(error) };
   }
-  
+}
+
+
+// Update member information public_metadata
+export async function updateMemberInformation(id: string, user: any) {
+  try {
+    const params = {
+      publicMetadata: {
+        phoneNumber: user.phoneNumber,
+        companyName: user.companyName,
+        siret: user.siret,
+        role: user.role,
+        address: user.address,
+      },
+    };
+
+    await clerkClient.users.updateUserMetadata(id, params);
+
+    return { status: 'success', message: 'Les informations ont été modifiées avec succès.' };
+  } catch (error: any) {
+    console.log(error);
+
+    return { status: 'error', message: JSON.stringify(error) };
+  }
 }

@@ -6,36 +6,38 @@ interface KoalaWelcomeEmailProps {
   url: string;
 }
 
-export const PaymentTemplate = ({ companyName, url }: KoalaWelcomeEmailProps) => (
-  <Html>
-    <Head />
-    <Preview>The sales intelligence platform that helps you uncover qualified leads.</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Text style={title}>Avis Étoiles 🎁</Text>
+export default function PaymentTemplate({ companyName, url }: KoalaWelcomeEmailProps) {
+  return (
+    <Html>
+      <Head />
+      <Preview>The sales intelligence platform that helps you uncover qualified leads.</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Text style={title}>Avis Étoiles 🎁</Text>
 
-        <Text style={paragraph}>Hi {companyName},</Text>
-        <Text style={paragraph}>Vous trouverez ci-dessous le lien pour effectuer le paiement de votre abonnement.</Text>
-        <Section style={btnContainer}>
-          <Button style={button} href={url}>
-            Payer
-          </Button>
-        </Section>
-        <Text style={paragraph}>
-          À bientôt,
-          <br />
-          L'équipe Avis Étoiles
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-);
+          <Text style={paragraph}>Hi {companyName},</Text>
+          <Text style={paragraph}>
+            Vous trouverez ci-dessous le lien pour effectuer le paiement de votre abonnement.
+          </Text>
+          <Section style={btnContainer}>
+            <Button style={button} href={url}>
+              Payer
+            </Button>
+          </Section>
+          <Text style={paragraph}>
+            À bientôt,
+            <br />
+            L'équipe Avis Étoiles
+          </Text>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
 
 PaymentTemplate.PreviewProps = {
   companyName: 'Alan',
 } as KoalaWelcomeEmailProps;
-
-export default PaymentTemplate;
 
 const main = {
   backgroundColor: '#ffffff',
@@ -74,14 +76,4 @@ const button = {
   textAlign: 'center' as const,
   display: 'block',
   padding: '12px',
-};
-
-const hr = {
-  borderColor: '#cccccc',
-  margin: '20px 0',
-};
-
-const footer = {
-  color: '#8898aa',
-  fontSize: '12px',
 };

@@ -23,7 +23,7 @@ const MemberSchema = z.object({
     firstName: z.string().describe('Prénom'),
     lastName: z.string().describe('Nom'),
     email: z.string().email(),
-    phone: z
+    phoneNumber: z
       .string()
       .describe('Numéro de téléphone')
       .max(22, {
@@ -31,7 +31,7 @@ const MemberSchema = z.object({
       })
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de téléphone doit être une valeur numérique',
-      }),
+      }).describe('Numéro de téléphone'),
     companyName: z.string().describe('Nom de la société'),
     siret: z
       .string()

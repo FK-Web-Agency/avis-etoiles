@@ -9,13 +9,13 @@ const userSchema = DefaultSchema.merge(
     companyName: z.string().optional(),
     email: z.string(),
     phone: z.string().optional(),
-    role: z.string().optional(),
-    logo: z.string().optional(),
+    role: z.enum(['admin', 'member']).optional(),
+    photo: z.string().optional(),
     address: z
       .object({
         street: z.string(),
         city: z.string(),
-        zip: z.string(),
+        zipCode: z.string(),
         country: z.string(),
       })
       .optional(),
@@ -29,6 +29,9 @@ const userSchema = DefaultSchema.merge(
     subscription: z
       .object({
         status: z.boolean(),
+        plan: z.string(),
+        price: z.string(),
+        startDate: z.date(),
         expirationDate: z.date(),
       })
       .optional(),
