@@ -10,6 +10,7 @@ import { RiMenu4Line } from 'react-icons/ri';
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import { FiEdit3 } from "react-icons/fi";
 import { ImSpinner9 } from "react-icons/im";
+import { PiFloppyDiskDuotone } from "react-icons/pi";
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -61,5 +62,6 @@ const Icons = {
   Delete: (props: IconProps) => <LuTrash2 {...props} />,
   Back: (props: IconProps) => <IoChevronBack {...props} />,
   Spinner: (props: IconProps) => <ImSpinner9 {...props} />,
+  Disc: (props: IconProps) => <PiFloppyDiskDuotone {...props} />,
 };
 export default Icons;

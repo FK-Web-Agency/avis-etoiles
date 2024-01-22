@@ -14,6 +14,8 @@ export default function page() {
     resource: 'users',
   });
 
+  const members = data?.data || [];
+
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -29,7 +31,7 @@ export default function page() {
       </div>
       {isLoading ? (
         <TableSkeleton />
-      ) : (
+      ) : members?.length > 0 ? (
         <Table>
           <TableHeader className="bg-background">
             <TableRow>
@@ -40,7 +42,7 @@ export default function page() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data.map((user) => (
+            {members.map((user) => (
               <TableRow className="border-gray-600">
                 <TableCell className="font-medium">
                   <div className="flex items-center">
@@ -53,15 +55,10 @@ export default function page() {
                       </div>
                       <div className="font-medium text-gray-100 p-regular-12">{user.companyName} </div>
                       <div className="mt-1 text-gray-500 flex items-center gap-2">
-                        <Icons.Envelope className="w-2.5 h-2.5 mr-1 inline-block" />
+                        
                         <Link href={`mailto:${user?.email}`}>{user.email}</Link>
                       </div>
-                      {user.phone && (
-                        <div className="mt-1 text-gray-500 flex items-center gap-2">
-                          <Icons.Phone className="w-2.5 h-2.5 mr-1 inline-block" />
-                          <Link href={`tel:${user?.phone}`}>{user.phone}</Link>
-                        </div>
-                      )}
+                     
                     </div>
                   </div>
                 </TableCell>
@@ -80,8 +77,8 @@ export default function page() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className=" hidden sm:block">
-                  <p className="text-white">
+                <TableCell className=" ">
+                  <p className="text-white ">
                     {user?.subscription?.expirationDate ? (
                       user?.subscription?.expirationDate
                     ) : (
@@ -119,6 +116,11 @@ export default function page() {
             ))}
           </TableBody>
         </Table>
+      ) : (
+        <div className="flex-center flex-col">
+          <Icons.Disc className="w-16 h-16 text-gray-400" />
+          <p className="text-gray-400">Aucun membre</p>
+        </div>
       )}
     </>
   );

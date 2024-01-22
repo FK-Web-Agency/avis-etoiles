@@ -60,11 +60,12 @@ export async function createMember(value: MemberProps) {
 export async function updateMemberEmail(id: string, user: any) {
   console.log('use update', user);
 
-
   try {
+    // primaryEmailAddressID: user?.email,
+    // TODO: update email address with clerk : Wait answer from clerk
     const params = {  firstName: user.firstName, lastName: user.lastName };
 
-    await clerkClient.users.updateUser('user_2bHw8JQyN9ADzUDNpGS7mwNjI7o', params);
+    await clerkClient.users.updateUser(id, params);
 
     return { status: 'success', message: "L'adresse email a été modifiée avec succès." };
   } catch (error: any) {
