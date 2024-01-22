@@ -47,7 +47,7 @@ export default function EditPasswordForm({ clerkId, email }: { clerkId: string; 
       setPasswordGenerated('');
 
       await sendEmail({
-        to: email,
+        email,
         subject: 'Votre mot de passe a été modifié - Avis Étoiles',
         emailTemplate: 'reset-password',
         password,

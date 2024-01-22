@@ -37,9 +37,9 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
         {/* ------------------------------- Edit email ------------------------------- */}
         <EditEmailAndNameForm {...{ ...editEmailAndNameObject }} />
         {/* ------------------------------- Edit password ------------------------------- */}
-        <EditPasswordForm clerkId={user?.clerkId} />
+        <EditPasswordForm clerkId={user?.clerkId} email={user?.email} />
         {/* ------------------------------- Edit profile ------------------------------- */}
-        <EditProfileForm {...{user}} />
+        <EditProfileForm {...{ user }} />
         {/* ------------------------------- Subscription ------------------------------- */}
         <EditSubscriptionForm />
         <Button variant={'destructive'}>Supprimer</Button>
