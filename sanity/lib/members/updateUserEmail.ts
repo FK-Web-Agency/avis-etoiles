@@ -9,15 +9,13 @@ interface UpdateUserProps {
   };
 }
 
-export default async function 
-updateUserEmail({ id, user }: UpdateUserProps) {
+export default async function updateUserEmail({ id, user }: UpdateUserProps) {
   try {
-    const response = await client
+    await client
       .patch(id)
       .set({ ...user })
-      .commit();
-
-    return response;
+      .commit()
+      .then((res) => console.log('res', res));
   } catch (error) {
     console.log(error);
     return error;
