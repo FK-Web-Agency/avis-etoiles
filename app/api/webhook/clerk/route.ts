@@ -84,11 +84,18 @@ export async function POST(req: Request) {
   }
 
   if (eventType === 'user.updated') {
-    const {id, email_addresses, public_metadata } = evt.data;
-console.log(id);
-
-    // @ts-ignore
-    await updateUserEmail({ email: email_addresses[0].email_address, id: public_metadata?.userId });
+    const { id, email_addresses, first_name, last_name, public_metadata } = evt.data;
+    console.log(id);
+    const user = {
+      email: email_addresses[0].email_address,
+      firstName: first_name,
+      lastName: last_name,
+    };
+    await updateUserEmail({
+      user,
+      // @ts-ignore
+      id: public_metadata?.userId,
+    });
   }
 
   return new Response('', { status: 200 });

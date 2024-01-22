@@ -9,7 +9,8 @@ interface UpdateUserProps {
   };
 }
 
-export default async function updateUserEmail({ id, user }: UpdateUserProps) {
+export default async function 
+updateUserEmail({ id, user }: UpdateUserProps) {
   try {
     const response = await client
       .patch(id)
