@@ -45,16 +45,14 @@ export default function RefineProvider({ children }: PropsWithChildren) {
       });
   }, []);
 
-  if (!role) {
-    return null;
-  }
+
 
   return (
     <Refine
       // @ts-ignore
       dataProvider={dataProvider(client)}
       routerProvider={routerProvider}
-      resources={resources[role]}
+      resources={resources[role || 'member']}
       options={{
         liveMode: 'auto',
         syncWithLocation: true,
