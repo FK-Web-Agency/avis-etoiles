@@ -68,6 +68,9 @@ export default function EditPasswordForm({ clerkId, email }: { clerkId: string; 
 
   return (
     <section className="flex flex-col gap-5 py-8 my-8 border-y border-gray-600">
+      <h4 className='subtile-dashboard'>Générer un mot de passe</h4>
+
+
       <AutoForm
         onAction={handleAction}
         formSchema={EditPasswordSchema}

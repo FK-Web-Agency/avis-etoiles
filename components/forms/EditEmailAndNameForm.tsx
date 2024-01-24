@@ -17,10 +17,14 @@ export default function EditEmailAndNameForm({ email, firstName, lastName, clerk
   };
 
   return (
-    <AutoForm onAction={handleAction} formSchema={EmailSchema}>
-      <AutoFormSubmit variant="secondary" className="text-gray-900">
-        Sauvegarder
-      </AutoFormSubmit>
-    </AutoForm>
+    <section>
+      <h4 className="subtile-dashboard">Gestion de compte</h4>
+
+      <AutoForm onAction={handleAction} formSchema={EmailSchema}>
+        <AutoFormSubmit variant="secondary" className="text-gray-900">
+          Sauvegarder
+        </AutoFormSubmit>
+      </AutoForm>
+    </section>
   );
 }

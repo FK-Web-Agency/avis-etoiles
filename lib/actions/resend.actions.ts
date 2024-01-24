@@ -22,17 +22,25 @@ function getEmailTemplate(templateName: string, data: any) {
   }
 }
 
-export default async function sendEmail(data: any) {
+export default async function sendEmail(body: any) {
   try {
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'admin@avisetoiles.com',
-      to: data.email,
-      subject: data.subject,
-      react: getEmailTemplate(data.emailTemplate, data),
+      to: [body.email],
+      subject: body.subject,
+      react: getEmailTemplate(body.emailTemplate, body),
     });
-    console.log('email sent');
 
-    return { status: 'success', message: 'Email envoyé avec succés' };
+    if (error) {
+      console.error(error);
+      return {
+        status: 'error',
+        message: "Une erreur s'est produite, merci de réessayer ultérieurement",
+      };
+    }
+
+    console.log('email sent');
+    return { status: 'success', message: 'Email envoyé avec succés', data };
   } catch (err) {
     console.error(err);
     return {

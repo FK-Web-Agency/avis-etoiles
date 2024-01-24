@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { AutoForm, AutoFormSubmit } from '@/components/ui';
-import { IUser } from '@/interfaces/dashboard';
+import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { updateMemberInformation } from '@/lib/actions/clerk.actions';
 
 export default function EditInformation({ user }: { user: any }) {
+  const { toast } = useToast();
+
   // Schema for the form
   const EditInformationSchema = z.object({
     role: z.enum(['admin', 'member']).default(user?.role).optional(),
@@ -57,11 +58,23 @@ export default function EditInformation({ user }: { user: any }) {
   const handleAction = async function (values: any) {
     console.log(values);
 
-    await updateMemberInformation(user?.clerkId, values);
+    const { status, message } = await updateMemberInformation(user?.clerkId, values);
+
+     status === 'success'
+      ? toast({
+          description: 'Votre profil a été mis à jour',
+        })
+      : toast({
+          variant: 'destructive',
+          title: 'Uh oh! Quelque chose a mal tourné.',
+          description: message,
+        });
   };
 
   return (
     <section className="pb-8 mb-8 border-b border-gray-600">
+      <h4 className="subtile-dashboard">Profil</h4>
+
       <AutoForm onAction={handleAction} formSchema={EditInformationSchema}>
         <AutoFormSubmit variant={'secondary'} className="text-gray-900">
           Mettre à jour

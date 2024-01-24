@@ -121,6 +121,13 @@ export default defineType({
         defineField({
           name: 'status',
           title: 'Status',
+          description: "Status de l'abonnement",
+          type: 'boolean',
+        }),
+        defineField({
+          name: 'free',
+          title: 'Gratuit',
+          description: 'Abonnement gratuit ?',
           type: 'boolean',
         }),
         defineField({
@@ -129,8 +136,8 @@ export default defineType({
           type: 'string',
           options: {
             list: [
-              { title: 'Essentiel', value: 'basic' },
-              { title: 'Pro', value: 'pro' },
+              { title: 'Essentiel', value: 'essential' },
+              { title: 'Pro', value: 'premium' },
               { title: 'Entreprise', value: 'enterprise' },
             ],
           },
@@ -150,11 +157,10 @@ export default defineType({
           name: 'price',
           title: 'Prix',
           type: 'number',
-          hidden: true,
         }),
         defineField({
           name: 'startDate',
-          title: 'Date',
+          title: 'Date de début',
           type: 'date',
           options: {
             dateFormat: 'DD-MM-YYYY',
@@ -162,7 +168,7 @@ export default defineType({
         }),
         defineField({
           name: 'expirationDate',
-          title: 'Date',
+          title: "Date d'expiration",
           type: 'date',
           options: {
             dateFormat: 'DD-MM-YYYY',

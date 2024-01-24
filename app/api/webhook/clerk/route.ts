@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
 import { createUser } from '@/sanity/lib';
 import { clerkClient } from '@clerk/nextjs';
-import updateUserEmail from '@/sanity/lib/members/updateUserEmail';
+import updateUser from '@/sanity/lib/members/updateUser';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
       subscription: public_metadata.subscription,
     };
 
-    await updateUserEmail({
+    await updateUser({
       user,
       // @ts-ignore
       id: public_metadata?.userId,
