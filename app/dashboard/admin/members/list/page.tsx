@@ -89,7 +89,7 @@ export default function page() {
                     <ToggleRoleMemberButton user={user}>
                       <Icons.Group
                         className={classNames(
-                          user?.role === 'member' ? 'text-gray-100' : 'text-green-500',
+                          user?.role === 'member' ? 'text-gray-900' : 'text-slate-100',
                           'transition-colors duration-200 w-4 h-4'
                         )}
                       />

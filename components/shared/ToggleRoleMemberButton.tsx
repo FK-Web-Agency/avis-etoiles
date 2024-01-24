@@ -42,7 +42,7 @@ export default function ToggleRoleMemberButton({ children, user }: PropsWithChil
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button variant={'destructive'}>{children}</Button>
+        <Button variant={user?.role === 'member' ? 'outline' : 'destructive'} >{children}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

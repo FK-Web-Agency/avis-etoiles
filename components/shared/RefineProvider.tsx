@@ -29,7 +29,7 @@ const resources = {
   member: [
     {
       name: 'overview',
-      show: '/dashboard/member/overview',
+      list: '/dashboard/member/overview',
     },
   ],
 };
@@ -45,7 +45,7 @@ export default function RefineProvider({ children }: PropsWithChildren) {
       });
   }, []);
 
-
+  if (role === null) return null;
 
   return (
     <Refine
