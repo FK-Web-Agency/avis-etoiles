@@ -1,9 +1,10 @@
 'use client';
 
 import { EditEmailAndNameForm, EditPasswordForm, EditProfileForm, EditSubscriptionForm } from '@/components/forms';
-import { GoBack } from '@/components/shared';
-import { Button } from '@/components/ui';
-import { useOne } from '@refinedev/core';
+import { DeleteMemberButton, GoBack, Icons } from '@/components/shared';
+import { useToast } from '@/components/ui';
+import { useDelete, useNavigation, useOne } from '@refinedev/core';
+import { deleteMember } from '@/lib/actions/clerk.actions';
 
 interface EditMemberProps {
   params: {
@@ -16,8 +17,8 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
     resource: 'users',
     id,
   });
+
   const user = data?.data;
-  console.log(user);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -42,7 +43,12 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
         <EditProfileForm {...{ user }} />
         {/* ------------------------------- Subscription ------------------------------- */}
         <EditSubscriptionForm {...{ user }} />
-        <Button variant={'destructive'}>Supprimer</Button>
+        <DeleteMemberButton {...{ user, id }}>
+          <div className='mt-8'>
+            <Icons.Delete className="w-4 h-4 mr-2" />
+            Supprimer
+          </div>
+        </DeleteMemberButton>
       </section>
     </>
   );

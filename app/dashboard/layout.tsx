@@ -28,12 +28,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {
                   name: 'members',
                   list: '/dashboard/members/list',
-                  show: '/dashboard/members/show/:id',
                   create: '/dashboard/members/create',
                   edit: '/dashboard/members/edit/:id',
                   meta: {
                     canDelete: true,
                   },
+                },
+                {
+                  name: 'teams',
+                  list: '/dashboard/teams/list',
                 },
               ]}
               options={{

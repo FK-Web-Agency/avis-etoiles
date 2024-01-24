@@ -4,6 +4,7 @@ import { WebhookEvent } from '@clerk/nextjs/server';
 import { createUser } from '@/sanity/lib';
 import { clerkClient } from '@clerk/nextjs';
 import updateUser from '@/sanity/lib/members/updateUser';
+import deleteUser from '@/sanity/lib/members/deleteUser';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -90,7 +91,7 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       phone: public_metadata.phoneNumber,
-     // photo: image_url,
+      // photo: image_url,
       firstName: first_name,
       lastName: last_name,
 
@@ -106,6 +107,14 @@ export async function POST(req: Request) {
       // @ts-ignore
       id: public_metadata?.userId,
     });
+  }
+
+  if (eventType === 'user.deleted') {
+    const { id } = evt.data;
+
+    if (id) {
+      await deleteUser({ id });
+    }
   }
 
   return new Response('', { status: 200 });

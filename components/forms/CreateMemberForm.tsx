@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { useGo } from '@refinedev/core';
+import {  useNavigation } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
@@ -31,7 +31,8 @@ const MemberSchema = z.object({
       })
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de téléphone doit être une valeur numérique',
-      }).describe('Numéro de téléphone'),
+      })
+      .describe('Numéro de téléphone'),
     companyName: z.string().describe('Nom de la société'),
     siret: z
       .string()
@@ -82,7 +83,7 @@ export type MemberProps = z.infer<typeof MemberSchema>;
 export default function CreateMemberForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const go = useGo();
+  const { list } = useNavigation();
 
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
@@ -101,10 +102,8 @@ export default function CreateMemberForm() {
       });
 
       setTimeout(() => {
-          go({
-          to: '/dashboard/members/list',
-        });
-      }, 1000);
+        list('members');
+      }, 900);
     }
 
     setLoading(false);

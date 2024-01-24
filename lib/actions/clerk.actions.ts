@@ -111,3 +111,16 @@ export async function updateMemberInformation(id: string, user: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
+
+// Delete member
+export async function deleteMember(id: string) {
+  try {
+    await clerkClient.users.deleteUser(id);
+
+    return { status: 'success', message: 'Le membre a été supprimé avec succès.' };
+  } catch (error: any) {
+    console.log(error);
+
+    return { status: 'error', message: JSON.stringify(error) };
+  }
+}

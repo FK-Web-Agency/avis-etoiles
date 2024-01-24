@@ -4,7 +4,7 @@ import { useList, useGo } from '@refinedev/core';
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { classNames } from '@/helper';
-import { Icons } from '@/components/shared';
+import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import Link from 'next/link';
 
@@ -55,10 +55,8 @@ export default function page() {
                       </div>
                       <div className="font-medium text-gray-100 p-regular-12">{user.companyName} </div>
                       <div className="mt-1 text-gray-500 flex items-center gap-2">
-                        
                         <Link href={`mailto:${user?.email}`}>{user.email}</Link>
                       </div>
-                     
                     </div>
                   </div>
                 </TableCell>
@@ -104,12 +102,11 @@ export default function page() {
                       className="rounded border-2 border-gray-100 px-2 text-gray-100 hover:text-gray-900">
                       <Icons.Edit className="w-4 h-4" />
                     </Button>
-                    <Button
-                      variant={'destructive'}
-                      size={'sm'}
-                      className="rounded border-2 border-gray-100 px-2 text-gray-100">
-                      <Icons.Delete className="w-4 h-4" />
-                    </Button>
+                    <DeleteMemberButton user={user} id={user?._id}>
+                      <>
+                        <Icons.Delete className="w-4 h-4" />
+                      </>
+                    </DeleteMemberButton>
                   </div>
                 </TableCell>
               </TableRow>
