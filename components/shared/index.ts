@@ -5,3 +5,4 @@ export {default as CookieConsent} from './CookieConsent';
 export { default as Sidebar } from './Sidebar';
 export {default as GoBack} from './GoBack';
 export { default as DeleteMemberButton } from './DeleteMemberButton';
+export { default as ToggleRoleMemberButton } from './ToggleRoleMemberButton';

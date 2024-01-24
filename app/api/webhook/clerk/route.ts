@@ -5,6 +5,7 @@ import { createUser } from '@/sanity/lib';
 import { clerkClient } from '@clerk/nextjs';
 import updateUser from '@/sanity/lib/members/updateUser';
 import deleteUser from '@/sanity/lib/members/deleteUser';
+import handleUserRole from '@/sanity/lib/members/handleUserRole';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -115,6 +116,20 @@ export async function POST(req: Request) {
     if (id) {
       await deleteUser({ id });
     }
+  }
+
+  // Add user to organization
+  if (eventType === 'organizationMembership.created') {
+    const { id, role } = evt.data;
+
+    await handleUserRole({ clerkId: id, role });
+  }
+
+  // Remove user from organization
+  if (eventType === 'organizationMembership.deleted') {
+    const { id } = evt.data;
+
+    await handleUserRole({ clerkId: id, role: 'member' });
   }
 
   return new Response('', { status: 200 });

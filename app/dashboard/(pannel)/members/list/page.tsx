@@ -4,7 +4,7 @@ import { useList, useGo } from '@refinedev/core';
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { classNames } from '@/helper';
-import { DeleteMemberButton, Icons } from '@/components/shared';
+import { DeleteMemberButton, Icons, ToggleRoleMemberButton } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import Link from 'next/link';
 
@@ -86,6 +86,15 @@ export default function page() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-center items-center gap-5">
+                    <ToggleRoleMemberButton user={user}>
+                      <Icons.Group
+                        className={classNames(
+                          user?.role === 'member' ? 'text-gray-100' : 'text-green-500',
+                          'transition-colors duration-200 w-4 h-4'
+                        )}
+                      />
+                    </ToggleRoleMemberButton>
+
                     <Button
                       onClick={() =>
                         go({

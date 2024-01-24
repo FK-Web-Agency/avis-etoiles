@@ -12,7 +12,7 @@ const navigation = [
   { name: 'Membres', href: '/dashboard/members/list', icon: Icons.Member, current: false },
   { name: 'Équipe', href: '/dashboard/teams/list', icon: Icons.Teams, current: false },
   { name: 'Jeu', href: '/dashboard/game', icon: Icons.Game, current: false },
-  { name: 'Reports', href: '/dashboard/report', icon: Icons.Reports, current: false },
+ /*  { name: 'Reports', href: '/dashboard/report', icon: Icons.Reports, current: false }, */
 ];
 
 export default function NavItems() {
