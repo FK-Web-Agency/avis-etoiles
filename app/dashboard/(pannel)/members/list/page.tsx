@@ -124,8 +124,8 @@ export default function page() {
         </Table>
       ) : (
         <div className="flex-center flex-col">
-          <Icons.Disc className="w-16 h-16 text-gray-400" />
-          <p className="text-gray-400">Aucun membre</p>
+          <Icons.Disc className="w-16 h-16 text-gray-600" />
+          <p className="text-gray-600">Aucun membre</p>
         </div>
       )}
     </>
