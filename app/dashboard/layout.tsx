@@ -9,44 +9,20 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { frFR } from '@clerk/localizations';
 
 import { client } from '@/sanity/lib';
+import { useEffect } from 'react';
+import { RefineProvider } from '@/components/shared';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+
   return (
     <html lang="fr">
       <body>
         <ClerkProvider localization={frFR}>
           <DevtoolsProvider>
-            <Refine
-              // @ts-ignore
-              dataProvider={dataProvider(client)}
-              routerProvider={routerProvider}
-              resources={[
-                {
-                  name: 'overview',
-                  show: '/dashboard/overview',
-                },
-                {
-                  name: 'members',
-                  list: '/dashboard/members/list',
-                  create: '/dashboard/members/create',
-                  edit: '/dashboard/members/edit/:id',
-                  meta: {
-                    canDelete: true,
-                  },
-                },
-                {
-                  name: 'teams',
-                  list: '/dashboard/teams/list',
-                },
-              ]}
-              options={{
-                liveMode: 'auto',
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-                projectId: 'eT5PSC-Goadjp-dYfdbS',
-              }}>
+            <RefineProvider>
               {children}
-            </Refine>
+            </RefineProvider>
           </DevtoolsProvider>
           <DevtoolsPanel />
         </ClerkProvider>

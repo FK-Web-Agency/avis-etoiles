@@ -7,29 +7,45 @@ import { classNames } from '@/helper';
 import Icons from '../Icons';
 import { usePathname } from 'next/navigation';
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard/overview', icon: Icons.Dashboard, current: false },
-  { name: 'Membres', href: '/dashboard/members/list', icon: Icons.Member, current: false },
-  { name: 'Équipe', href: '/dashboard/teams/list', icon: Icons.Teams, current: false },
-  { name: 'Jeu', href: '/dashboard/game', icon: Icons.Game, current: false },
- /*  { name: 'Reports', href: '/dashboard/report', icon: Icons.Reports, current: false }, */
-];
+const navigation = {
+  admin: [
+    { name: 'Dashboard', href: '/dashboard/admin/overview', icon: Icons.Dashboard, current: false },
+    { name: 'Membres', href: '/dashboard/admin/members/list', icon: Icons.Member, current: false },
+    { name: 'Équipe', href: '/dashboard/admin/teams/list', icon: Icons.Teams, current: false },
+    { name: 'Jeu', href: '/dashboard/admin/game', icon: Icons.Game, current: false },
+    /*  { name: 'Reports', href: '/dashboard/admin/report', icon: Icons.Reports, current: false }, */
+  ],
+  member: [
+    { name: 'Dashboard', href: '/dashboard/member/overview', icon: Icons.Dashboard, current: false },
+    { name: 'Jeu', href: '/dashboard/member/game', icon: Icons.Game, current: false },
+    { name: 'Reports', href: '/dashboard/member/report', icon: Icons.Reports, current: false },
+  ],
+};
 
 export default function NavItems() {
-  const [navigationList, setNavigationList] = useState(navigation);
+  const [role, setRole] = useState('member');
+  const [navigationList, setNavigationList] = useState(navigation[role as keyof typeof navigation]);
   const pathname = usePathname();
 
   useEffect(() => {
-    const newNavigationList = navigationList.map((item) => {
-      if (pathname.includes(item.href)) {
-        item.current = true;
-      } else {
-        item.current = false;
-      }
-      return item;
+    fetch('/api/user')
+    .then((res) => res.json())
+    .then(({ role }) => {
+      const newNavigationList = navigation[role as keyof typeof navigation].map((item: { href: string; current: boolean }) => {
+        if (pathname.includes(item.href)) {
+          item.current = true;
+        } else {
+          item.current = false;
+        }
+        return item;
+      });
+  
+      // @ts-ignore
+      setNavigationList(newNavigationList);
+      setRole(role);
     });
-    setNavigationList(newNavigationList);
   }, []);
+
 
   const handleClick = function (event: React.MouseEvent<HTMLElement>) {
     const target = event.target as HTMLElement;
@@ -48,7 +64,7 @@ export default function NavItems() {
 
   return (
     <ul role="list" className="-mx-2 space-y-1">
-      {navigation.map((item) => (
+      {navigationList.map((item) => (
         <li key={item.name}>
           <Link
             onClick={handleClick}
