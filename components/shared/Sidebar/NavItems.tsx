@@ -1,21 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { classNames } from '@/helper';
 import Icons from '../Icons';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard/overview', icon: Icons.Dashboard, current: true },
-  { name: 'Membres', href: '/dashboard/members', icon: Icons.Member, current: false },
-  { name: 'Équipe', href: '/dashboard/teams', icon: Icons.Teams, current: false },
+  { name: 'Dashboard', href: '/dashboard/overview', icon: Icons.Dashboard, current: false },
+  { name: 'Membres', href: '/dashboard/members/list', icon: Icons.Member, current: false },
+  { name: 'Équipe', href: '/dashboard/teams/list', icon: Icons.Teams, current: false },
   { name: 'Jeu', href: '/dashboard/game', icon: Icons.Game, current: false },
   { name: 'Reports', href: '/dashboard/report', icon: Icons.Reports, current: false },
 ];
 
 export default function NavItems() {
   const [navigationList, setNavigationList] = useState(navigation);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const newNavigationList = navigationList.map((item) => {
+      if (pathname.includes(item.href)) {
+        item.current = true;
+      } else {
+        item.current = false;
+      }
+      return item;
+    });
+    setNavigationList(newNavigationList);
+  }, []);
 
   const handleClick = function (event: React.MouseEvent<HTMLElement>) {
     const target = event.target as HTMLElement;
