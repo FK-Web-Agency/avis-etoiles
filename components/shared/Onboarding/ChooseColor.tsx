@@ -13,7 +13,7 @@ export default function ChooseColor() {
   const handleSave = function () {
     setGameConfig({ color });
 
-    setStep('chooseGifts');
+    setStep('chooseRewards');
 
     toast({
       description: 'Couleur enregistrée',
@@ -24,7 +24,7 @@ export default function ChooseColor() {
     <div className="flex flex-col gap-5 items-start">
       <HexColorPicker color={color} onChange={setColor} />
 
-      <Button onClick={handleSave}>Confirmer</Button>
+      <Button variant={"gradient"} onClick={handleSave}>Confirmer</Button>
     </div>
   );
 }

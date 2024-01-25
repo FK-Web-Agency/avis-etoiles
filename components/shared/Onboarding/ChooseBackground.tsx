@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { useList } from '@refinedev/core';
 import Image from 'next/image';
 
-import {  urlForImage } from '@/sanity/lib';
-import { Input, Label, Skeleton, useToast } from '@/components/ui';
+import { urlForImage } from '@/sanity/lib';
+import { Button, Input, Label, Skeleton, useToast } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
 import { classNames } from '@/helper';
 
@@ -85,6 +85,10 @@ export default function ChooseBackground() {
           <Label>Télécharger votre arrière plan</Label>
           <Input ref={imageRef} type="file" accept="image/*" />
         </div>
+
+        <Button type="submit" variant={'gradient'}>
+          Confirmer
+        </Button>
       </div>
     </form>
   );

@@ -24,7 +24,7 @@ export default function Onboarding({ user }: { user: any }) {
         break;
 
       case 'Choisir vos couleurs':
-        setStep('chooseGifts');
+        setStep('chooseRewards');
         break;
 
       case 'Choisir vos cadeaux':
@@ -43,7 +43,7 @@ export default function Onboarding({ user }: { user: any }) {
         break;
 
       case 'Choisir vos actions':
-        setStep('chooseGifts');
+        setStep('chooseRewards');
         break;
 
       case 'Choisir vos cadeaux':

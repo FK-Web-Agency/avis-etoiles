@@ -1,6 +1,7 @@
 import ChangePassword from '@/components/shared/Onboarding/ChangePassword';
 import ChooseBackground from '@/components/shared/Onboarding/ChooseBackground';
 import ChooseColor from '@/components/shared/Onboarding/ChooseColor';
+import ChooseRewards from '@/components/shared/Onboarding/ChooseRewards';
 import UploadLogo from '@/components/shared/Onboarding/UploadLogo';
 import { z } from 'zod';
 import { create } from 'zustand';
@@ -40,10 +41,10 @@ const steps: Record<string, Step> = {
     description: 'Choisir une couleur pour le personnaliser',
     Content: ChooseColor,
   },
-  chooseGifts: {
+  chooseRewards: {
     title: 'Choisir vos cadeaux',
     description: 'Choisir vos cadeaux que vous allez offrir',
-    Content: ChangePassword,
+    Content: ChooseRewards,
   },
   chooseActions: {
     title: 'Choisir vos actions',
