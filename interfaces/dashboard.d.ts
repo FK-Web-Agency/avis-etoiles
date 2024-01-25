@@ -10,7 +10,7 @@ const userSchema = DefaultSchema.merge(
     email: z.string(),
     phone: z.string().optional(),
     role: z.enum(['admin', 'member']).optional(),
-    photo: z.string().optional(),
+    photo: z.any().optional(),
     address: z
       .object({
         street: z.string(),

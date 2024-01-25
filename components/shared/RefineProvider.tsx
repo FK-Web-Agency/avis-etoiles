@@ -35,7 +35,7 @@ const resources = {
 };
 
 export default function RefineProvider({ children }: PropsWithChildren) {
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState(undefined);
 
   useEffect(() => {
     fetch('/api/user')
@@ -44,6 +44,7 @@ export default function RefineProvider({ children }: PropsWithChildren) {
         setRole(role);
       });
   }, []);
+
 
   if (role === null) return null;
 

@@ -7,3 +7,4 @@ export { default as GoBack } from './GoBack';
 export { default as DeleteMemberButton } from './DeleteMemberButton';
 export { default as ToggleRoleMemberButton } from './ToggleRoleMemberButton';
 export { default as RefineProvider } from './RefineProvider';
+export {default as Onboarding} from './Onboarding';

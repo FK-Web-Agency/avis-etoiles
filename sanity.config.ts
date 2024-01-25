@@ -1,4 +1,5 @@
 import { IconManager } from 'sanity-plugin-icon-manager';
+import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 
 /**
  * This configuration is used to for the Sanity Studio that’s mounted on the `/app/studio/[[...index]]/page.tsx` route
@@ -23,6 +24,7 @@ export default defineConfig({
     // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
+    unsplashImageAsset(),
     IconManager({
 /*       customPalette: [
         {

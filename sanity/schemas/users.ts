@@ -176,26 +176,6 @@ export default defineType({
         }),
       ],
     }),
-
-    defineField({
-      name: 'game',
-      title: 'Jeu',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'rewards',
-          title: 'Récompenses',
-          type: 'array',
-          of: [{ type: 'string' }],
-        }),
-        defineField({
-          name: 'secretCode',
-          title: 'Code secret',
-          description: 'Code secret pour confirmer la recupération de la récompense',
-          type: 'string',
-        }),
-      ],
-    }),
     defineField({
       name: 'analytics',
       title: 'Analytics',
