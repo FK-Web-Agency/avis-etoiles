@@ -20,7 +20,7 @@ export default function Onboarding({ user }: { user: any }) {
         break;
 
       case 'Choisir votre arrière plan':
-        setStep('chooseColors');
+        setStep('chooseColor');
         break;
 
       case 'Choisir vos couleurs':
@@ -47,7 +47,7 @@ export default function Onboarding({ user }: { user: any }) {
         break;
 
       case 'Choisir vos cadeaux':
-        setStep('chooseColors');
+        setStep('chooseColor');
         break;
 
       case 'Choisir vos couleurs':
