@@ -7,12 +7,13 @@ import { LuHome , LuUsers, LuPieChart, LuTrash2} from 'react-icons/lu';
 import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline, IoPersonAddOutline, IoChevronBack } from 'react-icons/io5';
 import {MdDashboard} from 'react-icons/md';
 import { RiMenu4Line } from 'react-icons/ri';
-import { FaRegArrowAltCircleUp } from "react-icons/fa";
+import { FaRegArrowAltCircleUp , FaInstagram} from "react-icons/fa";
 import { FiEdit3 } from "react-icons/fi";
 import { ImSpinner9 } from "react-icons/im";
 import { PiFloppyDiskDuotone } from "react-icons/pi";
 import { FcLock } from "react-icons/fc";
 import { HiOutlineUserGroup } from "react-icons/hi2";
+import { FcGoogle } from "react-icons/fc";
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -67,5 +68,7 @@ const Icons = {
   Disc: (props: IconProps) => <PiFloppyDiskDuotone {...props} />,
   Lock: (props: IconProps) => <FcLock {...props} />,
   Group: (props: IconProps) => <HiOutlineUserGroup {...props} />,
+  Google: (props: IconProps) => <FcGoogle {...props} />,
+  Instagram: (props: IconProps) => <FaInstagram {...props} />,
 };
 export default Icons;

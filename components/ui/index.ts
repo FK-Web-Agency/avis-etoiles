@@ -3,7 +3,7 @@ export * from './separator';
 export * from './button';
 export * from './dialog';
 export * from './accordion';
-/* export * from './tabs'; */
+export * from './tabs';
 export * from './calendar';
 export * from './card';
 export * from './checkbox';

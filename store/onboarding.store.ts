@@ -1,4 +1,5 @@
 import ChangePassword from '@/components/shared/Onboarding/ChangePassword';
+import ChooseActions from '@/components/shared/Onboarding/ChooseActions';
 import ChooseBackground from '@/components/shared/Onboarding/ChooseBackground';
 import ChooseColor from '@/components/shared/Onboarding/ChooseColor';
 import ChooseRewards from '@/components/shared/Onboarding/ChooseRewards';
@@ -49,7 +50,7 @@ const steps: Record<string, Step> = {
   chooseActions: {
     title: 'Choisir vos actions',
     description: 'Choisir vos actions que les utilisateurs vont effectuer',
-    Content: ChangePassword,
+    Content: ChooseActions,
   },
   chooseNumberWinners: {
     title: 'Choisir le nombre de gagnants',
@@ -86,7 +87,7 @@ type Onboarding = z.infer<typeof OnboardingSchema>;
 type UserIdsProps = z.infer<typeof UserIds>;
 
 const useOnboardingStore = create<Onboarding>((set) => ({
-  step: steps.createPassword,
+  step: steps.chooseActions,
   userIds: {
     clerkId: undefined,
     sanityId: undefined,
