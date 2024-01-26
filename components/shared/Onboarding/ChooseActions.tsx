@@ -29,37 +29,34 @@ const actionsList: Action[] = [
     Icon: Icons.Google,
     Description: () => (
       <small>
-        Use the{' '}
+        Utilise l'outil{' '}
         <Link
           className="text-primary hover:text-primary-foreground"
           href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
           target="_blank">
           Google Place ID Finder
         </Link>
-        . On this page, you can search for the location in the integrated search bar and the tool will provide you with
-        the corresponding Place ID. Simply enter the name or address of the location, and the tool will display the
-        location with its Place ID that you can easily copy.
+        . Sur cette page, vous peuvez rechercher le lieu dans la barre de recherche intégrée et l'outil te fournira le
+        Place ID correspondant. Il suffit de saisir le nom du lieu ou son adresse, et l'outil affichera le lieu avec son
+        Place ID que vous peuvez facilement copier
       </small>
     ),
-    placeholder: 'Enter your Place ID',
+    placeholder: 'Entrez votre Place ID',
     label: 'Place ID',
-    value: undefined,
   },
   {
     title: 'instagram',
     Icon: Icons.Instagram,
-    Description: () => <small>Enter the URL of your Instagram account</small>,
-    placeholder: 'Enter your URL',
-    label: 'Instagram Profile URL',
-    value: undefined,
+    Description: () => <small>Renseigner l'URL de votre compte Instagram</small>,
+    placeholder: 'Entrez votre URL',
+    label: 'URL profile Instagram',
   },
   {
     title: 'facebook',
     Icon: Icons.Facebook,
-    Description: () => <small>Enter the URL of your Facebook account</small>,
-    placeholder: 'Enter your URL',
-    label: 'Facebook Profile URL',
-    value: undefined,
+    Description: () => <small>Renseigner l'URL de votre page Facebook</small>,
+    placeholder: 'Entrez votre URL',
+    label: 'URL page Facebook',
   },
 ];
 
@@ -145,7 +142,7 @@ export default function ChooseActions() {
   return (
     <div>
       <Tabs className="mt-5" defaultValue="google">
-        <TabsList className="bg-transparent mb-8">
+        <TabsList className="bg-transparent mb-8 flex-col max-[410px]:justify-center max-[410px]:w-full min-[410px]:flex-row">
           {actions.map((action, index) => {
             const config: ActionFromConfig[] | undefined = gameConfig?.actions?.filter(
               (a) => a.socialNetworkName === action.title
@@ -177,7 +174,7 @@ export default function ChooseActions() {
           );
 
           return (
-            <TabsContent key={index} value={action.title}>
+            <TabsContent className="max-[410px]:pt-20" key={index} value={action.title}>
               <action.Description />
 
               <div className="mt-4 flex flex-col gap-1">
