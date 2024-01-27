@@ -4,7 +4,7 @@ import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Car
 import { useOnboardingStore } from '@/store';
 
 export default function Onboarding({ user }: { user: any }) {
-  const { step, setStep } = useOnboardingStore();
+  const { step, gameConfig, setStep } = useOnboardingStore();
 
   // Components for each step
   const Content = step?.Content;
@@ -38,6 +38,10 @@ export default function Onboarding({ user }: { user: any }) {
 
   const handlePreviousStep = function () {
     switch (step.title) {
+      case 'Générer votre QR Code':
+        setStep('chooseNumberWinners');
+        break;
+
       case 'Choisir le nombre de gagnants':
         setStep('chooseActions');
         break;
@@ -77,7 +81,7 @@ export default function Onboarding({ user }: { user: any }) {
             <CardTitle> {step?.title} </CardTitle>
             <CardDescription> {step?.description} </CardDescription>
           </CardHeader>
-          <CardContent className='min-h-60'>
+          <CardContent className="min-h-60">
             <Content />
           </CardContent>
           <CardFooter>
@@ -88,10 +92,13 @@ export default function Onboarding({ user }: { user: any }) {
                 onClick={handlePreviousStep}>
                 Précédent
               </Button>
-
-              <Button disabled={step.title.includes('gagnants')} variant="secondary" onClick={handleNextStep}>
-                Suivant
-              </Button>
+              {step.title.includes('QR Code') ? (
+                <Button disabled={!gameConfig?.qrCode} variant="gradient">Terminer</Button>
+              ) : (
+                <Button disabled={step.title.includes('gagnants')} variant="secondary" onClick={handleNextStep}>
+                  Suivant
+                </Button>
+              )}
             </div>
           </CardFooter>
         </Card>

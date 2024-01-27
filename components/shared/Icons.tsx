@@ -15,6 +15,8 @@ import { FcLock } from "react-icons/fc";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { FcGoogle } from "react-icons/fc";
 import { GoPlus } from "react-icons/go";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+
 
 import { client, queries, urlForImage } from '@/sanity/lib';
 
@@ -70,6 +72,7 @@ const Icons = {
   Lock: (props: IconProps) => <FcLock {...props} />,
   Group: (props: IconProps) => <HiOutlineUserGroup {...props} />,
   Plus: (props: IconProps) => <GoPlus {...props} />,
+  Eye: (props: IconProps) => <MdOutlineRemoveRedEye {...props} />,
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,
   Facebook: (props: IconProps) => <FaFacebookSquare {...props} />,

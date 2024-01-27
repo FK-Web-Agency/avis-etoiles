@@ -6,6 +6,7 @@ import orders from './schemas/orders';
 import users from './schemas/users';
 import gameConfig from './schemas/game/gameConfig';
 import gameBackgrounds from './schemas/game/gameBackgrounds';
+import gameEasel from './schemas/game/gameEasel';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -20,6 +21,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     users,
     orders,
     gameBackgrounds,
+    gameEasel,
     gameConfig,
   ],
 };

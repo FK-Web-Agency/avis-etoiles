@@ -18,6 +18,18 @@ export default defineType({
       type: 'image',
     }),
     defineField({
+      name: 'qrCode',
+      title: 'QR Code',
+      type: 'image',
+    }),
+    // chevalet
+    defineField({
+      name: 'gameEasel',
+      title: 'easel',
+      type: 'reference',
+      to: [{ type: 'gameEasel' }],
+    }),
+    defineField({
       name: 'background',
       title: 'Arrière plan',
       type: 'reference',
@@ -33,22 +45,24 @@ export default defineType({
       title: 'Actions',
       type: 'array',
       description: 'Actions à réaliser pour pouvoir tourner la roue',
-      of:[{
-        type: 'object',
-        fields: [
-          defineField({
-            name: 'socialNetworkName',
-            title: 'Nom du réseau social',
-            type: 'string',
-          }),
-          defineField({
-            name: 'value',
-            title: 'Valeur',
-            description: 'Valeur de l\'action (url ou placeId pour google)',
-            type: 'string',
-          }),
-        ]
-      }]
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'socialName',
+              title: 'Nom du réseau social',
+              type: 'string',
+            }),
+            defineField({
+              name: 'value',
+              title: 'Valeur',
+              description: "Valeur de l'action (url ou placeId pour google)",
+              type: 'string',
+            }),
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'rewards',

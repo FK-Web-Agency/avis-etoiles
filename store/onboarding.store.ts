@@ -2,7 +2,10 @@ import ChangePassword from '@/components/shared/Onboarding/ChangePassword';
 import ChooseActions from '@/components/shared/Onboarding/ChooseActions';
 import ChooseBackground from '@/components/shared/Onboarding/ChooseBackground';
 import ChooseColor from '@/components/shared/Onboarding/ChooseColor';
+import ChooseNumberWinners from '@/components/shared/Onboarding/ChooseNumberWinners';
 import ChooseRewards from '@/components/shared/Onboarding/ChooseRewards';
+import ChooseSecretCode from '@/components/shared/Onboarding/ChooseSecretCode';
+import GenerateQRCode from '@/components/shared/Onboarding/GenerateQRCode';
 import UploadLogo from '@/components/shared/Onboarding/UploadLogo';
 import { z } from 'zod';
 import { create } from 'zustand';
@@ -55,7 +58,17 @@ const steps: Record<string, Step> = {
   chooseNumberWinners: {
     title: 'Choisir le nombre de gagnants',
     description: 'Choisir le nombre de gagnants par mois',
-    Content: ChangePassword,
+    Content: ChooseNumberWinners,
+  },
+  chooseSecretCode: {
+    title: 'Choisir votre code secret',
+    description: 'Choisir votre code secret pour confirmer la récupération des cadeaux par les gagnants',
+    Content: ChooseSecretCode,
+  },
+  generateQRCode: {
+    title: 'Générer votre QR Code',
+    description: 'Générer votre QR Code pour le mettre sur votre site',
+    Content: GenerateQRCode,
   },
 };
 
@@ -64,15 +77,19 @@ const UserIds = z.object({
   sanityId: z.string().optional(),
 });
 
+
+
 const GameConfigSchema = z.object({
   user: z.string().optional(),
-  logo: z.instanceof(File).optional(),
-  background: z.instanceof(File).optional(),
+  logo: z.any().optional(),
+  background: z.any().optional(),
   color: z.string().optional(),
   actions: z.array(z.object({ socialNetworkName: z.string(), value: z.string() })).optional(),
   rewards: z.array(z.string()).optional(),
   numberWinners: z.number().optional(),
   secretCode: z.string().optional(),
+  qrCode: z.any().optional(),
+  easel: z.any().optional(),
 });
 
 const OnboardingSchema = z.object({
@@ -88,7 +105,7 @@ type Onboarding = z.infer<typeof OnboardingSchema>;
 type UserIdsProps = z.infer<typeof UserIds>;
 
 const useOnboardingStore = create<Onboarding>((set) => ({
-  step: steps.chooseActions,
+  step: steps.createPassword,
   userIds: {
     clerkId: undefined,
     sanityId: undefined,
@@ -102,6 +119,8 @@ const useOnboardingStore = create<Onboarding>((set) => ({
     rewards: undefined,
     numberWinners: undefined,
     secretCode: undefined,
+    qrCode: undefined,
+    easel: undefined,
   },
   setStep: (stepName: keyof typeof steps) => set({ step: steps[stepName] }),
   setUserIds: ({ clerkId, sanityId }: UserIdsProps) => set({ userIds: { clerkId, sanityId } }),
