@@ -6,9 +6,9 @@ import React, { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 export default function ChooseColor() {
-  const [color, setColor] = useState('#aabbcc');
+  const { setGameConfig, setStep, gameConfig } = useOnboardingStore();
+  const [color, setColor] = useState(gameConfig.color || '#aabbcc');
   const { toast } = useToast();
-  const { setGameConfig, setStep } = useOnboardingStore();
 
   const handleSave = function () {
     setGameConfig({ color });

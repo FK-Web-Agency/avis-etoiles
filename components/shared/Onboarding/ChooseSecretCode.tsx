@@ -1,8 +1,6 @@
 'use client';
 
 import { z } from 'zod';
-import bcrypt from "bcryptjs-react";
-
 
 import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
@@ -23,10 +21,7 @@ export default function ChooseSecretCode() {
   type ChooseSecretCodeSchemaType = z.infer<typeof ChooseSecretCodeSchema>;
 
   const onSubmit = async function (values: ChooseSecretCodeSchemaType) {
-    const salt = await bcrypt.genSalt(10);
-    const secretCode = await bcrypt.hash(values.secretCode, salt);
-
-    setGameConfig({ secretCode });
+    setGameConfig({ secretCode: values.secretCode });
 
     toast({
       description: 'Code secret enregistré',

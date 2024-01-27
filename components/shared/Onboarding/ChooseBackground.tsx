@@ -9,8 +9,8 @@ import { classNames } from '@/helper';
 
 export default function ChooseBackground() {
   const [backgroundSelected, setBackgroundSelected] = useState<null | number>(null);
+  const { setGameConfig, setStep, gameConfig } = useOnboardingStore();
   const { toast } = useToast();
-  const { setGameConfig, setStep } = useOnboardingStore();
   const { data, isLoading } = useList({ resource: 'gameBackgrounds' });
 
   const imageRef = useRef<HTMLInputElement>(null);
@@ -54,6 +54,8 @@ export default function ChooseBackground() {
     }
   };
 
+  console.log(imageRef?.current?.files);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex-center flex-align-start flex-col gap-5">
@@ -72,7 +74,7 @@ export default function ChooseBackground() {
                     alt="Image"
                     className={classNames(
                       'rounded-md object-cover w-full h-28',
-                      backgroundSelected === index && 'ring-2 ring-primary'
+                      backgroundSelected === index && imageRef?.current?.files?.length === 0 && 'ring-2 ring-primary'
                     )}
                     width={200}
                     height={200}

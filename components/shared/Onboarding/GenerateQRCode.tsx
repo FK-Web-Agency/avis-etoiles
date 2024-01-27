@@ -132,14 +132,15 @@ export default function GenerateQRCode() {
                   onClick={() => setEaselSelected(index)}
                   src={urlForImage(easel)}
                   className={classNames(
-                    'shadow-xl rounded-lg',
+                    'shadow-xl rounded-lg w-full h-auto',
                     easelSelected === index
                       ? 'ring-2 ring-primary opacity-100'
                       : 'opacity-70 hover:opacity-100 transition-opacity'
                   )}
                   alt="QR Code"
-                  width={200}
-                  height={200}
+                  width="0"
+                  height="0"
+                  sizes="100vw"
                   priority
                 />
               ))}

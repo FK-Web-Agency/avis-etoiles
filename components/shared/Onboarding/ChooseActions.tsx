@@ -7,6 +7,8 @@ import { Icons } from '@/components/shared';
 import { classNames } from '@/helper';
 import { useOnboardingStore } from '@/store';
 
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+
 // Define the schema for an action
 const actionSchema = z.object({
   title: z.string(),
@@ -63,26 +65,45 @@ const actionsList: Action[] = [
 export default function ChooseActions() {
   const [actions, setActions] = useState<Action[]>(actionsList);
   const [textEntered, setTextEntered] = useState('');
+  const [selectGoogle, setSelectGoogle] = useState<null | { description: string; place_id: string }>(null);
+  const [togglePopover, setTogglePopover] = useState(false);
   const { gameConfig, setGameConfig, setStep } = useOnboardingStore();
   const { toast } = useToast();
+
+  const { placePredictions, getPlacePredictions } = usePlacesService({
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
+    language: 'fr',
+  });
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);
 
   // Handle adding an action
   const handleAddAction = function (action: Action) {
+    if (action.title === 'google' && !selectGoogle) {
+      return toast({
+        title: 'Erreur',
+        description: 'Vous devez choissir un lieu',
+        variant: 'destructive',
+      });
+    }
+
     setActions((prevActions) => {
       const newActions = [...prevActions];
       const index = newActions.findIndex((a) => a.title === action.title);
-      newActions[index].value = textEntered;
+      newActions[index].value = selectGoogle?.place_id || textEntered;
       return newActions;
     });
 
+    setSelectGoogle(null);
     setTextEntered('');
   };
 
   // Handle editing an action
   const handleEditAction = function (action: Action) {
+    if (action.title === 'google')
+      return alert("Pour modifier votre place ID, merci d'utiliser le champ de recherche Google ci-dessus");
+
     const editText = prompt('Enter your modification', action.value);
 
     if (!editText)
@@ -179,19 +200,53 @@ export default function ChooseActions() {
 
               <div className="mt-4 flex flex-col gap-1">
                 <Label htmlFor={action.title}>{action.label}</Label>
-                <Input
-                  id={action.title}
-                  type="text"
-                  placeholder={action.placeholder}
-                  value={textEntered}
-                  onChange={handleChange}
-                />
+                {action.title === 'google' ? (
+                  <>
+                    <Input
+                      placeholder="Nom de la société"
+                      id={action.title}
+                      value={selectGoogle?.description || textEntered}
+                      onChange={(evt) => {
+                        if (!togglePopover) setTogglePopover(!togglePopover);
+
+                        setTextEntered(evt.target.value);
+                        getPlacePredictions({ input: evt.target.value });
+                      }}
+                    />
+                    {placePredictions.length && togglePopover ? (
+                      <div className="flex flex-col gap-4 z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 mt-4">
+                        {placePredictions?.map((suggestion: any, index) => (
+                          <div
+                            onClick={() => (setSelectGoogle(suggestion), setTogglePopover(!togglePopover))}
+                            className="min-h-min p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                            key={index}>
+                            <div className="flex items-start flex-col gap-1 text-gray-900 hover:bg-gray-200 rounded">
+                              <p className="p-medium-14 text-gray-900 break-all">{suggestion.description}</p>
+                              <small className="text-xs block text-gray-600">Place ID :{suggestion.place_id}</small>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  <Input
+                    id={action.title}
+                    type="text"
+                    placeholder={action.placeholder}
+                    value={textEntered}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
               {action.value || (config && config?.length > 0) ? (
                 <div className="mt-4 flex flex-col gap-1 items-start">
                   <p className="p-medium-12">
                     Valeur enregistrée :{' '}
-                    <span className="text-gray-900">{action.value || (config && config[0]?.value)}</span>.
+                    <span className="text-gray-900">
+                      {selectGoogle?.description || action.value || (config && config[0]?.value)}
+                    </span>
+                    .
                   </p>
 
                   <div className="flex items-center gap-4">

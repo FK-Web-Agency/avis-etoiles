@@ -46,8 +46,8 @@ export default function UploadLogo() {
           <Input onChange={handleChange} type="file" name="logo" accept="image/*" required />
         </div>
 
-        <Button type="submit" className="mt-8">
-          Sauvegarder
+        <Button variant={'gradient'} type="submit" className="mt-8">
+          Enregistré
         </Button>
       </form>
     </div>

@@ -105,7 +105,7 @@ type Onboarding = z.infer<typeof OnboardingSchema>;
 type UserIdsProps = z.infer<typeof UserIds>;
 
 const useOnboardingStore = create<Onboarding>((set) => ({
-  step: steps.createPassword,
+  step: steps.chooseActions,
   userIds: {
     clerkId: undefined,
     sanityId: undefined,

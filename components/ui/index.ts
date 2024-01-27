@@ -25,6 +25,7 @@ export * from './skeleton'
 export * from './table'
 export * from './dropdown-menu'
 export * from './alert-dialog'
+export * from './popover'
 
 export {default as AutoForm} from './auto-form'
 
