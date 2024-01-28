@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   type: 'document',
-  name: 'game-config',
+  name: 'gameConfig',
   title: 'Jeu',
   fields: [
     defineField({
@@ -24,16 +24,14 @@ export default defineType({
     }),
     // chevalet
     defineField({
-      name: 'gameEasel',
+      name: 'easel',
       title: 'easel',
-      type: 'reference',
-      to: [{ type: 'gameEasel' }],
+      type: 'image',
     }),
     defineField({
       name: 'background',
       title: 'Arrière plan',
-      type: 'reference',
-      to: [{ type: 'gameBackgrounds' }],
+      type: 'image',
     }),
     defineField({
       name: 'color',
@@ -50,7 +48,7 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({
-              name: 'socialName',
+              name: 'socialNetworkName',
               title: 'Nom du réseau social',
               type: 'string',
             }),

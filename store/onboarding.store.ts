@@ -57,7 +57,7 @@ const steps: Record<string, Step> = {
   },
   chooseNumberWinners: {
     title: 'Choisir le nombre de gagnants',
-    description: 'Choisir le nombre de gagnants par mois',
+    description: 'Choisir le nombre de gagnants par semaine',
     Content: ChooseNumberWinners,
   },
   chooseSecretCode: {
@@ -77,14 +77,17 @@ const UserIds = z.object({
   sanityId: z.string().optional(),
 });
 
-
-
 const GameConfigSchema = z.object({
-  user: z.string().optional(),
+  user: z
+    .object({
+      _type: z.string(),
+      _ref: z.string(),
+    })
+    .optional(),
   logo: z.any().optional(),
   background: z.any().optional(),
   color: z.string().optional(),
-  actions: z.array(z.object({ socialNetworkName: z.string(), value: z.string() })).optional(),
+  actions: z.array(z.object({ socialNetworkName: z.string(), value: z.string(), _key: z.string() })).optional(),
   rewards: z.array(z.string()).optional(),
   numberWinners: z.number().optional(),
   secretCode: z.string().optional(),
@@ -105,7 +108,7 @@ type Onboarding = z.infer<typeof OnboardingSchema>;
 type UserIdsProps = z.infer<typeof UserIds>;
 
 const useOnboardingStore = create<Onboarding>((set) => ({
-  step: steps.chooseActions,
+  step: steps.uploadLogo,
   userIds: {
     clerkId: undefined,
     sanityId: undefined,

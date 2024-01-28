@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import Link from 'next/link';
+import { memo, useId, useState } from 'react';
 import { z } from 'zod';
 
 import { Button, Input, Label, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
@@ -8,6 +7,7 @@ import { classNames } from '@/helper';
 import { useOnboardingStore } from '@/store';
 
 import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+import { generate } from 'generate-password';
 
 // Define the schema for an action
 const actionSchema = z.object({
@@ -22,7 +22,7 @@ const actionSchema = z.object({
 // Infer the type of an action from the schema
 type Action = z.infer<typeof actionSchema>;
 
-type ActionFromConfig = { socialNetworkName: string; value: string };
+type ActionFromConfig = { socialNetworkName: string; value: string; _key?: string };
 
 // Define a list of actions
 const actionsList: Action[] = [
@@ -31,16 +31,8 @@ const actionsList: Action[] = [
     Icon: Icons.Google,
     Description: () => (
       <small>
-        Utilise l'outil{' '}
-        <Link
-          className="text-primary hover:text-primary-foreground"
-          href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
-          target="_blank">
-          Google Place ID Finder
-        </Link>
-        . Sur cette page, vous peuvez rechercher le lieu dans la barre de recherche intégrée et l'outil te fournira le
-        Place ID correspondant. Il suffit de saisir le nom du lieu ou son adresse, et l'outil affichera le lieu avec son
-        Place ID que vous peuvez facilement copier
+        Utilise le champ de recherche ci-dessous pour trouver votre lieu. <br />
+        Nous avons besoin du place ID de votre lieu pour pouvoir diriger les utilisateurs et récupérer les avis.
       </small>
     ),
     placeholder: 'Entrez votre Place ID',
@@ -49,20 +41,28 @@ const actionsList: Action[] = [
   {
     title: 'instagram',
     Icon: Icons.Instagram,
-    Description: () => <small>Renseigner l'URL de votre compte Instagram</small>,
+    Description: () => (
+      <small>
+        Renseigner l'URL de votre compte Instagram l'utilisateur sera rediriger vers ce lien lors de son seconde visite
+      </small>
+    ),
     placeholder: 'Entrez votre URL',
     label: 'URL profile Instagram',
   },
   {
     title: 'facebook',
     Icon: Icons.Facebook,
-    Description: () => <small>Renseigner l'URL de votre page Facebook</small>,
+    Description: () => (
+      <small>
+        Renseigner l'URL de votre page Facebook l'utilisateur sera rediriger vers ce lien lors de sa troisiéme visite
+      </small>
+    ),
     placeholder: 'Entrez votre URL',
     label: 'URL page Facebook',
   },
 ];
 
-export default function ChooseActions() {
+function ChooseActions() {
   const [actions, setActions] = useState<Action[]>(actionsList);
   const [textEntered, setTextEntered] = useState('');
   const [selectGoogle, setSelectGoogle] = useState<null | { description: string; place_id: string }>(null);
@@ -149,6 +149,10 @@ export default function ChooseActions() {
     const socialNetworkData = actionsWithValues.map((action) => ({
       socialNetworkName: action.title,
       value: action.value as string,
+      _key: generate({
+        numbers: true,
+        length: 5,
+      }),
     }));
 
     setGameConfig({ actions: socialNetworkData });
@@ -286,3 +290,5 @@ export default function ChooseActions() {
     </div>
   );
 }
+
+export default memo(ChooseActions);

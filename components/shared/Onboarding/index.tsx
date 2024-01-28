@@ -1,17 +1,33 @@
 'use client';
 
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui';
-import { useOnboardingStore } from '@/store';
 import { useRef, useState } from 'react';
+import bcrypt from 'bcryptjs-react';
+
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  useToast,
+} from '@/components/ui';
+import { uploadFileToSanity } from '@/sanity/lib/helper';
+import { useOnboardingStore } from '@/store';
+import { Icons } from '@/components/shared';
+import { createGameConfig } from '@/sanity/lib/game';
 
 export default function Onboarding({ user }: { user: any }) {
   const [previousNavigation, setPreviousNavigation] = useState({
     status: false,
     step: '',
   });
+  const [loading, setLoading] = useState(false);
   const nextButtonRef = useRef(null);
+  const { toast } = useToast();
 
-  const { step, gameConfig, setStep } = useOnboardingStore();
+  const { step, gameConfig, userIds, setStep } = useOnboardingStore();
 
   // Components for each step
   const Content = step?.Content;
@@ -100,6 +116,58 @@ export default function Onboarding({ user }: { user: any }) {
     }
   };
 
+  const handleFinish = async function () {
+    setLoading(true);
+
+    const copyGameConfig: any = { ...gameConfig };
+
+    const fileProperties: string[] = [];
+
+    // Parcourir toutes les propriétés de l'objet "step" et vérifier si elles sont de type "file"
+    for (const property in copyGameConfig) {
+      // Vérifier si la propriété est bien une propriété de l'objet et si elle est de type "file"
+      // @ts-ignore
+      if (copyGameConfig.hasOwnProperty(property) && copyGameConfig[property] instanceof File) {
+        fileProperties.push(property);
+      }
+    }
+
+    for (const property of fileProperties) {
+      // @ts-ignore
+      const doc = await uploadFileToSanity(copyGameConfig[property] as File);
+
+      console.log('doc', doc);
+
+      copyGameConfig[property] = doc;
+    }
+
+    copyGameConfig.user = {
+      _type: 'reference',
+      _ref: userIds?.sanityId as string,
+    };
+
+    const salt = await bcrypt.genSalt(10);
+    copyGameConfig.secretCode = await bcrypt.hash(copyGameConfig.secretCode, salt);
+
+    const { status, message, gameConfig: config } = await createGameConfig({ ...copyGameConfig, _type: 'gameConfig' });
+
+    if (status === 'error') {
+      return toast({
+        title: 'Erreur',
+        description: message,
+      });
+    }
+
+    toast({
+      title: 'Succès',
+      description: 'Votre jeu de la roulette a été configuré avec succès',
+    });
+
+    console.log('copyGameConfig', config);
+
+    setLoading(false);
+  };
+
   return (
     <main className="wrapper flex flex-col gap-8">
       <div>
@@ -129,14 +197,12 @@ export default function Onboarding({ user }: { user: any }) {
                 Précédent
               </Button>
               {step.title.includes('QR Code') ? (
-                <Button disabled={!gameConfig?.qrCode} variant="gradient">
+                <Button disabled={!gameConfig?.qrCode && !loading} onClick={handleFinish} variant="gradient">
+                  {loading && <Icons.Spinner className="animate-spin mr-2 w-4 h-4" />}
                   Terminer
                 </Button>
               ) : previousNavigation.status && previousNavigation.step !== step.title ? (
-                <Button
-                  ref={nextButtonRef}
-                  variant="secondary"
-                  onClick={handleNextStep}>
+                <Button ref={nextButtonRef} variant="secondary" onClick={handleNextStep}>
                   Suivant
                 </Button>
               ) : undefined}

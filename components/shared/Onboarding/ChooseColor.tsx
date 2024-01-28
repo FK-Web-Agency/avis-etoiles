@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, useToast } from '@/components/ui';
+import { Button, Input, Label, useToast } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
 import React, { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
@@ -24,7 +24,14 @@ export default function ChooseColor() {
     <div className="flex flex-col gap-5 items-start">
       <HexColorPicker color={color} onChange={setColor} />
 
-      <Button variant={"gradient"} onClick={handleSave}>Confirmer</Button>
+      <div className="flex flex-col gap-1">
+        <Label>HEX</Label>
+        <Input value={color} onChange={(e) => setColor(e.target.value)} />
+      </div>
+
+      <Button variant={'gradient'} onClick={handleSave}>
+        Confirmer
+      </Button>
     </div>
   );
 }

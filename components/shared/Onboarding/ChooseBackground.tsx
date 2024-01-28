@@ -22,27 +22,30 @@ export default function ChooseBackground() {
   const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      if (imageRef?.current?.files) {
+      if (imageRef?.current?.files && imageRef?.current?.files?.length > 0) {
         const file = imageRef.current.files[0];
         setGameConfig({ background: file });
 
         toast({
           description: 'Votre arrière plan a été mis à jour',
         });
-
-        // Next Step
-        setStep('chooseColor');
       } else {
         if (backgrounds) {
-          fetch(backgrounds[backgroundSelected as number].asset._ref)
+          fetch(urlForImage(backgrounds[backgroundSelected as number].background))
             .then((response) => response.blob())
             .then((blob) => {
               const file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
+
+              console.log(file);
+
               // Now you can use `file` as a File object
               setGameConfig({ background: file });
             });
         }
       }
+
+      // Next Step
+      setStep('chooseColor');
     } catch (error: any) {
       console.log(error);
 
@@ -61,7 +64,7 @@ export default function ChooseBackground() {
       <div className="flex-center flex-align-start flex-col gap-5">
         <div>
           <p>Choissir :</p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center min-[525px]:justify-start flex-wrap gap-5">
             {isLoading
               ? Array.from({ length: 3 }).map((_, index) => (
                   <Skeleton className="rounded-md object-cover w-full h-28" key={index} />
@@ -73,7 +76,7 @@ export default function ChooseBackground() {
                     src={urlForImage(background)}
                     alt="Image"
                     className={classNames(
-                      'rounded-md object-cover w-full h-28',
+                      'rounded-md object-cover w-32 min-[525px]:w-48 h-28',
                       backgroundSelected === index && imageRef?.current?.files?.length === 0 && 'ring-2 ring-primary'
                     )}
                     width={200}
