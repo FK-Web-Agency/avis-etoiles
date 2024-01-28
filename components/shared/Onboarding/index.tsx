@@ -197,7 +197,7 @@ export default function Onboarding({ user }: { user: any }) {
                 Précédent
               </Button>
               {step.title.includes('QR Code') ? (
-                <Button disabled={!gameConfig?.qrCode && !loading} onClick={handleFinish} variant="gradient">
+                <Button disabled={!gameConfig?.qrCode || loading} onClick={handleFinish} variant="gradient">
                   {loading && <Icons.Spinner className="animate-spin mr-2 w-4 h-4" />}
                   Terminer
                 </Button>

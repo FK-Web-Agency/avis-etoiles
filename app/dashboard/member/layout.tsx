@@ -1,14 +1,26 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
-import '../../styles/globals.css';
+import { useUser } from '@clerk/nextjs';
+import { useList } from '@refinedev/core';
 import { Onboarding, Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
+import '../../styles/globals.css';
 
 export default function layout({ children }: PropsWithChildren) {
   const { user } = useUser();
+  const { data, isLoading } = useList({
+    resource: 'gameConfig',
+    filters: [
+      {
+        field: 'user._ref',
+        operator: 'contains',
+        value: user?.publicMetadata.userId,
+      },
+    ],
+  });
+
   const { setUserIds } = useOnboardingStore();
 
   const public_metadata = user?.publicMetadata;
@@ -16,8 +28,6 @@ export default function layout({ children }: PropsWithChildren) {
   useEffect(() => {
     setUserIds({ clerkId: user?.id, sanityId: public_metadata?.userId as string });
   }, []);
-  const libraries = useMemo(() => ['places'], []);
-
 
   /* 
   1) Changer le mot de passe
@@ -30,18 +40,40 @@ export default function layout({ children }: PropsWithChildren) {
     * définir les règles du jeu (nombre de points, nombre de cadeaux, nombre de gagnants)
   */
 
+  if (isLoading) return <div>Chargement...</div>;
+
+  if (data?.total === 0) {
+    setTimeout(() => {
+      return (
+        <html lang="fr" className="min-h-screen">
+          <head>
+            <title>Avis - Onboarding</title>
+            {/*  <script
+      defer
+    src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}></script> */}
+          </head>
+
+          <body className=" background-body">
+            <Onboarding user={user} />
+
+            <Toaster />
+          </body>
+        </html>
+      );
+    }, 500);
+  }
 
   return (
     <html lang="fr" className="min-h-screen">
       <head>
-        <title>Avis - Onboarding</title>
+        <title>Avis - Overview</title>
         {/*  <script
           defer
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}></script> */}
       </head>
 
       <body className=" background-body">
-        {user?.lastSignInAt ? <Onboarding user={user} /> : <Sidebar>{children}</Sidebar>}
+        {<Sidebar>{children}</Sidebar>}
 
         <Toaster />
       </body>

@@ -7,6 +7,8 @@ import users from './schemas/users';
 import gameConfig from './schemas/game/gameConfig';
 import gameBackgrounds from './schemas/game/gameBackgrounds';
 import gameEasel from './schemas/game/gameEasel';
+import winner from './schemas/game/winner';
+import gameAnalytics from './schemas/game/gameAnalytics';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -23,5 +25,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     gameBackgrounds,
     gameEasel,
     gameConfig,
+    winner,
+    gameAnalytics
   ],
 };

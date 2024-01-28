@@ -126,11 +126,11 @@ export default function GenerateQRCode() {
         <div className="flex items-center justify-center sm:justify-start gap-4 flex-wrap">
           {isLoading
             ? Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} className="w-52 h-52" />)
-            : easels?.map(({ easel }, index) => (
+            : easels?.map(({ easelPreview }, index) => (
                 <Image
                   key={index}
                   onClick={() => setEaselSelected(index)}
-                  src={urlForImage(easel)}
+                  src={urlForImage(easelPreview)}
                   className={classNames(
                     'shadow-xl rounded-lg',
                     easelSelected === index

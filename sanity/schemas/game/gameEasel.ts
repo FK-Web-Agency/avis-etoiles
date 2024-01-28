@@ -8,8 +8,14 @@ export default defineType({
   description: 'Les chevalets pour afficher les QR Codes',
   fields: [
     defineField({
+      name: 'easelPreview',
+      title: 'Chevalet de prévisualisation',
+      type: 'image',
+    }),
+
+    defineField({
       name: 'easel',
-      title: 'Chevalet',
+      title: 'Chevalet pour afficher les QR Codes',
       type: 'image',
     }),
     defineField({

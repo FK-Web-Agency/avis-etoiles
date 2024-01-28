@@ -35,21 +35,21 @@ type LogoProps = {
 } & IconProps;
 
 const Icons = {
-  Logo: async (props: LogoProps) => {
-    const { logo } = await client.fetch(queries.GET_LOGO);
+  Logo:  (props: LogoProps) => {
+  //  const { logo } = await client.fetch(queries.GET_LOGO);
 
     // If no logo, return text
-    if (!logo)
+/*     if (!logo)
       return (
         <Link href={props.hrefNull ? '#' : '/'} className="text-4xl">
           Avis Étoiles 🎁
         </Link>
-      );
+      ); */
 
     // If logo, return image
     return (
       <Link href={props.hrefNull ? '#' : '/'} className="w-36">
-        <Image src={urlForImage(logo)} alt="logo" width={200} height={58} />
+        <Image src={'/logo.webp'} alt="logo" width={200} height={58} />
       </Link>
     );
   },
