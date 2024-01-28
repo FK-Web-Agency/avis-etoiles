@@ -5,10 +5,16 @@ import { Button, Input, Label, useToast } from '@/components/ui';
 import { Icons } from '@/components/shared';
 import { useOnboardingStore } from '@/store';
 
-export default function ChooseRewards() {
+export default function ChooseRewards({
+  onSave,
+  rewardsDb,
+}: {
+  onSave?: (rewards: string[]) => void;
+  rewardsDb?: string[];
+}) {
   const { setGameConfig, setStep, gameConfig } = useOnboardingStore();
   const [textEntered, setTextEntered] = useState('');
-  const [rewards, setRewards] = useState<string[]>(gameConfig?.rewards || []);
+  const [rewards, setRewards] = useState<string[]>(gameConfig?.rewards || rewardsDb || []);
   const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);
@@ -47,14 +53,15 @@ export default function ChooseRewards() {
 
   // Submit the rewards
   const handleSubmit = function () {
+    if (onSave) return onSave(rewards);
+
     setGameConfig({ ...gameConfig, rewards });
 
     toast({
       description: 'Les récompenses ont été enregistrées',
     });
 
-
-    setStep('chooseActions')
+    setStep('chooseActions');
   };
 
   return (

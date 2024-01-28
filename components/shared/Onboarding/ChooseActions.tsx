@@ -1,4 +1,4 @@
-import { memo, useId, useState } from 'react';
+import { memo, useEffect, useId, useState } from 'react';
 import { z } from 'zod';
 
 import { Button, Input, Label, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
@@ -62,7 +62,7 @@ const actionsList: Action[] = [
   },
 ];
 
-function ChooseActions() {
+function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConfig[]) => void; actionsDb?: any[] }) {
   const [actions, setActions] = useState<Action[]>(actionsList);
   const [textEntered, setTextEntered] = useState('');
   const [selectGoogle, setSelectGoogle] = useState<null | { description: string; place_id: string }>(null);
@@ -74,6 +74,22 @@ function ChooseActions() {
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
     language: 'fr',
   });
+
+  useEffect(() => {
+    // Check if actionsDb contains titles of actions and add the value to the corresponding action
+    if (actionsDb) {
+      actionsDb.forEach((actionDb) => {
+        const copyActions = [...actions];
+        const index = copyActions.findIndex((action) => action.title === actionDb.socialNetworkName);
+        if (index !== -1) {
+          actions[index].value = actionDb.value;
+
+          setActions(copyActions);
+        }
+      });
+    }
+  }, [actionsDb]);
+console.log(actionsDb);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);
@@ -154,6 +170,8 @@ function ChooseActions() {
         length: 5,
       }),
     }));
+
+    if (onSave) return onSave(socialNetworkData);
 
     setGameConfig({ actions: socialNetworkData });
 

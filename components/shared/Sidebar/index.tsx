@@ -5,8 +5,11 @@ import Icons from '../Icons';
 import NavItems from './NavItems';
 import MobileNav from './MobileNav';
 import TeamsNav from './TeamsNav';
+import { useMemberDashboardStore } from '@/store';
 
 export default function Sidebar({ children }: PropsWithChildren) {
+  const { role } = useMemberDashboardStore();
+
   return (
     <>
       <div>
@@ -22,9 +25,11 @@ export default function Sidebar({ children }: PropsWithChildren) {
                 <li>
                   <NavItems />
                 </li>
-                <li>
-                  <TeamsNav />
-                </li>
+                {role === 'admin' && (
+                  <li>
+                    <TeamsNav />
+                  </li>
+                )}
                 <li className="mt-auto">
                   <a
                     href="#"

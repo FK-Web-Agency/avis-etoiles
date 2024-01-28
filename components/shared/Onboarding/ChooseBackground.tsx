@@ -3,13 +3,20 @@ import { useList } from '@refinedev/core';
 import Image from 'next/image';
 
 import { urlForImage } from '@/sanity/lib';
+import { Image as ImageSanity } from 'sanity';
 import { Button, Input, Label, Skeleton, useToast } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
 import { classNames } from '@/helper';
+import { z } from 'zod';
 
-export default function ChooseBackground() {
+type ChooseBackgroundProps = {
+  onSave?: (file: File) => void;
+  background?: ImageSanity;
+};
+
+export default function ChooseBackground({ onSave, background }: ChooseBackgroundProps) {
   const [backgroundSelected, setBackgroundSelected] = useState<null | number>(null);
-  const { setGameConfig, setStep, gameConfig } = useOnboardingStore();
+  const { setGameConfig, setStep } = useOnboardingStore();
   const { toast } = useToast();
   const { data, isLoading } = useList({ resource: 'gameBackgrounds' });
 
@@ -21,9 +28,14 @@ export default function ChooseBackground() {
 
   const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    let file;
+
     try {
       if (imageRef?.current?.files && imageRef?.current?.files?.length > 0) {
-        const file = imageRef.current.files[0];
+        file = imageRef.current.files[0];
+
+        if (onSave) return onSave(file as File);
+
         setGameConfig({ background: file });
 
         toast({
@@ -34,10 +46,10 @@ export default function ChooseBackground() {
           fetch(urlForImage(backgrounds[backgroundSelected as number].background))
             .then((response) => response.blob())
             .then((blob) => {
-              const file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
+              file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
 
               console.log(file);
-
+              if (onSave) return onSave(file as File);
               // Now you can use `file` as a File object
               setGameConfig({ background: file });
             });
@@ -62,6 +74,18 @@ export default function ChooseBackground() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex-center flex-align-start flex-col gap-5">
+        {background && (
+          <div  className='mb-8 w-full'>
+            <p>Arrière plan choissi :</p>
+            <Image
+              src={urlForImage(background!)}
+              alt="Image"
+              width={200}
+              height={200}
+              className="w-full h-32 object-cover rounded-xl"
+            />
+          </div>
+        )}
         <div>
           <p>Choissir :</p>
           <div className="flex items-center min-[525px]:justify-start flex-wrap gap-5">

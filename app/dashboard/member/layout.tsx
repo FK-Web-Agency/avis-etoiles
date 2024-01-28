@@ -5,11 +5,13 @@ import { useUser } from '@clerk/nextjs';
 import { useList } from '@refinedev/core';
 import { Onboarding, Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
-import { useOnboardingStore } from '@/store';
+import { useMemberDashboardStore, useOnboardingStore } from '@/store';
 import '../../styles/globals.css';
 
 export default function layout({ children }: PropsWithChildren) {
   const { user } = useUser();
+  const { setMemberIds } = useMemberDashboardStore();
+
   const { data, isLoading } = useList({
     resource: 'gameConfig',
     filters: [
@@ -26,8 +28,11 @@ export default function layout({ children }: PropsWithChildren) {
   const public_metadata = user?.publicMetadata;
 
   useEffect(() => {
-    setUserIds({ clerkId: user?.id, sanityId: public_metadata?.userId as string });
-  }, []);
+    const ids = { clerkId: user?.id as string, sanityId: public_metadata?.userId as string };
+
+    setUserIds(ids);
+    setMemberIds(ids);
+  }, [user]);
 
   /* 
   1) Changer le mot de passe

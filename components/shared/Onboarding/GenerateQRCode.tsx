@@ -5,6 +5,7 @@ import Image from 'next/image';
 import QRCode from 'qrcode';
 import { useList } from '@refinedev/core';
 import CompositeImage from 'composite-image';
+import { Image as ImageSanity } from 'sanity';
 
 import { Button, Dialog, DialogContent, DialogTrigger, Skeleton, useToast } from '@/components/ui';
 import { urlForImage } from '@/sanity/lib';
@@ -15,7 +16,7 @@ import { useOnboardingStore } from '@/store';
 const PREVIEW_WIDTH = 1414;
 const PREVIEW_HEIGHT = 2000;
 
-export default function GenerateQRCode() {
+export default function GenerateQRCode({ onSave, easel }: { onSave: (file: File) => void; easel: ImageSanity }) {
   const [qrCode, setQrCode] = useState<null | string>();
   const [preview, setPreview] = useState<null | { print: () => string; download: (name: string) => void }>(null);
   const [easelSelected, setEaselSelected] = useState<null | number>(0);
@@ -43,8 +44,6 @@ export default function GenerateQRCode() {
 
   useEffect(() => {
     if (easels) {
-      console.log(data.data[0]);
-
       // @ts-ignore
       const image = new CompositeImage({
         bgWidth: PREVIEW_WIDTH,
@@ -66,7 +65,7 @@ export default function GenerateQRCode() {
         width: easels[easelSelected || 0].qrcode.size.width,
         height: easels[easelSelected || 0].qrcode.size.height,
       };
-
+      // TODO add logo placement
       image.composite(cfg1, cfg2).then(() => {
         setPreview(image);
       });
@@ -88,6 +87,8 @@ export default function GenerateQRCode() {
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
+          if (onSave) return onSave(file);
+
           setGameConfig({ easel: file });
         });
 
@@ -112,7 +113,7 @@ export default function GenerateQRCode() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2 items-start">
+      <div className="flex flex-col gap-2 items-center sm:items-start ">
         <Image src={qrCode} alt="QR Code" className="shadow" width={200} height={200} />
         <Button asChild variant={'secondary'}>
           <a href={qrCode} download="qrcode.png">
@@ -122,6 +123,19 @@ export default function GenerateQRCode() {
       </div>
 
       <div className="mt-8">
+        {easel && (
+          <div className="flex flex-col justify-center items-center mb-8">
+            <small>Chevalet actuel</small>
+            <Image
+              src={urlForImage(easels && easelSelected ? easels[easelSelected!].easelPreview : easel)}
+              className="shadow-xl rounded-lg"
+              alt="chevalet"
+              width={200}
+              height={200}
+            />
+          </div>
+        )}
+
         <h4 className="p-semibold-14 mb-4">Choissisez un chevalet</h4>
         <div className="flex items-center justify-center sm:justify-start gap-4 flex-wrap">
           {isLoading
