@@ -7,6 +7,12 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'companyName',
+      title: "Nom de l'entreprise",
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'clerkId',
       title: 'id du membre',
       type: 'string',
@@ -37,12 +43,7 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'companyName',
-      title: "Nom de l'entreprise",
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
+
     defineField({
       name: 'siret',
       title: 'Siret',
@@ -174,51 +175,6 @@ export default defineType({
             dateFormat: 'DD-MM-YYYY',
           },
         }),
-      ],
-    }),
-    defineField({
-      name: 'analytics',
-      title: 'Analytics',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'month',
-              title: 'Mois',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'year',
-              title: 'Année',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'google',
-              title: 'Google',
-              type: 'number',
-            }),
-            defineField({
-              name: 'instagram',
-              title: 'Instagram',
-              type: 'number',
-            }),
-            defineField({
-              name: 'facebook',
-              title: 'Facebook',
-              type: 'number',
-            }),
-            defineField({
-              name: 'visitors',
-              title: 'Numbre de visiteurs',
-              type: 'number',
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
-        },
       ],
     }),
   ],

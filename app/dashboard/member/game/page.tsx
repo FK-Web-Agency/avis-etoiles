@@ -8,7 +8,6 @@ import ChooseSecretCode from '@/components/shared/Onboarding/ChooseSecretCode';
 import GenerateQRCode from '@/components/shared/Onboarding/GenerateQRCode';
 import UploadLogo from '@/components/shared/Onboarding/UploadLogo';
 import { Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
-import { saveBackground } from '@/sanity/lib/game';
 import { uploadFileToSanity } from '@/sanity/lib/helper';
 import { useMemberDashboardStore } from '@/store';
 import { useList, useUpdate } from '@refinedev/core';

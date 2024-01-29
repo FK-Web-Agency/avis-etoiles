@@ -18,7 +18,7 @@ const navigation = {
   member: [
     { name: 'Dashboard', href: '/dashboard/member/overview', icon: Icons.Dashboard, current: false },
     { name: 'Jeu', href: '/dashboard/member/game', icon: Icons.Game, current: false },
-    { name: 'Reports', href: '/dashboard/member/report', icon: Icons.Reports, current: false },
+    { name: 'Reports', href: '/dashboard/member/reports', icon: Icons.Reports, current: false },
   ],
 };
 
@@ -29,23 +29,24 @@ export default function NavItems() {
 
   useEffect(() => {
     fetch('/api/user')
-    .then((res) => res.json())
-    .then(({ role }) => {
-      const newNavigationList = navigation[role as keyof typeof navigation].map((item: { href: string; current: boolean }) => {
-        if (pathname.includes(item.href)) {
-          item.current = true;
-        } else {
-          item.current = false;
-        }
-        return item;
-      });
-  
-      // @ts-ignore
-      setNavigationList(newNavigationList);
-      setRole(role);
-    });
-  }, []);
+      .then((res) => res.json())
+      .then(({ role }) => {
+        const newNavigationList = navigation[role as keyof typeof navigation].map(
+          (item: { href: string; current: boolean }) => {
+            if (pathname.includes(item.href)) {
+              item.current = true;
+            } else {
+              item.current = false;
+            }
+            return item;
+          }
+        );
 
+        // @ts-ignore
+        setNavigationList(newNavigationList);
+        setRole(role);
+      });
+  }, []);
 
   const handleClick = function (event: React.MouseEvent<HTMLElement>) {
     const target = event.target as HTMLElement;
@@ -59,6 +60,8 @@ export default function NavItems() {
       }
       return item;
     });
+    // TODO close mobile nav
+
     setNavigationList(newNavigationList);
   };
 

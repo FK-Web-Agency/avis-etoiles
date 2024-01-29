@@ -1,4 +1,4 @@
-import { Sheet, SheetContent, Separator, SheetTrigger, Button } from '@/components/ui';
+import { Sheet, SheetContent,  SheetTrigger } from '@/components/ui';
 import Icons from '../Icons';
 import NavItems from './NavItems';
 import TeamsNav from './TeamsNav';

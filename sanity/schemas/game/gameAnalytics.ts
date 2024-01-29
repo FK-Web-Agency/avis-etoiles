@@ -14,35 +14,22 @@ export default defineType({
       to: [{ type: 'users' }],
     }),
     defineField({
-      name: 'views',
-      title: 'Vues',
-      description: 'Nombre de vues ou de fois que le QR code a été scanné',
-      type: 'number',
-    }),
-    defineField({
-      name: 'winners',
-      title: 'Gagnants',
-      description: 'Les gagnants',
+      name: 'analytics',
+      title: 'Analytique',
       type: 'array',
-      of: [{ type: 'winner' }],
-    }),
-    defineField({
-      name: 'google',
-      title: 'Google',
-      description: 'Statistiques de Google',
-      type: 'number',
-    }),
-    defineField({
-      name: 'facebook',
-      title: 'Facebook',
-      description: 'Statistiques de Facebook',
-      type: 'number',
-    }),
-    defineField({
-      name: 'instagram',
-      title: 'Instagram',
-      description: 'Statistiques de Instagram',
-      type: 'number',
+      of: [{ type: 'analytic' }],
     }),
   ],
+
+  preview: {
+    select: {
+      title: 'user.companyName',
+    },
+
+    prepare({ title }) {
+      return {
+        title: `Analytique du jeu pour ${title}`,
+      };
+    },
+  },
 });

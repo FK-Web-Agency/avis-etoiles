@@ -12,8 +12,12 @@ export default function ChooseSecretCode({ onSave }: { onSave?: (secretCode: str
   const ChooseSecretCodeSchema = z.object({
     secretCode: z
       .string()
-      .min(4)
-      .max(6)
+      .min(4, {
+        message: 'Le code secret doit être entre 4 et 6 caractères',
+      })
+      .max(6, {
+        message: 'Le code secret doit être entre 4 et 6 caractères',
+      })
       .describe('Code secret de 4 à 6 caractères')
       .default(gameConfig.secretCode as string),
   });
