@@ -26,6 +26,7 @@ export * from './table'
 export * from './dropdown-menu'
 export * from './alert-dialog'
 export * from './popover'
+export * from './pagination'
 
 export {default as AutoForm} from './auto-form'
 

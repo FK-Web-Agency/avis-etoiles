@@ -26,49 +26,16 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'winnerAddress',
-      title: 'Adresse du gagnant',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'winnerAddressStreet',
-          title: 'Rue',
-          type: 'string',
-        }),
-        defineField({
-          name: 'winnerAddressCity',
-          title: 'Ville',
-          type: 'string',
-        }),
-        defineField({
-          name: 'winnerAddressPostalCode',
-          title: 'Code postal',
-          type: 'string',
-        }),
-        defineField({
-          name: 'winnerAddressCountry',
-          title: 'Pays',
-          type: 'string',
-        }),
-        defineField({
-            name: 'createdAt',
-            title: 'Date de création',
-            type: 'datetime',
-            options: {
-              dateFormat: 'DD/MM/YYYY',
-              timeFormat: 'HH:mm',
-              timeStep: 15,
-            },
-        }),
-      ],
+      name: 'winnerZipAddress',
+      title: 'Code postal du gagnant',
+      type: 'string',
     }),
   ],
 
-
   preview: {
     select: {
-      title: 'winnerFirstName' + ' ' + 'winnerLastName',
+      title: 'winnerFirstName',
       subtitle: 'winnerEmail',
     },
-  }
+  },
 });
