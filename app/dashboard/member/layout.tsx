@@ -1,6 +1,6 @@
 'use client';
 
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useList } from '@refinedev/core';
 import { Onboarding, Sidebar } from '@/components/shared';
@@ -33,6 +33,7 @@ export default function layout({ children }: PropsWithChildren) {
     setUserIds(ids);
     setMemberIds(ids);
   }, [user]);
+console.log(user);
 
   /* 
   1) Changer le mot de passe
@@ -69,19 +70,19 @@ export default function layout({ children }: PropsWithChildren) {
   }
 
   return (
-    <html lang="fr" className="min-h-screen">
-      <head>
-        <title>Avis - Overview</title>
-        {/*  <script
+      <html lang="fr" className="min-h-screen">
+        <head>
+          <title>Avis - Overview</title>
+          {/*  <script
           defer
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}></script> */}
-      </head>
+        </head>
 
-      <body className=" background-body">
-        {<Sidebar>{children}</Sidebar>}
+        <body className=" background-body">
+          {<Sidebar>{children}</Sidebar>}
 
-        <Toaster />
-      </body>
-    </html>
+          <Toaster />
+        </body>
+      </html>
   );
 }

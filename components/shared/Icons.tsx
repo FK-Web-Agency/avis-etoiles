@@ -24,7 +24,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { GoPlus } from 'react-icons/go';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
-
+import { TiDocumentText } from "react-icons/ti";
 import { client, queries, urlForImage } from '@/sanity/lib';
 
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -81,6 +81,7 @@ const Icons = {
   Plus: (props: IconProps) => <GoPlus {...props} />,
   Eye: (props: IconProps) => <MdOutlineRemoveRedEye {...props} />,
   Search: (props: IconProps) => <BiSearchAlt {...props} />,
+  Document: (props: IconProps) => <TiDocumentText {...props} />,
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,
   Facebook: (props: IconProps) => <FaFacebookSquare {...props} />,
