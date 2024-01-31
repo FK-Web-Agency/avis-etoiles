@@ -154,7 +154,6 @@ export default function Footer({ color }: { color: string }) {
             </AccordionItem>
           </Accordion>
           <DrawerFooter>
-       
             <DrawerClose>
               <Button variant="outline">Fermer</Button>
             </DrawerClose>

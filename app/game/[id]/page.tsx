@@ -1,12 +1,13 @@
 'use client';
 
-import { Footer } from '@/components/game';
+import { z } from 'zod';
+import { useList } from '@refinedev/core';
+
+import { Footer, LaunchWheel, Starter } from '@/components/game';
 import { Icons } from '@/components/shared';
 import { urlForImage } from '@/sanity/lib';
-import { useList } from '@refinedev/core';
-import Image from 'next/image';
-import React from 'react';
-import { z } from 'zod';
+import useGameStore, { GameStep } from '@/store/game.store';
+import { useEffect, useState } from 'react';
 
 const GameSchema = z.object({
   params: z.object({
@@ -17,6 +18,8 @@ const GameSchema = z.object({
 type GameProps = z.infer<typeof GameSchema>;
 
 export default function Game({ params: { id } }: GameProps) {
+  const [actionExists, setActionExists] = useState(true);
+  const { gameStep, currentAction } = useGameStore();
   const { data, isLoading } = useList({
     resource: 'gameConfig',
     filters: [
@@ -27,8 +30,19 @@ export default function Game({ params: { id } }: GameProps) {
       },
     ],
   });
+  const config = data?.data[0];
 
-  /* 
+  useEffect(() => {
+ /*    const actionsTitle = config?.actions?.map(
+      (action: { socialNetworkName: string; value: string }) => action.socialNetworkName
+    );
+
+    if (actionsTitle?.includes(currentAction?.title)) {
+      setActionExists(true);
+    } */
+  }, [data]);
+
+  /*
 BEFORE LAUNCH GAME
  verify that the user has a game config
   if not, send a error message
@@ -45,8 +59,6 @@ BEFORE LAUNCH GAME
   Verify which action the user has to do
 */
 
-  const config = data?.data[0];
-  console.log(config);
   return (
     <>
       {isLoading ? (
@@ -59,11 +71,10 @@ BEFORE LAUNCH GAME
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
             }}
-            className='min-h-[calc(100vh-2rem)]'
-            >
-            <header className="flex justify-center items-center">
-              <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={200} height={200} />
-            </header>
+            className="min-h-[calc(100vh-2rem)]">
+            {!actionExists && <div>error</div>}
+            {gameStep === GameStep.starter && actionExists && <Starter config={config} />}
+            {gameStep === GameStep.launchWheel && actionExists && <LaunchWheel />}
           </main>
 
           <Footer color={config?.color} />
