@@ -8,16 +8,38 @@
 @import './utilities.css';
 
 #faqs a {
-    @apply text-primary
+  @apply text-primary;
 }
 
-.pie-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 1.5rem;
-    @apply mt-8
+.pie-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 1.5rem;
+  @apply mt-8;
 }
 
-.PhoneInputInput{
-    @apply bg-transparent px-4 py-1
+.PhoneInputInput {
+  @apply bg-transparent px-4 py-1;
+}
+
+/* Wheel style */
+/* styles.css */
+.wheel-container {
+  position: relative;
+  width: 100%;
+  height: 55vh;
+  max-width: 100vw;
+  left: -280px;
+  margin-top: auto;
+}
+
+.spin-btn-wrapper {
+  display: flex;
+  padding: 0 2%;
+  margin-top: auto;
+  margin-bottom: 40px;
+}
+
+.spin-btn-wrapper > * {
+  flex: 1;
 }

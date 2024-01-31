@@ -25,10 +25,12 @@ const GameSchema = z.object({
   canPlay: z.boolean(),
   userLocalStorage: z.function().returns(z.tuple([userHistorySchema, z.function().returns(z.any())])),
   gameStep: z.nativeEnum(GameStep),
+  result: z.string().optional(),
   setCurrentAction: z.function().args(ActionSchema).returns(z.void()),
   setCanPlay: z.function().args(z.boolean()).returns(z.void()),
   setUserLocalStorage: z.function().args(userHistorySchema, z.any()).returns(z.void()),
   setGameStep: z.function().args(z.nativeEnum(GameStep)).returns(z.void()),
+  setResult: z.function().args(z.string()).returns(z.void()),
 });
 
 type GameProps = z.infer<typeof GameSchema>;
@@ -40,11 +42,13 @@ const useGameStore = create<GameProps>((set) => ({
   currentAction: undefined,
   userLocalStorage: () => [undefined, () => {}],
   gameStep: GameStep.starter,
+  result: undefined,
   setCurrentAction: (currentAction: ActionProps) => set({ currentAction }),
   setCanPlay: (canPlay: boolean) => set({ canPlay }),
   setUserLocalStorage: (userHistory: UserHistoryProps | undefined, saveUserHistory: any) =>
     set({ userLocalStorage: () => [userHistory, saveUserHistory] }),
   setGameStep: (gameStep: GameStep) => set({ gameStep }),
+  setResult: (result: string) => set({ result }),
 }));
 
 export default useGameStore;

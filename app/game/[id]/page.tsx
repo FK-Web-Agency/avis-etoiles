@@ -1,13 +1,15 @@
 'use client';
 
 import { z } from 'zod';
-import { useList } from '@refinedev/core';
+import { useList, useUpdate } from '@refinedev/core';
 
-import { Footer, LaunchWheel, Starter } from '@/components/game';
+import { Footer, LaunchWheel, Result, Starter } from '@/components/game';
 import { Icons } from '@/components/shared';
 import { urlForImage } from '@/sanity/lib';
 import useGameStore, { GameStep } from '@/store/game.store';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { classNames } from '@/helper';
 
 const GameSchema = z.object({
   params: z.object({
@@ -20,6 +22,7 @@ type GameProps = z.infer<typeof GameSchema>;
 export default function Game({ params: { id } }: GameProps) {
   const [actionExists, setActionExists] = useState(true);
   const { gameStep, currentAction } = useGameStore();
+  const { mutate } = useUpdate();
   const { data, isLoading } = useList({
     resource: 'gameConfig',
     filters: [
@@ -30,10 +33,22 @@ export default function Game({ params: { id } }: GameProps) {
       },
     ],
   });
+
+  const { data: dataAnalytics } = useList({
+    resource: 'gameAnalytics',
+    filters: [
+      {
+        field: 'user._ref',
+        operator: 'contains',
+        value: id,
+      },
+    ],
+  });
   const config = data?.data[0];
+  const analytics = dataAnalytics?.data[0];
 
   useEffect(() => {
- /*    const actionsTitle = config?.actions?.map(
+    /*    const actionsTitle = config?.actions?.map(
       (action: { socialNetworkName: string; value: string }) => action.socialNetworkName
     );
 
@@ -58,11 +73,37 @@ BEFORE LAUNCH GAME
 
   Verify which action the user has to do
 */
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
+
+  const userAnalytics = analytics?.analytics;
+  const index = userAnalytics?.findIndex((item: any) => new Date(item.year).getFullYear() === year);
+
+  const thisYearAnalytics = userAnalytics?.at(index);
+  const monthIndex = thisYearAnalytics?.months.findIndex((item: any) => new Date(item.month).getMonth() === month);
+  const thisMonthAnalytics = thisYearAnalytics?.months?.at(monthIndex);
+  console.log(thisMonthAnalytics);
+
+  useEffect(() => {
+    if (!thisMonthAnalytics) return;
+    thisMonthAnalytics.visitors += 1;
+    console.log('update', thisMonthAnalytics.visitors);
+
+    mutate({
+      resource: 'gameAnalytics',
+      values: {
+        analytics: userAnalytics,
+      },
+      id: analytics?._id,
+    });
+  }, [thisMonthAnalytics]);
 
   return (
     <>
       {isLoading ? (
-        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+        <div className='flex-center'>
+          <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+        </div>
       ) : (
         <>
           <main
@@ -72,9 +113,26 @@ BEFORE LAUNCH GAME
               backgroundRepeat: 'no-repeat',
             }}
             className="min-h-[calc(100vh-2rem)]">
-            {!actionExists && <div>error</div>}
-            {gameStep === GameStep.starter && actionExists && <Starter config={config} />}
-            {gameStep === GameStep.launchWheel && actionExists && <LaunchWheel />}
+            <div className="container overflow-x-hidden">
+              <div
+                className={classNames(
+                  'flex justify-center items-center ',
+                  gameStep === GameStep.starter ? 'mb-16' : 'mb-1'
+                )}>
+                <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
+              </div>
+              {!actionExists && <div>error</div>}
+              {gameStep === GameStep.starter && actionExists && <Starter config={config} />}
+              {gameStep === GameStep.launchWheel && actionExists && (
+                <LaunchWheel
+                  config={config}
+                  thisYearAnalytics={thisYearAnalytics}
+                  thisMonthAnalytics={thisMonthAnalytics}
+                  analytics={analytics}
+                />
+              )}
+              {gameStep === GameStep.result && actionExists && <Result config={config} id={id} />}
+            </div>
           </main>
 
           <Footer color={config?.color} />
