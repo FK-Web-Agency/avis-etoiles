@@ -1,3 +1,4 @@
+"use client"
 import { PieChart, TotalRevenue } from '@/components/charts';
 
 export default function Overview() {
