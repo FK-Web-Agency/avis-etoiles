@@ -12,6 +12,7 @@ import { useGameStore } from '@/store';
 import '../styles/globals.css';
 import { Icons } from '@/components/shared';
 import { UserHistoryProps } from '@/store/game.store';
+import { Toaster } from '@/components/ui';
 
 // Incognito Content
 function IncognitoContent() {
@@ -139,6 +140,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="fr">
         <body className="min-h-screen background-body">
           <IncognitoContent />
+      
         </body>
       </html>
     );
@@ -149,6 +151,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {!isSmallDevice ? <LargeDeviceContent /> : null}
         {!canPlay && isSmallDevice ? <UserCanNotPlay /> : null}
         {canPlay && isSmallDevice ? <MainContent children={children} /> : null}
+        <Toaster />
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import AutoForm, { AutoFormSubmit } from '../ui/auto-form';
 import { useState } from 'react';
 import { ToastAction, useToast } from '../ui';
 import sendEmail from '@/lib/actions/resend.actions';
+import { Icons } from '../shared';
 
 type StringProps = { messageError: string; describe: string };
 
@@ -15,7 +16,7 @@ const string = ({ messageError, describe }: StringProps) =>
       required_error: messageError,
     })
     .min(2)
-    .max(20)
+    .max(40)
     .describe(describe);
 
 /**
@@ -55,7 +56,7 @@ const ContactSchema = z.object({
    * @messageError 'Merci de fournir votre email'
    * @describe 'votre email'
    */
-  email: string({ messageError: 'Merci de fournir votre email', describe: 'email' }),
+  email: string({ messageError: 'Merci de fournir votre email', describe: 'email' }).email(),
 
   /**
    * The phone number field.
@@ -85,10 +86,12 @@ type ContactFormProps = z.infer<typeof ContactSchema>;
 export default function contactForm() {
   const { toast } = useToast();
   const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (value: any) => setRecaptchaValue(value);
 
   const handleAction = async function (values: ContactFormProps) {
+    setLoading(true);
     if (!recaptchaValue) return;
 
     const response: any = await sendEmail({
@@ -105,6 +108,8 @@ export default function contactForm() {
         action: <ToastAction altText="Rééassayer plus tard">Rééassayer plus tard</ToastAction>,
       });
     }
+
+    setLoading(false);
   };
 
   return (
@@ -128,7 +133,10 @@ export default function contactForm() {
         },
       }}>
       <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={onChange} />
-      <AutoFormSubmit>Envoyer</AutoFormSubmit>
+      <AutoFormSubmit>
+        <Icons.Spinner className={`animate-spin w-4 h-4 mr-2 ${loading ? 'inline-block' : 'hidden'}`} />
+        Envoyer
+      </AutoFormSubmit>
     </AutoForm>
   );
 }

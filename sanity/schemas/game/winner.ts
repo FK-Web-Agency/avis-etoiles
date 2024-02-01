@@ -30,6 +30,29 @@ export default defineType({
       title: 'Code postal du gagnant',
       type: 'string',
     }),
+    defineField({
+      name: 'reward',
+      title: 'Récompense',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'rewardName',
+          title: 'Nom de la récompense',
+          type: 'string',
+        }),
+        defineField({
+          name: 'retrieved',
+          title: 'Récupéré',
+          type: 'boolean',
+          initialValue: false,
+        }),
+      ],
+    }),
+    defineField({
+      name: 'createdAt',
+      title: 'Date de création',
+      type: 'datetime',
+    }),
   ],
 
   preview: {

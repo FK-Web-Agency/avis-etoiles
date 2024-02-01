@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { z } from 'zod';
 import QRCode from 'qrcode';
 
@@ -21,6 +21,7 @@ import { PortableText } from '@portabletext/react';
 import { encodedValue } from '@/lib/actions/jwt.actions';
 import { useGameStore } from '@/store';
 import sendEmail from '@/lib/actions/resend.actions';
+import { Icons } from '../shared';
 
 const WinnerFormSchema = z.object({
   winnerFirstName: z.string().describe('Prénom'),
@@ -38,6 +39,7 @@ const WinnerFormSchema = z.object({
 });
 
 export default function WinnerForm({ color, id }: { color: any; id: string }) {
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { result } = useGameStore();
   const { data } = useList({
@@ -66,21 +68,27 @@ export default function WinnerForm({ color, id }: { color: any; id: string }) {
   const winners = allDataWinner?.winners;
 
   const handleAction = async function (values: any) {
+    setLoading(true);
     const winner = {
       firstName: values.winnerFirstName,
       lastName: values.winnerLastName,
       email: values.winnerEmail,
       phone: values.winnerPhone,
       zipAddress: values.winnerZipAddress,
+      createAt: new Date(),
+      reward: {
+        rewardName: result,
+        retrieve: false,
+      },
     };
 
     const baseUrl =
       process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-    const token = await encodedValue({ ...winner, reward: result, createAt: Date.now() });
+    const token = await encodedValue({id: allDataWinner?._id, winner});
     const qrCode = await QRCode.toDataURL(`${baseUrl}/game/retrieve/${token}`);
 
     try {
-       await sendEmail({
+      await sendEmail({
         ...winner,
         subject: 'Votre lot est prêt',
         emailTemplate: 'winner',
@@ -105,6 +113,8 @@ export default function WinnerForm({ color, id }: { color: any; id: string }) {
       toast({
         description: 'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
       });
+
+      setLoading(false);
     } catch (error) {
       toast({
         title: 'Erreur',
@@ -149,8 +159,10 @@ export default function WinnerForm({ color, id }: { color: any; id: string }) {
       }}>
       <Button
         type="submit"
+        disabled={loading}
         style={{ backgroundColor: color }}
         className={classNames(colorIsLight(color) ? 'text-back' : 'text-white')}>
+        {loading && <Icons.Spinner className={classNames(loading ? 'animate-spin w-4 h-4 mr-2' : 'hidden')} />}
         Confirmer
       </Button>
     </AutoForm>

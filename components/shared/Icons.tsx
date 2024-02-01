@@ -25,8 +25,7 @@ import { GoPlus } from 'react-icons/go';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
 import { TiDocumentText } from "react-icons/ti";
-import { client, queries, urlForImage } from '@/sanity/lib';
-
+import { BiSolidErrorCircle } from "react-icons/bi";
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 type LogoProps = {
@@ -80,6 +79,7 @@ const Icons = {
   Group: (props: IconProps) => <HiOutlineUserGroup {...props} />,
   Plus: (props: IconProps) => <GoPlus {...props} />,
   Eye: (props: IconProps) => <MdOutlineRemoveRedEye {...props} />,
+  Error: (props: IconProps) => <BiSolidErrorCircle {...props} />,
   Search: (props: IconProps) => <BiSearchAlt {...props} />,
   Document: (props: IconProps) => <TiDocumentText {...props} />,
   Google: (props: IconProps) => <FcGoogle {...props} />,

@@ -1,4 +1,6 @@
-import { memo, useEffect, useId, useState } from 'react';
+"use client"
+
+import { memo, useEffect, useState } from 'react';
 import { z } from 'zod';
 
 import { Button, Input, Label, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';

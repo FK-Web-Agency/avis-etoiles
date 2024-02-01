@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef, useState } from 'react';
 import { useList } from '@refinedev/core';
 import Image from 'next/image';
