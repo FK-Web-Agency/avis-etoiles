@@ -1,5 +1,5 @@
 'use client';
-
+import QRCode from 'qrcode'
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Refine } from '@refinedev/core';
 import routerProvider from '@refinedev/nextjs-router/app';
@@ -145,6 +145,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </html>
     );
 
+/*     QRCode.toDataURL('https://avis-etoiles-fwcv.vercel.app/game/tdabMO2xq8YYq6FIyqBHte')
+  .then(url => {
+    console.log(url)
+  })
+  .catch(err => {
+    console.error(err)
+  }) */
   return (
     <html lang="fr">
       <body className="min-h-screen overflow-y-auto">
