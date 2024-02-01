@@ -3,7 +3,7 @@
 import React, { PropsWithChildren, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useList } from '@refinedev/core';
-import { Onboarding, Sidebar } from '@/components/shared';
+import { Icons, Onboarding, Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
 import { useMemberDashboardStore, useOnboardingStore } from '@/store';
 import '../../styles/globals.css';
@@ -33,7 +33,7 @@ export default function layout({ children }: PropsWithChildren) {
     setUserIds(ids);
     setMemberIds(ids);
   }, [user]);
-console.log(user);
+  console.log(user);
 
   /* 
   1) Changer le mot de passe
@@ -46,7 +46,12 @@ console.log(user);
     * définir les règles du jeu (nombre de points, nombre de cadeaux, nombre de gagnants)
   */
 
-  if (isLoading) return <div>Chargement...</div>;
+  if (isLoading)
+    return (
+      <div className="h-screen flex-center">
+        <Icons.Spinner className="w-8 h-8 animate-spin" />
+      </div>
+    );
 
   if (data?.total === 0) {
     setTimeout(() => {
@@ -70,19 +75,19 @@ console.log(user);
   }
 
   return (
-      <html lang="fr" className="min-h-screen">
-        <head>
-          <title>Avis - Overview</title>
-          {/*  <script
+    <html lang="fr" className="min-h-screen">
+      <head>
+        <title>Avis - Overview</title>
+        {/*  <script
           defer
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}></script> */}
-        </head>
+      </head>
 
-        <body className=" background-body">
-          {<Sidebar>{children}</Sidebar>}
+      <body className=" background-body">
+        {<Sidebar>{children}</Sidebar>}
 
-          <Toaster />
-        </body>
-      </html>
+        <Toaster />
+      </body>
+    </html>
   );
 }

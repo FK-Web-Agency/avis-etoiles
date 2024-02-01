@@ -41,7 +41,7 @@ const useGameStore = create<GameProps>((set) => ({
   canPlay: true,
   currentAction: undefined,
   userLocalStorage: () => [undefined, () => {}],
-  gameStep: GameStep.result,
+  gameStep: GameStep.starter,
   result: 'lait',
   setCurrentAction: (currentAction: ActionProps) => set({ currentAction }),
   setCanPlay: (canPlay: boolean) => set({ canPlay }),

@@ -124,6 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       const actions = userHistory?.actions;
       if (actions.includes('google')) setCurrentAction({ title: 'instagram', Icon: Icons.Instagram });
       if (actions.includes('instagram')) setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
+      else setCurrentAction({ title: 'google', Icon: Icons.Google });
     } else setCurrentAction({ title: 'google', Icon: Icons.Google });
 
     setUserLocalStorage(userHistory, saveUserHistory);
@@ -140,7 +141,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="fr">
         <body className="min-h-screen background-body">
           <IncognitoContent />
-      
         </body>
       </html>
     );

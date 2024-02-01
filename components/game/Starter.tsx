@@ -40,7 +40,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
       lastGamePlayed: new Date(),
       actions: userHistory ? [...userHistory?.actions!, currentAction?.title] : [currentAction?.title],
     };
-    // saveUserHistory(user);
+    saveUserHistory(user);
 
     // Set the game step to "launchWheel"
     setGameStep(GameStep.launchWheel);

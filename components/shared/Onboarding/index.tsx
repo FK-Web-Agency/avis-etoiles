@@ -13,16 +13,18 @@ import {
   CardTitle,
   useToast,
 } from '@/components/ui';
-import { uploadFileToSanity } from '@/sanity/lib/helper';
+import { createAnalytics, uploadFileToSanity } from '@/sanity/lib/helper';
 import { useOnboardingStore } from '@/store';
 import { Icons } from '@/components/shared';
-import { createGameConfig } from '@/sanity/lib/game';
+import { useCreate } from '@refinedev/core';
 
 export default function Onboarding({ user }: { user: any }) {
   const [previousNavigation, setPreviousNavigation] = useState({
     status: false,
     step: '',
   });
+  const { mutate } = useCreate();
+
   const [loading, setLoading] = useState(false);
   const nextButtonRef = useRef(null);
   const { toast } = useToast();
@@ -141,29 +143,30 @@ export default function Onboarding({ user }: { user: any }) {
       copyGameConfig[property] = doc;
     }
 
-    copyGameConfig.user = {
+    const user = {
       _type: 'reference',
       _ref: userIds?.sanityId as string,
     };
 
+    copyGameConfig.user = user;
+
     const salt = await bcrypt.genSalt(10);
     copyGameConfig.secretCode = await bcrypt.hash(copyGameConfig.secretCode, salt);
-
-    const { status, message, gameConfig: config } = await createGameConfig({ ...copyGameConfig, _type: 'gameConfig' });
-
-    if (status === 'error') {
-      return toast({
+    try {
+      // const { status, message, gameConfig: config } = await createGameConfig({ ...copyGameConfig, _type: 'gameConfig' });
+      mutate({ resource: 'gameConfig', values: { ...copyGameConfig } });
+      // Create analytics
+      mutate({ resource: 'gameAnalytics', values: { user, analytics: createAnalytics() } });
+      toast({
+        title: 'Succès',
+        description: 'Votre jeu de la roulette a été configuré avec succès',
+      });
+    } catch (error: any) {
+      toast({
         title: 'Erreur',
-        description: message,
+        description: error.message,
       });
     }
-
-    toast({
-      title: 'Succès',
-      description: 'Votre jeu de la roulette a été configuré avec succès',
-    });
-
-    console.log('copyGameConfig', config);
 
     setLoading(false);
   };

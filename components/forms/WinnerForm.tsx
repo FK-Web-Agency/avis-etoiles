@@ -38,7 +38,7 @@ const WinnerFormSchema = z.object({
     }),
 });
 
-export default function WinnerForm({ color, id }: { color: any; id: string }) {
+export default function WinnerForm({ color, id, formCompleted }: { color: any; id: string; formCompleted: any }) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { result } = useGameStore();
@@ -84,7 +84,7 @@ export default function WinnerForm({ color, id }: { color: any; id: string }) {
 
     const baseUrl =
       process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-    const token = await encodedValue({id: allDataWinner?._id, winner});
+    const token = await encodedValue({ id: allDataWinner?._id, winner });
     const qrCode = await QRCode.toDataURL(`${baseUrl}/game/retrieve/${token}`);
 
     try {
@@ -115,6 +115,7 @@ export default function WinnerForm({ color, id }: { color: any; id: string }) {
       });
 
       setLoading(false);
+      formCompleted();
     } catch (error) {
       toast({
         title: 'Erreur',
