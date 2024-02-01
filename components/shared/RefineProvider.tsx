@@ -9,7 +9,7 @@ import { useMemberDashboardStore } from '@/store';
 
 const resources = {
   admin: [
-    {
+   /*  {
       name: 'overview',
       list: '/dashboard/admin/overview',
     },
@@ -25,13 +25,13 @@ const resources = {
     {
       name: 'teams',
       list: '/dashboard/admin/teams/list',
-    },
+    }, */
   ],
   member: [
-    {
+  /*   {
       name: 'overview',
       list: '/dashboard/member/overview',
-    },
+    }, */
   ],
 };
 
