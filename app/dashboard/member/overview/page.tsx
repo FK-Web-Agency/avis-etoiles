@@ -1,7 +1,7 @@
 'use client';
 
 import { useList } from '@refinedev/core';
-import { KPIGame, PieChart, TotalRevenue } from '@/components/charts';
+import { KPIGame, PieChart } from '@/components/charts';
 import { useMemberDashboardStore } from '@/store';
 import { IAnalyticItem } from '@/interfaces/analytic';
 import { getYear } from '@/helper/getDate';
