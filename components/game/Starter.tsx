@@ -98,6 +98,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
             <DrawerHeader>
               <DrawerTitle>Likez nous</DrawerTitle>
               <DrawerDescription>
+                {/* TODO - Ajouter pour instagram et facebook */}
                 {currentAction?.title === 'google' && (
                   <ul className='text-left flex flex-col items-center gap-4'>
                     <li className="flex items-start space-x-5">
