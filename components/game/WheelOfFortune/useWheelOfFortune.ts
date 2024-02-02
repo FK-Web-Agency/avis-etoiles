@@ -38,7 +38,7 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
       .attr('height', h + padding.top + padding.bottom);
     console.log(window.innerWidth);
 
-    const translateX = window.innerWidth < 380 ? w / 1.45 + padding.left : w / 1.7 + padding.left;
+    const translateX = window.innerWidth < 380 ? w / 1.45 + padding.left : w / 1.55 + padding.left;
 
     // Create a group to hold the pie chart
     const container = svg
