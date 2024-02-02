@@ -126,7 +126,7 @@ export default function Game({ params: { id } }: GameProps) {
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
             }}
-            className="min-h-[calc(100vh-2rem)]">
+            className="min-h-[calc(100vh-2rem)] pb-10">
             <div className="container overflow-x-hidden">
               <div
                 className={classNames(
