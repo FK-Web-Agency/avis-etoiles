@@ -1,10 +1,9 @@
-import ChartBar from './ChartBar';
+'use client';
 
-import { ApexOptions } from 'apexcharts';
 import { useWindowSize } from '@uidotdev/usehooks';
-
-import { Icons } from '../shared';
-
+import { ApexOptions } from 'apexcharts';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 const TotalRevenueSeries = [
   {
     name: 'Last Month',
@@ -66,29 +65,17 @@ const TotalRevenueOptions: ApexOptions = {
   },
 };
 
-export default function TotalRevenue() {
+export default function ExampleChart() {
   const size: any = useWindowSize();
 
   return (
-    <section className="bg-slate-100 flex-1 flex flex-col rounded p-4 mt-8" id="chart">
-      <div>
-        <h2 className="p-regular-18">Revenue Total</h2>
-
-        <div className="my-2 flex gap-4 flex-wrap">
-          <h5 className="h5-bold">100€</h5>
-
-          <div className="flex items-center gap-1">
-            <Icons.ArrowUp className="w-4 h-4 text-green-500" />
-
-            <div className="flex flex-col">
-              <span className="text-green-500 p-semibold-14">0.8%</span>
-              <span className="p-medium-12">Depuis le dernier mois</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ChartBar />
-    </section>
+    <>
+      <Chart
+        type="bar"
+        height={size?.width < 1186 && size?.width > 1018 ? 310 : size?.width < 920 ? 310 : 410}
+        series={TotalRevenueSeries}
+        options={TotalRevenueOptions}
+      />
+    </>
   );
 }

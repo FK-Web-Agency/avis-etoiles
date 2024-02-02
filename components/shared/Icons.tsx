@@ -22,11 +22,12 @@ import { FcLock, FcHome } from 'react-icons/fc';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import { FcGoogle } from 'react-icons/fc';
 import { GoPlus } from 'react-icons/go';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { MdOutlineRemoveRedEye, MdOutlineEuro } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
 import { TiDocumentText } from 'react-icons/ti';
-import { BiSolidErrorCircle } from 'react-icons/bi';
+import { BiSolidErrorCircle, BiUserPlus, BiCommentDetail } from 'react-icons/bi';
 import { TbTargetArrow } from 'react-icons/tb';
+import { BsGift } from "react-icons/bs";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -87,6 +88,10 @@ const Icons = {
   FolderInfo: (props: IconProps) => <RiFolderInfoFill {...props} />,
   HomeColor: (props: IconProps) => <FcHome {...props} />,
   Features: (props: IconProps) => <TbTargetArrow {...props} />,
+  Euro: (props: IconProps) => <MdOutlineEuro {...props} />,
+  Subscribe: (props: IconProps) => <BiUserPlus {...props} />,
+  Comment: (props: IconProps) => <BiCommentDetail {...props} />,
+Gift: (props: IconProps) => <BsGift {...props} />,
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,
