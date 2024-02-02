@@ -13,6 +13,9 @@
   .background-body {
     @apply bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black
   }
+  .glassmorphism {
+    @apply rounded-md bg-clip-padding backdrop-filter backdrop-blur-3xl border p-4;
+  }
 
   .flex-center {
     @apply flex justify-center items-center;

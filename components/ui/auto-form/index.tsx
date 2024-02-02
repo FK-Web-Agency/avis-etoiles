@@ -1,23 +1,42 @@
-"use client";
-import React from "react";
-import { z } from "zod";
-import { Form } from "../form";
-import { DefaultValues, useForm } from "react-hook-form";
+'use client';
+import React from 'react';
+import { z } from 'zod';
+import { Form } from '../form';
+import { DefaultValues, useForm } from 'react-hook-form';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../button";
-import { cn } from "@/lib/utils";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../button';
+import { cn } from '@/lib/utils';
 
-import { FieldConfig } from "./types";
-import {
-  ZodObjectOrWrapped,
-  getDefaultValues,
-  getObjectFormSchema,
-} from "./utils";
-import AutoFormObject from "./fields/object";
+import { FieldConfig } from './types';
+import { ZodObjectOrWrapped, getDefaultValues, getObjectFormSchema } from './utils';
+import AutoFormObject from './fields/object';
+import { Icons } from '@/components/shared';
+import { classNames } from '@/helper';
 
-export function AutoFormSubmit({ children }: { children?: React.ReactNode }) {
-  return <Button type="submit">{children ?? "Submit"}</Button>;
+type Variant = 'link' | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'gradient' | null | undefined;
+
+export function AutoFormSubmit({
+  children,
+  loading,
+  variant,
+  className,
+}: {
+  children?: React.ReactNode;
+  loading?: boolean;
+  variant?: Variant;
+  className?: string;
+}) {
+  return (
+    <Button
+      type="submit"
+      variant={variant || 'gradient'}
+      disabled={loading}
+      className={classNames('text-muted', className ? className : '')}>
+      {loading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
+      {children}
+    </Button>
+  );
 }
 
 function AutoForm<SchemaType extends ZodObjectOrWrapped>({
@@ -29,6 +48,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
   fieldConfig,
   children,
   className,
+  onAction: onActionProp,
 }: {
   formSchema: SchemaType;
   values?: Partial<z.infer<SchemaType>>;
@@ -38,10 +58,10 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
   fieldConfig?: FieldConfig<z.infer<SchemaType>>;
   children?: React.ReactNode;
   className?: string;
+  onAction?: (values: z.infer<SchemaType>) => Promise<void>;
 }) {
   const objectFormSchema = getObjectFormSchema(formSchema);
-  const defaultValues: DefaultValues<z.infer<typeof objectFormSchema>> =
-    getDefaultValues(objectFormSchema);
+  const defaultValues: DefaultValues<z.infer<typeof objectFormSchema>> = getDefaultValues(objectFormSchema);
 
   const form = useForm<z.infer<typeof objectFormSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,6 +74,35 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
     if (parsedValues.success) {
       onSubmitProp?.(parsedValues.data);
     }
+  }
+
+  function onAction(values: z.infer<typeof formSchema>) {
+    const parsedValues = formSchema.safeParse(values);
+    if (parsedValues.success) {
+      onActionProp?.(parsedValues.data);
+    }
+  }
+
+  if (onActionProp) {
+    return (
+      <Form {...form}>
+        <form
+          action={(e: any) => form.handleSubmit(onAction)(e)}
+          onChange={() => {
+            const values = form.getValues();
+            onValuesChangeProp?.(values);
+            const parsedValues = formSchema.safeParse(values);
+            if (parsedValues.success) {
+              onParsedValuesChange?.(parsedValues.data);
+            }
+          }}
+          className={cn('space-y-5', className)}>
+          <AutoFormObject schema={objectFormSchema} form={form} fieldConfig={fieldConfig} />
+
+          {children}
+        </form>
+      </Form>
+    );
   }
 
   return (
@@ -70,13 +119,8 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
             onParsedValuesChange?.(parsedValues.data);
           }
         }}
-        className={cn("space-y-5", className)}
-      >
-        <AutoFormObject
-          schema={objectFormSchema}
-          form={form}
-          fieldConfig={fieldConfig}
-        />
+        className={cn('space-y-5', className)}>
+        <AutoFormObject schema={objectFormSchema} form={form} fieldConfig={fieldConfig} />
 
         {children}
       </form>

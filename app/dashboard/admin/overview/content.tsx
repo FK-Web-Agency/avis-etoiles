@@ -2,31 +2,62 @@
 
 import { PieChart, TotalRevenue } from '@/components/charts';
 import { Icons } from '@/components/shared';
-/* import { Spinner } from '@/components/shared';
-import { useList } from '@refinedev/core'; */
+import { Spinner } from '@/components/shared';
+import { IAnalytics } from '@/interfaces';
+import { useList } from '@refinedev/core';
 
 export default function Content() {
-  /*   const { data, isLoading } = useList({
+  const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_GAME_ANALYTICS,
+  });
+
+  const { data: dataWinner } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_GAME_WINNERS,
   });
 
   if (isLoading) return <Spinner />;
 
-  console.log(data); */
+  const allAnalytics = data?.data;
+  const allWinners = dataWinner?.data;
+
+  // Calculate the total revenue for a specific platform
+  const calculateTotal = (platform: string) => {
+    return allAnalytics?.reduce((total, analytic) => {
+      return (
+        total +
+        (analytic.analytics?.reduce((analyticsTotal: number, analyticItem: IAnalytics) => {
+          return (
+            // @ts-ignore
+            analyticsTotal + (analyticItem.months?.reduce((monthTotal, month) => monthTotal + month[platform], 0) || 0)
+          );
+        }, 0) || 0)
+      );
+    }, 0);
+  };
+
+  const totalFacebookSubscribers = calculateTotal('facebook');
+  const totalInstagramSubscribers = calculateTotal('instagram');
+  const totalReviews = calculateTotal('google');
+
+  const totalSubscribers = totalFacebookSubscribers! + totalInstagramSubscribers!;
+
+  const totalWinners = allWinners?.reduce((total, winner) => {
+    return total + winner.winners.length;
+  }, 0);
 
   return (
     <>
       <h1 className="h4-medium text-white">Overview</h1>
 
-      {/* -------------------------- List Pie Charts here -------------------------- */}
+      {/* Render the pie charts */}
       <section className="pie-container">
         <PieChart title="Revenue Total" value={100} Icon={Icons.Euro} />
-        <PieChart title="Abonnés" value={10} Icon={Icons.Subscribe} />
-        <PieChart title="Avis recueillis" value={3000} Icon={Icons.Comment} />
-        <PieChart title="Cadeaux gagnés" value={700} Icon={Icons.Gift} />
+        <PieChart title="Abonnés" value={totalSubscribers} Icon={Icons.Subscribe} />
+        <PieChart title="Avis recueillis" value={totalReviews as number} Icon={Icons.Comment} />
+        <PieChart title="Cadeaux gagnés" value={totalWinners!} Icon={Icons.Gift} />
       </section>
 
-      {/* -------------------------- Total Revenue Charts -------------------------- */}
+      {/* Render the total revenue chart */}
       <TotalRevenue />
     </>
   );
