@@ -11,6 +11,7 @@ import {
   IoGameControllerOutline,
   IoPersonAddOutline,
   IoChevronBack,
+  IoCopy
 } from 'react-icons/io5';
 import { MdDashboard } from 'react-icons/md';
 import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
@@ -96,6 +97,7 @@ const Icons = {
   Stats: (props: IconProps) => <ImStatsDots {...props} />,
   User: (props: IconProps) => <FaUser {...props} />,
   Trophy: (props: IconProps) => <GoTrophy {...props} />,
+  Copy: (props: IconProps) => <IoCopy {...props} />,
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,

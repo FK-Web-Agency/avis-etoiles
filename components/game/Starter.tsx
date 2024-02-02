@@ -2,10 +2,21 @@
 import Link from 'next/link';
 import { BaseRecord, useList } from '@refinedev/core';
 
-import { Button } from '@/components/ui';
+import {
+  Button,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui';
 import { classNames, colorIsLight, hexToRgb } from '@/helper';
 import { useGameStore } from '@/store';
 import { GameStep } from '@/store/game.store';
+import { Icons } from '../shared';
 
 // Define the Starter component
 export default function Starter({ config }: { config: BaseRecord | undefined }) {
@@ -68,16 +79,64 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
         </ul>
       </div>
 
+   
       {/* Render the button if there is a current action */}
       {currentAction && (
-        <Button asChild style={{ backgroundColor: config?.color }} className={`w-full mt-8 py-8`}>
-          <Link href={url} onClick={handleAction} target="_blank">
-            <currentAction.Icon className="mr-2 h-6 w-6" />
-            <span className={classNames('p-semibold-18', colorIsLight(config?.color) ? 'text-black' : 'text-white')}>
-              {currentAction?.title === 'google' ? 'Donnez un avis ' : "S'abonner à "} {currentAction?.title}
-            </span>
-          </Link>
-        </Button>
+        <Drawer>
+          <DrawerTrigger className={`w-full mt-8`} >
+            <Button style={{ backgroundColor: config?.color }} className=' py-8 w-full' >
+              <>
+                <currentAction.Icon className="mr-2 h-6 w-6" />
+                <span
+                  className={classNames('p-semibold-18', colorIsLight(config?.color) ? 'text-black' : 'text-white')}>
+                  {currentAction?.title === 'google' ? 'Donnez un avis ' : "S'abonner à "} {currentAction?.title}
+                </span>
+              </>
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Likez nous</DrawerTitle>
+              <DrawerDescription>
+                {currentAction?.title === 'google' && (
+                  <ul className='text-left flex flex-col items-center gap-4'>
+                    <li className="flex items-start space-x-5">
+                      <span className="text-3xl animate-wiggle animate-infinite animate-duration-700">🎁</span>
+                      <span className="block p-medium-16 invert">
+                        Vous allez être redirigé vers votre page "google"{' '}
+                      </span>
+                    </li>
+
+                    <li className="flex items-start space-x-5">
+                      <span className="text-3xl animate-wiggle animate-infinite animate-duration-700">🎁</span>
+                      <span className="block p-medium-16 invert">
+                        Laissez-nous un avis, votre avis n'aura pas d'impact sur le jeu
+                      </span>
+                    </li>
+
+                    <li className="flex items-start space-x-5">
+                      <span className="text-3xl animate-wiggle animate-infinite animate-duration-700">🎁</span>
+                      <span className="block p-medium-16 invert">
+                        cliquez sur cette icone <span className="uppercase font-bold">en bas à droite</span>
+                      </span>
+                      <Icons.Copy className="w-4 h-4" />
+                    </li>
+                  </ul>
+                )}
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <Button>
+                <Link href={url} onClick={handleAction} target="_blank">
+                  Continuer
+                </Link>
+              </Button>
+              <DrawerClose className='w-full'>
+                <Button className='w-full' variant="outline">Annuler</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       )}
     </section>
   );
