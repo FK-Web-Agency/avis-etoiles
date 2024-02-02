@@ -3,13 +3,30 @@ import Image from 'next/image';
 import { BsGrid } from 'react-icons/bs';
 import { HiOutlineBuildingOffice2, HiOutlineEnvelope, HiOutlinePhone } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
-import { LuHome , LuUsers, LuPieChart} from 'react-icons/lu';
-import { IoSettingsOutline, IoLogOutOutline, IoPersonOutline, IoGameControllerOutline } from 'react-icons/io5';
-import {MdDashboard} from 'react-icons/md';
-import { RiMenu4Line } from 'react-icons/ri';
-
-
-import { client, queries, urlForImage } from '@/sanity/lib';
+import { LuHome, LuUsers, LuPieChart, LuTrash2 } from 'react-icons/lu';
+import {
+  IoSettingsOutline,
+  IoLogOutOutline,
+  IoPersonOutline,
+  IoGameControllerOutline,
+  IoPersonAddOutline,
+  IoChevronBack,
+} from 'react-icons/io5';
+import { MdDashboard } from 'react-icons/md';
+import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
+import { FaRegArrowAltCircleUp, FaInstagram, FaFacebookSquare } from 'react-icons/fa';
+import { FiEdit3 } from 'react-icons/fi';
+import { ImSpinner9 } from 'react-icons/im';
+import { PiFloppyDiskDuotone } from 'react-icons/pi';
+import { FcLock, FcHome } from 'react-icons/fc';
+import { HiOutlineUserGroup } from 'react-icons/hi2';
+import { FcGoogle } from 'react-icons/fc';
+import { GoPlus } from 'react-icons/go';
+import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { BiSearchAlt } from 'react-icons/bi';
+import { TiDocumentText } from 'react-icons/ti';
+import { BiSolidErrorCircle } from 'react-icons/bi';
+import { TbTargetArrow } from 'react-icons/tb';
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -19,21 +36,21 @@ type LogoProps = {
 } & IconProps;
 
 const Icons = {
-  Logo: async (props: LogoProps) => {
-    const { logo } = await client.fetch(queries.GET_LOGO);
+  Logo: (props: LogoProps) => {
+    //  const { logo } = await client.fetch(queries.GET_LOGO);
 
     // If no logo, return text
-    if (!logo)
+    /*     if (!logo)
       return (
         <Link href={props.hrefNull ? '#' : '/'} className="text-4xl">
           Avis Étoiles 🎁
         </Link>
-      );
+      ); */
 
     // If logo, return image
     return (
       <Link href={props.hrefNull ? '#' : '/'} className="w-36">
-        <Image src={urlForImage(logo)} alt="logo" width={200} height={58} />
+        <Image src={'/logo.webp'} alt="logo" width={200} height={58} />
       </Link>
     );
   },
@@ -53,5 +70,26 @@ const Icons = {
   Game: (props: IconProps) => <IoGameControllerOutline {...props} />,
   Reports: (props: IconProps) => <LuPieChart {...props} />,
   Menu: (props: IconProps) => <RiMenu4Line {...props} />,
+  ArrowUp: (props: IconProps) => <FaRegArrowAltCircleUp {...props} />,
+  AddMember: (props: IconProps) => <IoPersonAddOutline {...props} />,
+  Edit: (props: IconProps) => <FiEdit3 {...props} />,
+  Delete: (props: IconProps) => <LuTrash2 {...props} />,
+  Back: (props: IconProps) => <IoChevronBack {...props} />,
+  Spinner: (props: IconProps) => <ImSpinner9 {...props} />,
+  Disc: (props: IconProps) => <PiFloppyDiskDuotone {...props} />,
+  Lock: (props: IconProps) => <FcLock {...props} />,
+  Group: (props: IconProps) => <HiOutlineUserGroup {...props} />,
+  Plus: (props: IconProps) => <GoPlus {...props} />,
+  Eye: (props: IconProps) => <MdOutlineRemoveRedEye {...props} />,
+  Error: (props: IconProps) => <BiSolidErrorCircle {...props} />,
+  Search: (props: IconProps) => <BiSearchAlt {...props} />,
+  Document: (props: IconProps) => <TiDocumentText {...props} />,
+  FolderInfo: (props: IconProps) => <RiFolderInfoFill {...props} />,
+  HomeColor: (props: IconProps) => <FcHome {...props} />,
+  Features: (props: IconProps) => <TbTargetArrow {...props} />,
+
+  Google: (props: IconProps) => <FcGoogle {...props} />,
+  Instagram: (props: IconProps) => <FaInstagram {...props} />,
+  Facebook: (props: IconProps) => <FaFacebookSquare {...props} />,
 };
 export default Icons;

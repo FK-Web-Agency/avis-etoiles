@@ -23,7 +23,7 @@ const BannerSchema = DefaultSchema.merge(
   z.object({
     subtitle: z.string(),
     title: z.string(),
-    image: z.instanceof(Image),
+    image: Image,
   })
 );
 

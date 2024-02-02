@@ -1,11 +1,13 @@
 'use client';
 
-import {  PricesProps } from '@/interfaces/sanity';
+// TODO - Toggle the frequency between monthly and annually
+// TODO - Stripe checkout
+
+import { PricesProps } from '@/interfaces/sanity';
 import { Icons } from '@/components/shared';
 import CheckoutButton from '@/components/shared/CheckButton';
 import { useState } from 'react';
 import { classNames } from '@/helper';
-
 
 // Define the frequency options
 const frequencies = [
@@ -13,22 +15,21 @@ const frequencies = [
   { value: 'annually', label: 'Annually', priceSuffix: '/an' },
 ];
 
-
 type ListPricesType = {
   prices_list_section: PricesProps;
 };
 
 export default function ListPrices({ prices_list_section }: ListPricesType) {
-  console.log(prices_list_section);
-
   const [frequency, setFrequency] = useState(frequencies[0]);
 
   // Function to handle frequency change
-  const handleFrequencyChange = () =>
+  const handleFrequencyChange = () => {
+ 
     setFrequency((prev) => (prev.value === 'monthly' ? frequencies[1] : frequencies[0]));
+  };
 
   return (
-    <div>
+    <>
       {/* Frequency buttons */}
       <div className="mb-10 flex justify-center">
         <div className="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center p-semibold-14 ring-1 ring-inset ring-gray-200">
@@ -73,11 +74,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 {price.title}
               </h3>
               {/* Price description */}
-              <p
-                className={classNames(
-                  !price.price ? 'text-gray-300' : 'text-gray-600',
-                  'mt-4 text-sm leading-6'
-                )}>
+              <p className={classNames(!price.price ? 'text-gray-300' : 'text-gray-600', 'mt-4 text-sm leading-6')}>
                 {price.description}
               </p>
               {/* Price value */}
@@ -101,7 +98,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 ) : null}
               </p>
               {/* Checkout button */}
-              <CheckoutButton />
+              <CheckoutButton key={price?._id} />
               {/* Features list */}
               <ul
                 role="list"
@@ -113,10 +110,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                   <li key={feature} className="flex gap-x-3">
                     {/* Checked icon */}
                     <Icons.Checked
-                      className={classNames(
-                        !price.price ? 'text-white' : 'text-yellow-500',
-                        'h-6 w-5 flex-none'
-                      )}
+                      className={classNames(!price.price ? 'text-white' : 'text-yellow-500', 'h-6 w-5 flex-none')}
                       aria-hidden="true"
                     />
                     {feature}
@@ -127,6 +121,6 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
           );
         })}
       </div>
-    </div>
+    </>
   );
 }

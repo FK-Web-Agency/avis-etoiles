@@ -1,3 +1,4 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 const groups = [
@@ -30,8 +31,9 @@ const groups = [
 
 export default defineType({
   name: 'home',
-  title: "🏠 Page d'accueil",
+  title: "Page d'accueil",
   type: 'document',
+  icon: Icons.HomeColor,
   groups,
   fields: [
     // SEO

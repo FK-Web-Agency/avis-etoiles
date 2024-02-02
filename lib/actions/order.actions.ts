@@ -4,7 +4,7 @@ import { client } from '@/sanity/lib';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
 
-export const checkoutOrder = async (order: any) => {
+export const checkoutOrder = async (order: any, withURL?: boolean) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
   try {
@@ -34,7 +34,7 @@ export const checkoutOrder = async (order: any) => {
       cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
     });
 
-    redirect(session.url!);
+    return withURL ? session.url : redirect(session.url!);
   } catch (error) {
     throw error;
   }

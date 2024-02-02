@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { checkoutOrder } from '@/lib/stripe/order';
-import { Button } from '../ui';
+
+import { Button } from '@/components/ui';
+import { checkoutOrder } from '@/lib/actions';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -13,6 +14,8 @@ export default function CheckoutButton({ plan }: any) {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
+
+    // TODO - handle success and cancelation
     if (query.get('success')) {
       console.log('Order placed! You will receive an email confirmation.');
     }
@@ -23,20 +26,20 @@ export default function CheckoutButton({ plan }: any) {
   }, []);
 
   const onCheckout = async function () {
+    console.log('onCheckout');
+
     const order = {
       id: plan._id,
       title: plan.title,
       price: plan.price,
     };
 
-    console.log(order);
-
     await checkoutOrder(order);
   };
 
   return (
-    <form action={onCheckout} method="POST">
-      <Button className='w-full' type="submit" role="link">
+    <form action={onCheckout} method="post">
+      <Button className="w-full" type="submit" role="link">
         Commander
       </Button>
     </form>

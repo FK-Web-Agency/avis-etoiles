@@ -1,8 +1,10 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'general',
-  title: 'ℹ️ Informations Generales (logo, mentions légales, etc)',
+  title: 'Informations Generales (logo, mentions légales, etc)',
+  icon: Icons.FolderInfo,
   type: 'document',
   fields: [
     defineField({

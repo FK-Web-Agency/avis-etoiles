@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import '../styles/globals.css';
 import { CookieConsent, Footer, Header } from '@/components/shared';
 import { Toaster } from '@/components/ui';
+import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'Avis Étoiles',

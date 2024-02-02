@@ -1,13 +1,7 @@
 import { Metadata } from 'next';
 import { PortableText } from '@portabletext/react';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  TextGradient,
-} from '@/components/ui';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, TextGradient } from '@/components/ui';
 import { client, queries } from '@/sanity/lib';
 import { ListPrices } from '@/components/pages/prices';
 import { generateMetadataWithSanity } from '@/helper';
@@ -17,9 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Prices() {
-  const { introduction_section, prices_list_section, faqs__section } = await client.fetch(
-    queries.GET_PRICES_PAGE
-  );
+  const { introduction_section, prices_list_section, faqs__section } = await client.fetch(queries.GET_PRICES_PAGE);
 
   return (
     <main className="wrapper main">
@@ -41,25 +33,21 @@ export default async function Prices() {
           <div>
             <h2 className="h1-bold mb-5">{faqs__section?.title} </h2>
 
-            {faqs__section?.description.map((item: any, index: number) => (
-              <PortableText key={index} value={item} />
-            ))}
+            <PortableText value={faqs__section?.description} />
           </div>
 
           {/* ------------------------------ Questions list ----------------------------- */}
           <Accordion type="single" collapsible>
-            {faqs__section?.faqs?.map(
-              ({ question, answer }: { question: string; answer: string }) => (
-                <AccordionItem key={question} value={question}>
-                  <AccordionTrigger>
-                    <h3 className="text-white">{question}</h3>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="text-gray-400">{answer} </p>
-                  </AccordionContent>
-                </AccordionItem>
-              )
-            )}
+            {faqs__section?.faqs?.map(({ question, answer }: { question: string; answer: string }) => (
+              <AccordionItem key={question} value={question}>
+                <AccordionTrigger>
+                  <h3 className="text-white">{question}</h3>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-gray-400">{answer} </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
       </section>
