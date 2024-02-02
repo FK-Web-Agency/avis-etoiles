@@ -46,7 +46,7 @@ export default function Footer({ color }: { color: string }) {
       style={{ backgroundColor: color }}
       className={classNames(
         color ? null : 'bg-gray-900',
-        'p-2 flex items-center gap-4 justify-evenly  p-medium-12 underline '
+        'p-2 flex items-center gap-4 justify-evenly  p-medium-12 underline mt-10'
       )}>
       <Drawer>
         <DrawerTrigger className="invert">CGU</DrawerTrigger>
