@@ -131,7 +131,7 @@ export default function Game({ params: { id } }: GameProps) {
               <div
                 className={classNames(
                   'flex justify-center items-center ',
-                  gameStep === GameStep.starter ? 'mb-16' : 'mb-1'
+                  gameStep === GameStep.starter ? 'mb-10' : 'mb-1'
                 )}>
                 <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
               </div>
