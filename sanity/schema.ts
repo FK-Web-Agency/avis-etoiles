@@ -1,9 +1,9 @@
 import { type SchemaTypeDefinition } from 'sanity';
-import { about, features, home, prices } from './schemas/pages';
+import { about, features, home, prices, game } from './schemas/pages';
 import { generatedTextGradient, infoContent, seo } from './schemas/helper';
 import general from './schemas/general';
 import orders from './schemas/orders';
-import { analytic, gameAnalytics, gameWinners, winner } from './schemas/game';
+import { analytic, gameAnalytics, gameBackgrounds, gameConfig, gameEasel, gameWinners, winner } from './schemas/game';
 import users from './schemas/users';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -16,11 +16,15 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     features,
     prices,
     about,
+    game,
     orders,
     users,
     analytic,
+    gameBackgrounds,
+    gameEasel,
+    gameConfig,
     gameAnalytics,
     winner,
-    gameWinners
+    gameWinners,
   ],
 };
