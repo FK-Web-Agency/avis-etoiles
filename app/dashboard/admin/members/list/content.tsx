@@ -7,6 +7,9 @@ import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons, ToggleRoleMemberButton } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import Link from 'next/link';
+import { formatDistance } from 'date-fns';
+import { fr } from 'date-fns/locale/fr';
+
 
 export default function Content() {
   const go = useGo();
@@ -78,7 +81,10 @@ export default function Content() {
                 <TableCell className=" ">
                   <p className="text-white ">
                     {user?.subscription?.expirationDate ? (
-                      user?.subscription?.expirationDate
+                      formatDistance(new Date(user?.subscription?.expirationDate), new Date(), {
+                        addSuffix: true,
+                        locale: fr,
+                      })
                     ) : (
                       <span className="text-gray-500">Aucune date d'expiration</span>
                     )}
@@ -108,7 +114,7 @@ export default function Content() {
                       }
                       variant={'ghost'}
                       size={'sm'}
-                      className="rounded border-2 border-gray-100 px-2 text-gray-100 hover:text-gray-900">
+                      className="border-2 border-gray-100 text-gray-100 hover:text-gray-900">
                       <Icons.Edit className="w-4 h-4" />
                     </Button>
                     <DeleteMemberButton user={user} id={user?._id}>
