@@ -4,14 +4,12 @@ import { z } from 'zod';
 import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { updateMemberEmail } from '@/lib/actions/clerk.actions';
 import { useUpdate } from '@refinedev/core';
-import { useDashboardStore } from '@/store';
 
 type EditEmailProps = { email: string; firstName: string; lastName: string; clerkId: string; sanityId: string };
 
 export default function EditEmailAndNameForm({ email, firstName, lastName, clerkId, sanityId }: EditEmailProps) {
   const { toast } = useToast();
   const { mutate } = useUpdate();
-  const { userIds } = useDashboardStore();
   const EmailSchema = z.object({
     firstName: z.string().default(firstName),
     lastName: z.string().default(lastName),
