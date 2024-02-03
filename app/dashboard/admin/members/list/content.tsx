@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 
-
 export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
@@ -39,7 +38,7 @@ export default function Content() {
           <TableHeader className="bg-background">
             <TableRow>
               <TableHead>Profile</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="hidden sm:table-cell">Status</TableHead>
               <TableHead className="w-28 hidden sm:table-cell">Expiration</TableHead>
               <TableHead className="text-right sr-only">Action</TableHead>
             </TableRow>
@@ -63,7 +62,7 @@ export default function Content() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <div className="flex items-center gap-2">
                     <div className={classNames('flex-none rounded-full p-1 bg-current')}>
                       <div
@@ -78,7 +77,7 @@ export default function Content() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className=" ">
+                <TableCell className="hidden sm:table-cell">
                   <p className="text-white ">
                     {user?.subscription?.expirationDate ? (
                       formatDistance(new Date(user?.subscription?.expirationDate), new Date(), {
@@ -90,7 +89,7 @@ export default function Content() {
                     )}
                   </p>
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right ">
                   <div className="flex justify-center items-center gap-5">
                     <ToggleRoleMemberButton user={user}>
                       <Icons.Group
