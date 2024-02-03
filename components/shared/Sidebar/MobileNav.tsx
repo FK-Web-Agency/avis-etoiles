@@ -16,7 +16,7 @@ export default function MobileNav() {
           </div>
 
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <NavItems />
+            <NavItems isMobile />
 
             <TeamsNav />
 
