@@ -61,9 +61,23 @@ export async function updateMemberEmail(id: string, user: any) {
   console.log('use update', user);
 
   try {
-    // primaryEmailAddressID: user?.email,
-    // TODO: update email address with clerk : Wait answer from clerk
-    const params = { firstName: user.firstName, lastName: user.lastName };
+    const { emailAddresses } = await clerkClient.users.getUser(id);
+    let emailId;
+
+    const emailExist = emailAddresses.find((email) => email.emailAddress === user.email);
+    emailId = emailExist?.id;
+
+    // Create new email address, this method will return an object with the id of the new email address
+    if (!emailExist) {
+      const newEmail = await clerkClient.emailAddresses.createEmailAddress({
+        userId: id,
+        emailAddress: user.email,
+        verified: true,
+      });
+
+      emailId = newEmail.id;
+    }
+    const params = { primaryEmailAddressID: emailId, firstName: user.firstName, lastName: user.lastName };
 
     await clerkClient.users.updateUser(id, params);
 

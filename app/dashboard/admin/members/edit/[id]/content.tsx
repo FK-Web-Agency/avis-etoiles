@@ -2,19 +2,15 @@
 
 import { EditEmailAndNameForm, EditPasswordForm, EditProfileForm, EditSubscriptionForm } from '@/components/forms';
 import { DeleteMemberButton, GoBack, Icons, ToggleRoleMemberButton } from '@/components/shared';
-import { useToast } from '@/components/ui';
-import { useDelete, useNavigation, useOne } from '@refinedev/core';
-import { deleteMember } from '@/lib/actions/clerk.actions';
+import { useOne } from '@refinedev/core';
 import { EditMemberSkeleton } from '@/components/skeleton';
 import { classNames } from '@/helper';
 
-interface EditMemberProps {
-  params: {
-    id: string;
-  };
+interface ContentProps {
+  id: string;
 }
 
-export default function EditMember({ params: { id } }: EditMemberProps) {
+export default function Content({ id }: ContentProps) {
   const { data, isLoading, isError } = useOne({
     resource: 'users',
     id,
@@ -30,6 +26,7 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
     firstName: user?.firstName,
     lastName: user?.lastName,
     clerkId: user?.clerkId,
+    sanityId: user?._id
   };
 
   return (
@@ -50,21 +47,20 @@ export default function EditMember({ params: { id } }: EditMemberProps) {
             <EditProfileForm {...{ user }} />
             {/* ------------------------------- Subscription ------------------------------- */}
             <EditSubscriptionForm {...{ user }} />
-            <div className='flex items-center gap-4'>
+            <div className="flex items-center gap-4 mt-8">
               <DeleteMemberButton {...{ user, id }}>
-                <div className="mt-8">
-                  <Icons.Delete className="w-4 h-4 mr-2" />
-                  Supprimer
-                </div>
+                <Icons.Delete className="w-4 h-4 mr-2" />
+                <span className="text-slate-100">Supprimer</span>
               </DeleteMemberButton>
 
               <ToggleRoleMemberButton user={user}>
                 <Icons.Group
                   className={classNames(
-                    user?.role === 'member' ? 'text-gray-100' : 'text-green-500',
-                    'transition-colors duration-200 w-4 h-4'
+                    user?.role === 'member' ? 'text-gray-900' : 'text-green-500',
+                    'transition-colors duration-200 w-4 h-4 mr-2'
                   )}
                 />
+                <span className="text-gray-900">Changer de rôle</span>
               </ToggleRoleMemberButton>
             </div>
           </>

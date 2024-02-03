@@ -88,22 +88,26 @@ export default function CreateMemberForm() {
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
 
-    const response: any = await createMember(values);
+    const askConfirmation = confirm("Le prix de l'abonnement est de 0€, êtes-vous sûr de vouloir continuer ?");
 
-    if (response?.status === 'error') {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Quelque chose a mal tourné.',
-        description: response?.message,
-      });
-    } else {
-      toast({
-        description: 'Membre créé avec succès',
-      });
+    if (askConfirmation) {
+      const response: any = await createMember(values);
 
-      setTimeout(() => {
-        list('members');
-      }, 900);
+      if (response?.status === 'error') {
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Quelque chose a mal tourné.',
+          description: response?.message,
+        });
+      } else {
+        toast({
+          description: 'Membre créé avec succès',
+        });
+
+        setTimeout(() => {
+          list('members');
+        }, 900);
+      }
     }
 
     setLoading(false);
