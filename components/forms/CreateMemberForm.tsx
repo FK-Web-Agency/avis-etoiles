@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import {  useNavigation } from '@refinedev/core';
+import { useNavigation } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';

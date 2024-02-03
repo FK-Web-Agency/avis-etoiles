@@ -6,6 +6,7 @@ import dataProvider from 'refine-sanity';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { client } from '@/sanity/lib';
 import { useDashboardStore } from '@/store';
+import { useToast } from '@/components/ui';
 
 const resources = {
   admin: [
@@ -37,10 +38,11 @@ const resources = {
 
 export default function RefineProvider({ children }: PropsWithChildren) {
   const { role, setRole } = useDashboardStore();
+  const { toast } = useToast();
 
-// TODO - Remove this useEffect and use the role from the store
+  // TODO - Remove this useEffect and use the role from the store
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     fetch('/api/user')
       .then((res) => res.json())
       .then(({ role }) => {
