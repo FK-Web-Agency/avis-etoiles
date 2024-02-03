@@ -5,3 +5,5 @@ export {default as CookieConsent} from './CookieConsent';
 export { default as Sidebar } from './Sidebar';
 export { default as RefineProvider } from './RefineProvider';
 export { default as Spinner} from './Spinner';
+export { default as DeleteMemberButton } from './DeleteMemberButton';
+export { default as ToggleRoleMemberButton} from './ToggleRoleMemberButton';
