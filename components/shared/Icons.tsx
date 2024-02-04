@@ -11,14 +11,14 @@ import {
   IoGameControllerOutline,
   IoPersonAddOutline,
   IoChevronBack,
-  IoCopy
+  IoCopy,
 } from 'react-icons/io5';
 import { MdDashboard } from 'react-icons/md';
 import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
-import { FaRegArrowAltCircleUp, FaInstagram, FaFacebookSquare, FaUser } from 'react-icons/fa';
+import { FaRegArrowAltCircleUp, FaInstagram, FaFacebookSquare, FaUser, FaGifts } from 'react-icons/fa';
 import { FiEdit3 } from 'react-icons/fi';
 import { ImSpinner9 } from 'react-icons/im';
-import { PiFloppyDiskDuotone } from 'react-icons/pi';
+import { PiFloppyDiskDuotone, PiPresentationThin } from 'react-icons/pi';
 import { FcLock, FcHome } from 'react-icons/fc';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import { FcGoogle } from 'react-icons/fc';
@@ -30,6 +30,8 @@ import { BiSolidErrorCircle, BiUserPlus, BiCommentDetail } from 'react-icons/bi'
 import { TbTargetArrow } from 'react-icons/tb';
 import { BsGift } from 'react-icons/bs';
 import { ImStatsDots } from 'react-icons/im';
+import { FaImages } from "react-icons/fa6";
+
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -98,6 +100,10 @@ const Icons = {
   User: (props: IconProps) => <FaUser {...props} />,
   Trophy: (props: IconProps) => <GoTrophy {...props} />,
   Copy: (props: IconProps) => <IoCopy {...props} />,
+  GiftMutual: (props: IconProps) => <FaGifts {...props} />,
+  Easel: (props: IconProps) => <PiPresentationThin {...props} />,
+  Images: (props: IconProps) => <FaImages {...props} />,
+
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,

@@ -3,7 +3,16 @@ import { about, features, home, prices, game } from './schemas/pages';
 import { generatedTextGradient, infoContent, seo } from './schemas/helper';
 import general from './schemas/general';
 import orders from './schemas/orders';
-import { analytic, gameAnalytics, gameBackgrounds, gameConfig, gameEasel, gameWinners, winner } from './schemas/game';
+import {
+  analytic,
+  gameAnalytics,
+  gameBackgrounds,
+  gameConfig,
+  gameEasel,
+  gameMutualReward,
+  gameWinners,
+  winner,
+} from './schemas/game';
 import users from './schemas/users';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -23,6 +32,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     gameBackgrounds,
     gameEasel,
     gameConfig,
+    gameMutualReward,
     gameAnalytics,
     winner,
     gameWinners,

@@ -6,7 +6,7 @@ import { MemberProps } from '@/components/forms/CreateMemberForm';
 import { formatDate } from '@/helper';
 import sendEmail from './resend.actions';
 
-export async function createMember(value: MemberProps) {
+export async function createMember(value: any) {
   const password = generate({
     length: 10,
     numbers: true,

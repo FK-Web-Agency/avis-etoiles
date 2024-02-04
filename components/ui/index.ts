@@ -25,6 +25,8 @@ export * from './drawer'
 export * from './table'
 export * from './alert-dialog'
 export * from './skeleton'
+export * from './tabs'
+export * from './carousel'
 export {default as AutoForm} from './auto-form';
 
 export { default as CustomCard } from './custom-card';

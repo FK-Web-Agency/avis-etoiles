@@ -10,6 +10,7 @@ import { useNavigation } from '@refinedev/core';
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
+import { formatToISOString } from '@/helper';
 
 enum Recurring {
   monthly = 'Mois',
@@ -91,7 +92,16 @@ export default function CreateMemberForm() {
     const askConfirmation = confirm("Le prix de l'abonnement est de 0€, êtes-vous sûr de vouloir continuer ?");
 
     if (askConfirmation) {
-      const response: any = await createMember(values);
+      const startDate = formatToISOString(values?.subscription?.startDate);
+      const expirationDate = formatToISOString(values?.subscription?.expirationDate);
+
+      const response: any = await createMember({...values,
+        subscription: {
+          ...values.subscription,
+          startDate,
+          expirationDate,
+        },
+        });
 
       if (response?.status === 'error') {
         toast({
