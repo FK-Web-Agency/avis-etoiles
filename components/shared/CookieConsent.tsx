@@ -24,10 +24,11 @@ export default function CookieConsent() {
   };
 
   return (
-    <section className="fixed max-w-md p-4 mx-auto bg-gray-900 border border-gray-600 right-12 lg:right-4 lg:bottom-4 bottom-16 rounded-2xl">
-      <h2 className="p-medium-14">🍪 Activer les cookies</h2>
+    <section className="fixed max-w-96 md:max-w-[90vw] p-4 mx-auto border border-gray-50 left-0 right-0 bottom-2 rounded-2xl bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60">
+      <span className="block h4-medium">🍪</span>
+      <h2 className="p-medium-20 text-gray-900">Activer les cookies</h2>
 
-      <p className="mt-4 p-medium-12">
+      <p className="mt-4 p-medium-14 text-gray-900">
         Ce site web utilise des cookies pour améliorer votre expérience. En continuant à naviguer sur le site, vous
         acceptez notre utilisation des cookies. Veuillez consulter notre{' '}
         <Link href="/policies.txt">politique de confidentialité </Link> pour en savoir plus sur la manière dont nous
@@ -39,7 +40,10 @@ export default function CookieConsent() {
           Gérez vos préférences
         </button> */}
 
-        <Button className='text-xs' onClick={consentHandler}> Accepter</Button>
+        <Button className="text-xs" onClick={consentHandler}>
+          {' '}
+          Accepter
+        </Button>
       </div>
     </section>
   );
