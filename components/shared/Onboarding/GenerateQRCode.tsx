@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import QRCode from 'qrcode';
-import { useList } from '@refinedev/core';
+import { useList, useOne } from '@refinedev/core';
 import CompositeImage from 'composite-image';
 import { Image as ImageSanity } from 'sanity';
 
@@ -27,6 +27,12 @@ export default function GenerateQRCode({ onSave, easel }: { onSave: (file: File)
   const { data, isLoading } = useList({
     resource: 'gameEasel',
   });
+
+  const { data: userConfig } = useOne({
+    resource: 'gameConfig',
+    id: userIds?.sanityId,
+  });
+
   const easels = data?.data;
 
   useEffect(() => {
@@ -65,8 +71,17 @@ export default function GenerateQRCode({ onSave, easel }: { onSave: (file: File)
         width: easels[easelSelected || 0].qrcode.size.width,
         height: easels[easelSelected || 0].qrcode.size.height,
       };
+
+      const cfg3 = {
+        src: urlForImage(userConfig?.data?.logo),
+        x: easels[easelSelected || 0].logo.position.x,
+        y: easels[easelSelected || 0].logo.position.y,
+        width: easels[easelSelected || 0].logo.size.width,
+        height: easels[easelSelected || 0].logo.size.height,
+      };
+
       // TODO add logo placement
-      image.composite(cfg1, cfg2).then(() => {
+      image.composite(cfg1, cfg2, cfg3).then(() => {
         setPreview(image);
       });
     }
