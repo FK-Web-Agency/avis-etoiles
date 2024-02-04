@@ -138,7 +138,6 @@ export default function GameEasel() {
     })();
   }, [qrCodeConfig, easel]);
 
-  console.log('easelPreview', easelPreview);
 
   if (isLoading) return <Spinner />;
 
@@ -309,7 +308,7 @@ export default function GameEasel() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>Annuler</AlertDialogCancel>
                 <AlertDialogAction onClick={handleAction} type="submit">
                   Continue
                 </AlertDialogAction>
