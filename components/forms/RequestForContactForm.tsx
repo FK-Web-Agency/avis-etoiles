@@ -29,7 +29,6 @@ export default function RequestForContact({ children }: PropsWithChildren) {
       adminEmail: 'contact@avisetoiles.com',
       ...values,
     });
-    console.log('status', message);
 
     if (status === 'success') {
       toast({

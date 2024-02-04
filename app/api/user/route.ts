@@ -14,9 +14,6 @@ export async function GET() {
 
   const member = members.find((m: any) => m.publicUserData.userId === userId);
 
-  console.log(member);
-  
-
   if (!member) {
     return NextResponse.json({ role: 'member' });
   }

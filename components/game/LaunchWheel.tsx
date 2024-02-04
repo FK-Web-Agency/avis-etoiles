@@ -69,7 +69,6 @@ export default function LaunchWheel({
       setGameStep(GameStep.result);
     }, 900);
 
-    console.log('Spin Stopped', result);
   }
   return (
     <div>

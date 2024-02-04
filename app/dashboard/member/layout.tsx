@@ -33,7 +33,7 @@ export default function layout({ children }: PropsWithChildren) {
     setUserIds(ids);
     setMemberIds(ids);
   }, [user]);
-  console.log(user);
+
 
   /* 
   1) Changer le mot de passe

@@ -9,7 +9,6 @@ type CallToActionType = {
 };
 
 export default function CallToAction({ call_to_action_section }: CallToActionType) {
-  console.log(call_to_action_section);
 
   return (
     <section className="yellow-section py-16">

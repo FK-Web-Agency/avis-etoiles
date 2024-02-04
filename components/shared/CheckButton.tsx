@@ -26,8 +26,6 @@ export default function CheckoutButton({ plan }: any) {
   }, []);
 
   const onCheckout = async function () {
-    console.log('onCheckout');
-
     const order = {
       id: plan._id,
       title: plan.title,

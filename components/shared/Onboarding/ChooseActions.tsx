@@ -91,7 +91,6 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
       });
     }
   }, [actionsDb]);
-console.log(actionsDb);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);

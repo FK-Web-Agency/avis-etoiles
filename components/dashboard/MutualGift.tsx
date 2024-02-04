@@ -56,7 +56,6 @@ export default function MutualGift() {
         const createdAt = new Date(participant.createdAt);
         return createdAt >= startDate && createdAt <= endDate;
       });
-      console.log(participantsValid);
     }
   });
 

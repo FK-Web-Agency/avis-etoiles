@@ -18,8 +18,6 @@ export default function ChangePassword() {
 
   const handleAction = async function (values: ChangePasswordProps) {
     if (values.newPassword !== values.confirmPassword) {
-      console.log('Les mots de passe ne correspondent pas');
-
       toast({
         title: 'Erreur',
         description: 'Les mots de passe ne correspondent pas',
@@ -34,7 +32,6 @@ export default function ChangePassword() {
 
         setStep('uploadLogo');
       } catch (error: any) {
-        console.log(error);
         toast({
           title: 'Erreur',
           description: error.message,

@@ -9,6 +9,6 @@ export default async function createUser(user: any) {
     const user = await client.create(doc);
     return user;
   } catch (error) {
-    console.log(error);
+    return error
   }
 }

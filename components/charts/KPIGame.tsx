@@ -98,8 +98,6 @@ export default function KPIGame({ analytics }: any) {
   }
 
   if (sumByMonth && sumByMonth[previousMonth] && monthlyVisits && monthlyVisits[previousMonth]) {
-    console.log(sumByMonth[previousMonth], monthlyVisits[previousMonth]);
-
     previousConversionRate = sumByMonth[previousMonth] / monthlyVisits[previousMonth];
   }
 

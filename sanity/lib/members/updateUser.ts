@@ -17,7 +17,6 @@ export default async function updateUser({ id, user }: UpdateUserProps) {
       .commit()
       .then((res) => console.log('res', res));
   } catch (error) {
-    console.log(error);
     return error;
   }
 }

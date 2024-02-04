@@ -56,11 +56,9 @@ export default function EditInformation({ user }: { user: any }) {
 
   // Handle update data in sanity and clerk public_metadata
   const handleAction = async function (values: any) {
-    console.log(values);
-
     const { status, message } = await updateMemberInformation(user?.clerkId, values);
 
-     status === 'success'
+    status === 'success'
       ? toast({
           description: 'Votre profil a été mis à jour',
         })

@@ -13,7 +13,6 @@ export default async function handleUserRole({ clerkId, role }: UpdateUserProps)
       .commit()
       .then((res) => console.log('User role updated', res));
   } catch (error) {
-    console.log(error);
     return error;
   }
 }

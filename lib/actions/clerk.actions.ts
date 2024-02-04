@@ -50,7 +50,6 @@ export async function createMember(value: any) {
 
     return { status: 'success', message: 'Le membre a été créé avec succès.', password };
   } catch (error: any) {
-    console.log(error);
 
     return { status: 'error', message: JSON.stringify(error) };
   }
@@ -58,8 +57,6 @@ export async function createMember(value: any) {
 
 // Update email address
 export async function updateMemberEmail(id: string, user: any) {
-  console.log('use update', user);
-
   try {
     const { emailAddresses } = await clerkClient.users.getUser(id);
     let emailId;
@@ -83,8 +80,6 @@ export async function updateMemberEmail(id: string, user: any) {
 
     return { status: 'success', message: "L'adresse email a été modifiée avec succès." };
   } catch (error: any) {
-    console.log(error);
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
@@ -96,8 +91,6 @@ export async function changeMemberPassword(id: string, password: string) {
 
     return { status: 'success', message: 'Le mot de passe a été modifié avec succès.' };
   } catch (error: any) {
-    console.log(error);
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
@@ -119,8 +112,6 @@ export async function updateMemberInformation(id: string, user: any) {
 
     return { status: 'success', message: 'Les informations ont été modifiées avec succès.' };
   } catch (error: any) {
-    console.log(error);
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
@@ -142,8 +133,6 @@ export async function updateMemberRole(id: string, role: string) {
     }
     return { status: 'success', message: 'Le role a été modifié avec succès.' };
   } catch (error: any) {
-    console.log(error);
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
@@ -155,8 +144,6 @@ export async function deleteMember(id: string) {
 
     return { status: 'success', message: 'Le membre a été supprimé avec succès.' };
   } catch (error: any) {
-    console.log(error);
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }

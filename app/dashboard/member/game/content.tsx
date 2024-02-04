@@ -49,7 +49,6 @@ export default function Content() {
   };
 
   const onSaveLogo = async (file: File) => {
-    console.log('Upload file', file);
 
     const doc = await uploadFileToSanity(file);
     updateGameConfig({
@@ -57,11 +56,9 @@ export default function Content() {
     });
 
     //   const saveFile = await saveBackground({ id: data?.data[0]._id, background: doc! });
-    console.log('saveFile');
   };
 
   const onSaveBackground = async (file: File) => {
-    console.log('Upload file', file);
 
     const doc = await uploadFileToSanity(file);
     updateGameConfig({
@@ -69,7 +66,6 @@ export default function Content() {
     });
 
     //   const saveFile = await saveBackground({ id: data?.data[0]._id, background: doc! });
-    console.log('saveFile');
   };
 
   const onSaveColor = (color: string) =>
@@ -84,7 +80,6 @@ export default function Content() {
   const onSaveSecretCode = (secretCode: string) => updateGameConfig({ secretCode });
 
   const onSaveEasel = async (file: File) => {
-    console.log('Upload file', file);
 
     const doc = await uploadFileToSanity(file);
     updateGameConfig({

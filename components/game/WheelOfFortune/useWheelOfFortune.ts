@@ -36,7 +36,6 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
       .append('svg')
       .attr('width', w + padding.left + padding.right)
       .attr('height', h + padding.top + padding.bottom);
-    console.log(window.innerWidth);
 
     const translateX = window.innerWidth < 380 ? w / 1.45 + padding.left : w / 1.55 + padding.left;
 

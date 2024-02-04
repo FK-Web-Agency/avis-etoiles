@@ -7,8 +7,7 @@ export function formatDate(isoDate: Date) {
 
 export function getTimeBeforeExpiration(expirationDate: Date) {
   const currentDate = new Date();
-  console.log(expirationDate);
-
+  
   const timeDifference = expirationDate?.getTime() - currentDate.getTime();
   const millisecondsInDay = 24 * 60 * 60 * 1000;
   const daysBeforeExpiration = Math.ceil(timeDifference / millisecondsInDay);

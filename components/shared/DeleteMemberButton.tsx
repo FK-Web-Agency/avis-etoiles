@@ -53,7 +53,6 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
       });
     }
 
-    console.log('delete');
   };
 
   return (

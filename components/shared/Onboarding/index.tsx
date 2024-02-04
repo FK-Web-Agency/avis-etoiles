@@ -35,11 +35,9 @@ export default function Onboarding({ user }: { user: any }) {
   const Content = step?.Content;
 
   const handleNextStep = function () {
-    console.log(step);
 
     if (previousNavigation.step === step.title) {
       setPreviousNavigation({ status: false, step: '' });
-      console.log(nextButtonRef.current);
 
       return;
     }
@@ -137,8 +135,6 @@ export default function Onboarding({ user }: { user: any }) {
     for (const property of fileProperties) {
       // @ts-ignore
       const doc = await uploadFileToSanity(copyGameConfig[property] as File);
-
-      console.log('doc', doc);
 
       copyGameConfig[property] = doc;
     }

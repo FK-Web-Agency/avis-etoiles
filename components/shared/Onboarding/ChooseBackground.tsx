@@ -50,7 +50,6 @@ export default function ChooseBackground({ onSave, background }: ChooseBackgroun
             .then((blob) => {
               file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
 
-              console.log(file);
               if (onSave) return onSave(file as File);
               // Now you can use `file` as a File object
               setGameConfig({ background: file });
@@ -61,7 +60,6 @@ export default function ChooseBackground({ onSave, background }: ChooseBackgroun
       // Next Step
       setStep('chooseColor');
     } catch (error: any) {
-      console.log(error);
 
       toast({
         title: 'Erreur',
@@ -71,7 +69,6 @@ export default function ChooseBackground({ onSave, background }: ChooseBackgroun
     }
   };
 
-  console.log(imageRef?.current?.files);
 
   return (
     <form onSubmit={handleSubmit}>

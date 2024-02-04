@@ -103,7 +103,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Verify the user didn't play the game today
     // if so, send a error message
 
-    console.log(userHistory);
 
     if (userHistory?.lastGamePlayed) {
       const today = new Date();
@@ -144,13 +143,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </html>
     );
 
-/*     QRCode.toDataURL('https://avis-etoiles-fwcv.vercel.app/game/tdabMO2xq8YYq6FIyqBHte')
-  .then(url => {
-    console.log(url)
-  })
-  .catch(err => {
-    console.error(err)
-  }) */
+
   return (
     <html lang="fr">
       <body className="min-h-screen overflow-y-auto">

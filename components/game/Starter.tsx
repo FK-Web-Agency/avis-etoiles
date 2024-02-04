@@ -56,7 +56,6 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
     // Set the game step to "launchWheel"
     setGameStep(GameStep.launchWheel);
   };
-  console.log(gameStep);
 
   // Render the Starter component
   return (

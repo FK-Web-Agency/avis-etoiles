@@ -41,8 +41,6 @@ export default async function sendEmail(body: any) {
         message: "Une erreur s'est produite, merci de réessayer ultérieurement",
       };
     }
-
-    console.log('email sent');
     return { status: 'success', message: 'Email envoyé avec succés', data };
   } catch (err) {
     console.error(err);

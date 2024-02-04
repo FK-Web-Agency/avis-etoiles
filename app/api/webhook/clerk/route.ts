@@ -71,10 +71,8 @@ export async function POST(req: Request) {
       address: public_metadata.address,
       subscription: public_metadata.subscription,
     };
-    console.log('user', user);
 
     const newUser: any = await createUser(user);
-    console.log(newUser);
 
     if (newUser) {
       await clerkClient.users.updateUserMetadata(id, {

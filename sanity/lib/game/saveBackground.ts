@@ -16,10 +16,8 @@ export type SaveBackgroundProps = z.infer<typeof saveBackgroundSchema>;
 export default async function saveBackground({ id, background }: SaveBackgroundProps) {
   try {
     const fileUpload = await client.patch(id).set({ background }).commit();
-    console.log("fileUpload", fileUpload);
     return fileUpload;
   } catch (error) {
-    console.log(error);
     return error;
   }
 }

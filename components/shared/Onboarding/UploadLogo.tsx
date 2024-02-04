@@ -33,8 +33,6 @@ export default function UploadLogo({ onSave, logo }: UploadLogoProps) {
 
       setStep('chooseBackground');
     } catch (error: any) {
-      console.log(error);
-
       toast({
         title: 'Erreur',
         description: error.message,
