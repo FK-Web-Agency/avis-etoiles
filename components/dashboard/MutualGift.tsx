@@ -33,6 +33,12 @@ export default function MutualGift() {
   };
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_MUTUAL_REWARD!,
+    sorters: [
+      {
+        field: 'createdAt',
+        order: 'asc',
+      },
+    ],
   });
   const mutualGifts = data?.data[0];
 
@@ -110,7 +116,7 @@ export default function MutualGift() {
   return (
     <div>
       {mutualGifts && !showForm ? (
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col justify-center items-center sm:items-start">
           <h3 className="p-medium-20 text-slate-100">{mutualGifts.title} </h3>
           <p className="p-medium-14">
             Debut: {formatDate(mutualGifts.startDate)}
@@ -144,13 +150,13 @@ export default function MutualGift() {
             <Input className="mt-4" accept="image/*" type="file" id="photo" onChange={handlePhotoChange} />
           </div>
 
-
-          <div className='flex items-center gap-4'>
-
-          <AutoFormSubmit>Crée le cadeau mutualisé</AutoFormSubmit>
-          {mutualGifts && <Button onClick={handleShowForm} variant={"destructive"}>
-            Annuler
-          </Button>}
+          <div className="flex items-center gap-4">
+            <AutoFormSubmit>Crée le cadeau mutualisé</AutoFormSubmit>
+            {mutualGifts && (
+              <Button onClick={handleShowForm} variant={'destructive'}>
+                Annuler
+              </Button>
+            )}
           </div>
         </AutoForm>
       )}

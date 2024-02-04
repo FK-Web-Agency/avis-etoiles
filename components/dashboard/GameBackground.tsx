@@ -103,7 +103,7 @@ export default function GameBackground() {
             accept="image/*"
             onChange={(e) => e?.target?.files && setBackground(e?.target?.files[0])}
           />
-          <Button variant="gradient" className="mt-4">
+          <Button disabled={!background} variant="gradient" className="mt-4">
             Télécharger
           </Button>
         </form>

@@ -19,6 +19,47 @@ export default defineType({
       type: 'image',
     }),
     defineField({
+      name: 'logo',
+      title: 'Position et taille du Logo',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'size',
+          title: 'Taille',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'width',
+              title: 'Largeur',
+              type: 'number',
+            }),
+            defineField({
+              name: 'height',
+              title: 'Hauteur',
+              type: 'number',
+            }),
+          ],
+        }),
+        defineField({
+          name: 'position',
+          title: 'Position',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'x',
+              title: 'Position X',
+              type: 'number',
+            }),
+            defineField({
+              name: 'y',
+              title: 'Position Y',
+              type: 'number',
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
       name: 'qrcode',
       title: 'Position et taille du QR Code',
       type: 'object',
