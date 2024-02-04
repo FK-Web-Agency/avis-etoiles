@@ -15,7 +15,7 @@ import {
 } from 'react-icons/io5';
 import { MdDashboard } from 'react-icons/md';
 import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
-import { FaRegArrowAltCircleUp, FaInstagram, FaFacebookSquare, FaUser, FaGifts } from 'react-icons/fa';
+import { FaRegArrowAltCircleUp,FaArrowCircleDown, FaInstagram, FaFacebookSquare, FaUser, FaGifts } from 'react-icons/fa';
 import { FiEdit3 } from 'react-icons/fi';
 import { ImSpinner9 } from 'react-icons/im';
 import { PiFloppyDiskDuotone, PiPresentationThin } from 'react-icons/pi';
@@ -76,6 +76,7 @@ const Icons = {
   Reports: (props: IconProps) => <LuPieChart {...props} />,
   Menu: (props: IconProps) => <RiMenu4Line {...props} />,
   ArrowUp: (props: IconProps) => <FaRegArrowAltCircleUp {...props} />,
+  ArrowDown: (props: IconProps) => <FaArrowCircleDown {...props} />,
   AddMember: (props: IconProps) => <IoPersonAddOutline {...props} />,
   Edit: (props: IconProps) => <FiEdit3 {...props} />,
   Delete: (props: IconProps) => <LuTrash2 {...props} />,

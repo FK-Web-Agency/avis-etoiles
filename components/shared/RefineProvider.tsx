@@ -38,17 +38,14 @@ const resources = {
 
 export default function RefineProvider({ children }: PropsWithChildren) {
   const { role, setRole } = useDashboardStore();
-  const { toast } = useToast();
 
-  // TODO - Remove this useEffect and use the role from the store
-
-  /*   useEffect(() => {
+  useEffect(() => {
     fetch('/api/user')
       .then((res) => res.json())
       .then(({ role }) => {
         setRole(role);
       });
-  }, []); */
+  }, []);
 
   if (role === null) return null;
 
@@ -57,8 +54,7 @@ export default function RefineProvider({ children }: PropsWithChildren) {
       // @ts-ignore
       dataProvider={dataProvider(client)}
       routerProvider={routerProvider}
-      // TODO - has to change 'admin' to 'member' based on the role
-      resources={resources[role || 'admin']}
+      resources={resources[role || 'member']}
       options={{
         liveMode: 'auto',
         syncWithLocation: true,
