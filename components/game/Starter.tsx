@@ -57,6 +57,14 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
     setGameStep(GameStep.launchWheel);
   };
 
+  if (!url)
+    return (
+      <div className="h-screen flex-center">
+        <h1>Plus d'action à faire</h1>
+        <p>Merci de votre fidélité, il n'y a plus d'action</p>
+      </div>
+    );
+
   // Render the Starter component
   return (
     <section>
@@ -78,12 +86,11 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
         </ul>
       </div>
 
-   
       {/* Render the button if there is a current action */}
       {currentAction && (
         <Drawer>
-          <DrawerTrigger className={`w-full mt-8`} >
-            <Button style={{ backgroundColor: config?.color }} className=' py-8 w-full' >
+          <DrawerTrigger className={`w-full mt-8`}>
+            <Button style={{ backgroundColor: config?.color }} className=" py-8 w-full">
               <>
                 <currentAction.Icon className="mr-2 h-6 w-6" />
                 <span
@@ -99,7 +106,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
               <DrawerDescription>
                 {/* TODO - Ajouter pour instagram et facebook */}
                 {currentAction?.title === 'google' && (
-                  <ul className='text-left flex flex-col items-center gap-4'>
+                  <ul className="text-left flex flex-col items-center gap-4">
                     <li className="flex items-start space-x-5">
                       <span className="text-3xl animate-wiggle animate-infinite animate-duration-700">🎁</span>
                       <span className="block p-medium-16 invert">
@@ -131,8 +138,10 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
                   Continuer
                 </Link>
               </Button>
-              <DrawerClose className='w-full'>
-                <Button className='w-full' variant="outline">Annuler</Button>
+              <DrawerClose className="w-full">
+                <Button className="w-full" variant="outline">
+                  Annuler
+                </Button>
               </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
