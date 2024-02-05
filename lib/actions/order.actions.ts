@@ -30,8 +30,8 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
         buyerId: 'order.buyerId',
       },
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
+      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/prices/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/prices/`,
     });
 
     return withURL ? session.url : redirect(session.url!);

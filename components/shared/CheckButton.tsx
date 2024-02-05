@@ -11,6 +11,8 @@ import { checkoutOrder } from '@/lib/actions';
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CheckoutButton({ plan }: any) {
+  console.log(plan);
+  
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);

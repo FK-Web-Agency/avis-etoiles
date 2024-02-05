@@ -98,7 +98,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 ) : null}
               </p>
               {/* Checkout button */}
-              <CheckoutButton key={price?._id} />
+              <CheckoutButton key={price?._id} plan={price} />
               {/* Features list */}
               <ul
                 role="list"
