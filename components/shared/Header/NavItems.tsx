@@ -1,5 +1,6 @@
 'use client';
 
+import { SheetClose } from '@/components/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -11,7 +12,7 @@ const navigation = [
   { label: 'Contact', route: '/contact' },
 ];
 
-const NavItems = () => {
+const NavItems = ({ isMobile = false }: { isMobile?: boolean }) => {
   const pathname = usePathname();
 
   return (
@@ -19,19 +20,23 @@ const NavItems = () => {
       {navigation.map((link) => {
         const isActive = pathname === link.route;
 
+        if (!isMobile)
+          return (
+            <li key={link.route} className={`${isActive && 'text-primary'} flex-center p-medium-16 whitespace-nowrap `}>
+              <Link href={link.route}>{link.label}</Link>
+            </li>
+          );
+
         return (
-          <li
-            key={link.route}
-            className={`${
-              isActive && 'text-primary'
-            } flex-center p-medium-16 whitespace-nowrap `}>
-            <Link href={link.route}>{link.label}</Link>
-          </li>
+          <SheetClose asChild>
+            <li key={link.route} className={`${isActive && 'text-primary'} flex-center p-medium-16 whitespace-nowrap `}>
+              <Link href={link.route}>{link.label}</Link>
+            </li>
+          </SheetClose>
         );
       })}
     </ul>
   );
-}
+};
 
-
-export default  NavItems;
+export default NavItems;

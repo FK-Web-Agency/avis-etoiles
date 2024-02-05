@@ -14,7 +14,7 @@ const MobileNav = () => {
           <div className='flex flex-col gap-5'>
             <Icons.Logo hrefNull  />
             <Separator className="border border-gray-50" />
-            <NavItems />
+            <NavItems isMobile />
           </div>
 
           <Link
