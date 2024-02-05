@@ -28,11 +28,6 @@ export default function LaunchWheel({
       id: uuidv4(),
       text: item, // Capitalize the first letter
     },
-    {
-      id: uuidv4(),
-      text: 'Perdu',
-      lost: true,
-    },
   ]);
 
   while (data.length < 6) {
@@ -42,12 +37,11 @@ export default function LaunchWheel({
       lost: true,
     });
   }
-
   const rewards: any = data.map((item: any) => {
     return {
       ...item,
       completeOption: item.text,
-      option: item.text.length >= 30 ? item.text.substring(0, 15).trimEnd() + '...' : item.text,
+      option: item.text.length >= 15 ? item.text.substring(0, 10).trimEnd() + '...' : item.text,
     };
   });
 
@@ -68,7 +62,6 @@ export default function LaunchWheel({
     setTimeout(() => {
       setGameStep(GameStep.result);
     }, 900);
-
   }
   return (
     <div>

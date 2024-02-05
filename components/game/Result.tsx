@@ -35,7 +35,7 @@ export default function Result({ config, id }: { config: any; id: string }) {
           {showConfetti && (
             <Confetti className="z-[100]" width={size?.width!} height={size?.height!} color={config?.color} />
           )}
-          {!winnerFormCompleted ? (
+          {winnerFormCompleted && result !== 'Perdu' ? (
             <p className={classNames('p-semibold-20', colorIsLight(config?.color) ? 'text-gray-900' : 'text-white')}>
               Merci pour votre participation, à bientôt !
             </p>
