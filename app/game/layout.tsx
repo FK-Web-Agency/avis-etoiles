@@ -120,16 +120,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if (userHistory?.actions) {
       const actions = userHistory?.actions;
 
-      if (actions.includes('google')) {
+      if (actions.includes('google') && !actions.includes('facebook') && !actions.includes('instagram')) {
         return setCurrentAction({ title: 'instagram', Icon: Icons.Instagram });
       }
-      if (actions.includes('instagram')) {
+      if (actions.includes('instagram') && actions.includes('google') && !actions.includes('facebook')) {
         return setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
-      } else {
-        return setCurrentAction({ title: 'google', Icon: Icons.Google });
       }
     } else {
-       setCurrentAction({ title: 'google', Icon: Icons.Google });
+      setCurrentAction({ title: 'google', Icon: Icons.Google });
     }
 
     setUserLocalStorage(userHistory, saveUserHistory);
@@ -153,6 +151,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body className="min-h-screen overflow-y-auto">
+        <head>
+          <title>Game</title>
+        </head>
         {!isSmallDevice ? <LargeDeviceContent /> : null}
         {!canPlay && isSmallDevice ? <UserCanNotPlay /> : null}
         {canPlay && isSmallDevice ? <MainContent children={children} /> : null}

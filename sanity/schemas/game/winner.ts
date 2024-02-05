@@ -49,6 +49,11 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'qrCode',
+      title: 'QR Code',
+      type: 'image',
+    }),
+    defineField({
       name: 'createdAt',
       title: 'Date de création',
       type: 'datetime',

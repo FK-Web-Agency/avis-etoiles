@@ -49,7 +49,7 @@ export default function LaunchWheel({
     if (thisMonthAnalytics) {
       thisMonthAnalytics[currentAction?.title!] += 1;
     }
-    setResult(result?.value);
+    setResult(result?.label);
 
     mutate({
       resource: process.env.NEXT_PUBLIC_SANITY_GAME_ANALYTICS!,

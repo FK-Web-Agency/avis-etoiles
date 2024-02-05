@@ -59,8 +59,8 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
 
   if (!url)
     return (
-      <div className="h-screen flex-center">
-        <h1>Plus d'action à faire</h1>
+      <div className="h-screen flex-center flex-col gap-5">
+        <h1 className="p-bold-24">Plus d'action à faire</h1>
         <p>Merci de votre fidélité, il n'y a plus d'action</p>
       </div>
     );

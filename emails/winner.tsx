@@ -23,7 +23,7 @@ export const RewardTemplate = (values: any) => (
 
           <Text className="mb-4">Voici votre QR Code pour réclamer votre récompense :</Text>
 
-          <Img src={values.QRCode} alt="qrcode" />
+          <Img src={values.QRCode} alt="qrcode" width={300} height={300} />
           <Text className="mb-4">
             Pour récupérer votre récompense, suivez simplement ces étapes :
             <ol className="mb-4">

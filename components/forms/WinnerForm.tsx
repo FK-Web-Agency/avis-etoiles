@@ -22,6 +22,8 @@ import { encodedValue } from '@/lib/actions/jwt.actions';
 import { useGameStore } from '@/store';
 import sendEmail from '@/lib/actions/resend.actions';
 import { Icons } from '../shared';
+import { uploadFileToSanity } from '@/sanity/lib/helper';
+import { urlForImage } from '@/sanity/lib';
 
 const WinnerFormSchema = z.object({
   winnerFirstName: z.string().describe('Prénom'),
@@ -69,7 +71,7 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
   const handleAction = async function (values: any) {
     setLoading(true);
-    const winner = {
+    const winner: any = {
       firstName: values.winnerFirstName,
       lastName: values.winnerLastName,
       email: values.winnerEmail,
@@ -87,27 +89,49 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
     const token = await encodedValue({ id: allDataWinner?._id, winner });
     const qrCode = await QRCode.toDataURL(`${baseUrl}/game/retrieve/${token}`);
 
+    const response = await fetch(qrCode);
+    const blob = await response.blob();
+    const file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
+
+    const qrCodeUpload = await uploadFileToSanity(file);
+
+    console.log(qrCodeUpload);
+
     try {
-      await sendEmail({
-        ...winner,
-        subject: 'Votre lot est prêt',
-        emailTemplate: 'winner',
-
-        ownerName: userData?.data?.companyName,
-        QRCode: qrCode,
-      });
-
-      const valuesWithoutAcceptTerms = { ...values };
+      const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
       winners.push(valuesWithoutAcceptTerms);
 
       mutate({
         resource: 'gameWinners',
+        id: allDataWinner?._id,
         values: {
           winners: winners,
         },
-        id: allDataWinner?._id,
+        successNotification: (data, values:any, resource) => {
+          console.log(data, values, resource);
+
+          const winnerWithQRCode = values?.values?.winners?.find(
+            (winner:any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
+          );
+
+            sendEmail({
+            ...winner,
+            subject: 'Votre lot est prêt',
+            emailTemplate: 'winner',
+
+            ownerName: userData?.data?.companyName,
+            QRCode: urlForImage(winnerWithQRCode?.qrCode),
+          }).then(() => {
+            console.log('Email sent');
+          });
+          return {
+            message: ``,
+            description: '',
+            type: 'success',
+          };
+        },
       });
 
       toast({
