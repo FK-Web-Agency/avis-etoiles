@@ -103,7 +103,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Verify the user didn't play the game today
     // if so, send a error message
 
-
     if (userHistory?.lastGamePlayed) {
       const today = new Date();
       // Verify the last date played is not today
@@ -120,10 +119,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Verify the action the user has to do
     if (userHistory?.actions) {
       const actions = userHistory?.actions;
-      if (actions.includes('google')) setCurrentAction({ title: 'instagram', Icon: Icons.Instagram });
-      if (actions.includes('instagram')) setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
-      else setCurrentAction({ title: 'google', Icon: Icons.Google });
-    } else setCurrentAction({ title: 'google', Icon: Icons.Google });
+
+      if (actions.includes('google')) {
+        return setCurrentAction({ title: 'instagram', Icon: Icons.Instagram });
+      }
+      if (actions.includes('instagram')) {
+        return setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
+      } else {
+        return setCurrentAction({ title: 'google', Icon: Icons.Google });
+      }
+    } else {
+       setCurrentAction({ title: 'google', Icon: Icons.Google });
+    }
 
     setUserLocalStorage(userHistory, saveUserHistory);
   }, []);
@@ -142,7 +149,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </body>
       </html>
     );
-
 
   return (
     <html lang="fr">

@@ -90,11 +90,12 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
       {currentAction && (
         <Drawer>
           <DrawerTrigger className={`w-full mt-8`}>
-            <Button style={{ backgroundColor: config?.color }} className=" py-8 w-full">
+            <Button
+              style={{ backgroundColor: config?.color }}
+              className={classNames(' py-8 w-full', colorIsLight(config?.color) ? 'text-black' : 'text-white')}>
               <>
                 <currentAction.Icon className="mr-2 h-6 w-6" />
-                <span
-                  className={classNames('p-semibold-18', colorIsLight(config?.color) ? 'text-black' : 'text-white')}>
+                <span className={classNames('p-semibold-18')}>
                   {currentAction?.title === 'google' ? 'Donnez un avis ' : "S'abonner à "} {currentAction?.title}
                 </span>
               </>
