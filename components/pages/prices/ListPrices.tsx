@@ -11,8 +11,8 @@ import { classNames } from '@/helper';
 
 // Define the frequency options
 const frequencies = [
-  { value: 'monthly', label: 'Monthly', priceSuffix: '/mois' },
-  { value: 'annually', label: 'Annually', priceSuffix: '/an' },
+  { value: 'monthly', label: 'Mois', priceSuffix: '/mois' },
+  { value: 'annually', label: 'Annuel', priceSuffix: '/an' },
 ];
 
 type ListPricesType = {
@@ -40,7 +40,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
               'cursor-pointer rounded-full px-2.5 py-1',
               frequency.value === 'monthly' ? 'bg-primary text-white' : 'text-gray-500'
             )}>
-            <span>Monthly</span>
+            <span>Mois</span>
           </button>
           {/* Annually button */}
           <button
@@ -49,7 +49,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
               'cursor-pointer rounded-full px-2.5 py-1',
               frequency.value === 'annually' ? 'bg-primary text-white' : 'text-gray-500'
             )}>
-            <span>Annually</span>
+            <span>Annuel</span>
           </button>
         </div>
       </div>

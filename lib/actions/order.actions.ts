@@ -6,7 +6,10 @@ import Stripe from 'stripe';
 
 export const checkoutOrder = async (order: any, withURL?: boolean) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
+  const baseUrl =
+  process.env.NODE_ENV === 'development'
+    ? process.env.NEXT_PUBLIC_LOCALHOST_URL
+    : process.env.NEXT_PUBLIC_BASE_URL;
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -30,8 +33,9 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
         buyerId: 'order.buyerId',
       },
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/prices/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/prices/`,
+      success_url: `${baseUrl}/prices/success`,
+      cancel_url: `${baseUrl}/prices/`,
+      locale: 'fr',
     });
 
     return withURL ? session.url : redirect(session.url!);
