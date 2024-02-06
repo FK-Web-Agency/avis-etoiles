@@ -1,47 +1,41 @@
-import stripe from 'stripe';
-import { NextResponse } from 'next/server';
-import { createOrder } from '@/lib/actions/order.actions';
+import stripe from 'stripe'
+import { NextResponse } from 'next/server'
+import { createOrder } from '@/lib/actions/order.actions'
 
 export async function POST(request: Request) {
-  console.log('webhook');
+  const body = await request.text()
 
-  const body = await request.text();
+  const sig = request.headers.get('stripe-signature') as string
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-  const sig = request.headers.get('stripe-signature') as string;
-  const endpointSecret = "whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F";
-
-  let event;
-console.log(body, sig);
+  let event
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
-  } catch (err: any) {
-    console.log('Webhook error', err.message);
-
-    return NextResponse.json({ message: 'Webhook error', error: err });
+    event = stripe.webhooks.constructEvent(body, sig, endpointSecret)
+  } catch (err) {
+    return NextResponse.json({ message: 'Webhook error', error: err })
   }
 
   // Get the ID and type
-  const eventType = event.type;
-  console.log('event', event);
+  const eventType = event.type
 
   // CREATE
   if (eventType === 'checkout.session.completed') {
-    const { id, amount_total, metadata } = event.data.object;
-
+    const { id, amount_total, metadata } = event.data.object
+    console.log('checkout.session.completed', id, amount_total, metadata);
+    
+/* 
     const order = {
       stripeId: id,
-      plan: metadata?.plan || '',
+      eventId: metadata?.eventId || '',
       buyerId: metadata?.buyerId || '',
-      totalAmount: amount_total,
+      totalAmount: amount_total ? (amount_total / 100).toString() : '0',
       createdAt: new Date(),
-    };
+    }
 
-    console.log('order', order);
-
-    const newOrder = await createOrder(order);
-    return NextResponse.json({ message: 'OK', order: newOrder });
+    const newOrder = await createOrder(order) */
+    return NextResponse.json({ message: 'OK', order: "newOrder" })
   }
 
-  return new Response('', { status: 200 });
+  return new Response('', { status: 200 })
 }
