@@ -11,6 +11,7 @@ export async function POST(request: Request) {
   const endpointSecret = "whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F";
 
   let event;
+console.log(body, sig);
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
