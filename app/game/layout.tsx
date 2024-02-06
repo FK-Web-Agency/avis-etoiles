@@ -1,4 +1,5 @@
 'use client';
+
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Refine } from '@refinedev/core';
 import routerProvider from '@refinedev/nextjs-router/app';

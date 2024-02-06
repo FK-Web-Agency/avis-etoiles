@@ -11,8 +11,8 @@ import { classNames } from '@/helper';
 
 // Define the frequency options
 const frequencies = [
-  { value: 'monthly', label: 'Mois', priceSuffix: '/mois' },
-  { value: 'annually', label: 'Annuel', priceSuffix: '/an' },
+  { value: 'month', label: 'Mois', priceSuffix: '/mois' },
+  { value: 'year', label: 'Annuel', priceSuffix: '/an' },
 ];
 
 type ListPricesType = {
@@ -25,7 +25,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
   // Function to handle frequency change
   const handleFrequencyChange = () => {
  
-    setFrequency((prev) => (prev.value === 'monthly' ? frequencies[1] : frequencies[0]));
+    setFrequency((prev) => (prev.value === 'month' ? frequencies[1] : frequencies[0]));
   };
 
   return (
@@ -38,7 +38,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
             onClick={handleFrequencyChange}
             className={classNames(
               'cursor-pointer rounded-full px-2.5 py-1',
-              frequency.value === 'monthly' ? 'bg-primary text-white' : 'text-gray-500'
+              frequency.value === 'month' ? 'bg-primary text-white' : 'text-gray-500'
             )}>
             <span>Mois</span>
           </button>
@@ -47,7 +47,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
             onClick={handleFrequencyChange}
             className={classNames(
               'cursor-pointer rounded-full px-2.5 py-1',
-              frequency.value === 'annually' ? 'bg-primary text-white' : 'text-gray-500'
+              frequency.value === 'year' ? 'bg-primary text-white' : 'text-gray-500'
             )}>
             <span>Annuel</span>
           </button>
@@ -56,7 +56,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
       {/* Prices grid */}
       <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         {prices_list_section.map((price) => {
-          const priceSubscribe = frequency.value === 'monthly' ? price.price : price.price * 12;
+          const priceSubscribe = frequency.value === 'month' ? price.price : price.price * 12;
           return (
             <div
               key={price._id}
@@ -98,7 +98,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 ) : null}
               </p>
               {/* Checkout button */}
-              <CheckoutButton key={price?._id} plan={price} />
+              <CheckoutButton key={price?._id} plan={{...price, frequency: frequency.value, price: priceSubscribe}} />
               {/* Features list */}
               <ul
                 role="list"

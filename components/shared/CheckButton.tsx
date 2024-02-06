@@ -32,6 +32,7 @@ export default function CheckoutButton({ plan }: any) {
       id: plan._id,
       title: plan.title,
       price: plan.price,
+      frequency: plan.frequency,
     };
 
     await checkoutOrder(order);

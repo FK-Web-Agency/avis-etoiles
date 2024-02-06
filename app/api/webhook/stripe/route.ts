@@ -1,6 +1,7 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions';
+import { formatDate } from '@/helper';
 
 export async function POST(request: Request) {
   console.log('webhook');
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
       plan: metadata?.plan || '',
       buyerId: metadata?.buyerId || '',
       totalAmount: amount_total,
-      createdAt: new Date(),
+      createdAt: formatDate(new Date()),
     };
 
     console.log('order', order);

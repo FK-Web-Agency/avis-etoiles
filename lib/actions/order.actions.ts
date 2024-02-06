@@ -10,6 +10,9 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
   process.env.NODE_ENV === 'development'
     ? process.env.NEXT_PUBLIC_LOCALHOST_URL
     : process.env.NEXT_PUBLIC_BASE_URL;
+
+    console.log(order);
+    
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -21,8 +24,8 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
               name: `Formule ${order.title}`,
             },
             recurring: {
-              interval: 'month',
-              interval_count: 3,
+              interval: order?.frequency,
+              interval_count: 1,
             },
           },
           quantity: 1,
