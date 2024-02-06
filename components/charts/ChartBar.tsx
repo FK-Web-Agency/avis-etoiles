@@ -1,10 +1,13 @@
 'use client';
 
+import { BaseRecord, useList } from '@refinedev/core';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
-const TotalRevenueSeries = [
+import ApexCharts from 'react-apexcharts';
+
+/* const TotalRevenueSeries = [
   {
     name: 'Last Month',
     data: [183, 124, 115, 85, 143, 143, 96],
@@ -13,7 +16,7 @@ const TotalRevenueSeries = [
     name: 'Running Month',
     data: [95, 84, 72, 44, 108, 108, 47],
   },
-];
+]; */
 
 const TotalRevenueOptions: ApexOptions = {
   chart: {
@@ -65,12 +68,18 @@ const TotalRevenueOptions: ApexOptions = {
   },
 };
 
-export default function ExampleChart() {
+export default function ExampleChart({
+  TotalRevenueSeries,
+}: {
+  TotalRevenueSeries: { name: string; data: number[] }[];
+}) {
   const size: any = useWindowSize();
+
+  if (!window) return null;
 
   return (
     <>
-      <Chart
+      <ApexCharts
         type="bar"
         height={size?.width < 1186 && size?.width > 1018 ? 310 : size?.width < 920 ? 310 : 410}
         series={TotalRevenueSeries}
