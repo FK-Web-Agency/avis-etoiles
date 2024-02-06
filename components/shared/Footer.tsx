@@ -26,7 +26,7 @@ export default async function Footer() {
               <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">Resources</h5>
               <ul className="text-gray-400  flex flex-col gap-4">
                 <li>
-                  <Link href="/login" className="hover:underline">
+                  <Link href="/sign-in" className="hover:underline">
                     Espace membre
                   </Link>
                 </li>
