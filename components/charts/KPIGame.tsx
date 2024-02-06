@@ -1,3 +1,5 @@
+"use client"
+
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 import { useWindowSize } from '@uidotdev/usehooks';
