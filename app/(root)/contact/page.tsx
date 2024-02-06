@@ -1,8 +1,13 @@
-import { ContactForm } from "@/components/forms";
-import { Icons } from "@/components/shared";
+import { ContactForm } from '@/components/forms';
+import { Icons } from '@/components/shared';
+import { client, queries } from '@/sanity/lib';
+import Link from 'next/link';
 
+export default async function Contact() {
+  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await client.fetch(
+    queries.GET_GENERAL
+  );
 
-export default function Contact() {
   return (
     <section className="relative isolate">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -11,8 +16,7 @@ export default function Contact() {
             <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-white/5 lg:w-1/2">
               <svg
                 className="absolute inset-0 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-                aria-hidden="true"
-              >
+                aria-hidden="true">
                 <defs>
                   <pattern
                     id="54f88622-e7f8-4f1d-aaf9-c2f5e46dd1f2"
@@ -20,8 +24,7 @@ export default function Contact() {
                     height={200}
                     x="100%"
                     y={-1}
-                    patternUnits="userSpaceOnUse"
-                  >
+                    patternUnits="userSpaceOnUse">
                     <path d="M130 200V.5M.5 .5H200" fill="none" />
                   </pattern>
                 </defs>
@@ -32,8 +35,7 @@ export default function Contact() {
               </svg>
               <div
                 className="absolute -left-56 top-[calc(100%-13rem)] transform-gpu blur-3xl lg:left-[max(-14rem,calc(100%-59rem))] lg:top-[calc(50%-7rem)]"
-                aria-hidden="true"
-              >
+                aria-hidden="true">
                 <div
                   className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-br from-primary to-[#eab308] opacity-20"
                   style={{
@@ -45,8 +47,7 @@ export default function Contact() {
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-white">Contactez-nous</h2>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Proin volutpat consequat porttitor cras nullam gravida at. Orci molestie a eu arcu. Sed ut tincidunt
-              integer elementum id sem. Arcu sed malesuada et magna.
+              Avis Étoile est à votre disposition pour répondre à toutes vos questions. N'hésitez pas à nous contacter.
             </p>
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-300">
               <div className="flex gap-x-4">
@@ -55,9 +56,14 @@ export default function Contact() {
                   <Icons.BuildingOffice className="h-7 w-6 text-gray-400" aria-hidden="true" />
                 </dt>
                 <dd>
-                  545 Mavis Island
-                  <br />
-                  Chicago, IL 99191
+                  <Link href="#" className="hover:underline ">
+                    <p>
+                      {address?.street}
+                      <br />
+                      {address?.zipCode}, {address?.city} {address?.country}
+                      <br />
+                    </p>
+                  </Link>
                 </dd>
               </div>
               <div className="flex gap-x-4">
@@ -66,9 +72,10 @@ export default function Contact() {
                   <Icons.Phone className="h-7 w-6 text-gray-400" aria-hidden="true" />
                 </dt>
                 <dd>
-                  <a className="hover:text-white" href="tel:+1 (555) 234-5678">
-                    +1 (555) 234-5678
-                  </a>
+                  <Icons.Phone className="h-7 w-6 text-gray-400" aria-hidden="true" />
+                  <Link href={`tel:${phone}`} className="hover:underline">
+                    {phone}
+                  </Link>
                 </dd>
               </div>
               <div className="flex gap-x-4">
@@ -77,9 +84,9 @@ export default function Contact() {
                   <Icons.Envelope className="h-7 w-6 text-gray-400" aria-hidden="true" />
                 </dt>
                 <dd>
-                  <a className="hover:text-white" href="mailto:hello@example.com">
-                    hello@example.com
-                  </a>
+                  <Link href={`mailto:${email}`} className="hover:underline">
+                    {email}
+                  </Link>
                 </dd>
               </div>
             </dl>
@@ -90,5 +97,5 @@ export default function Contact() {
         <ContactForm />
       </div>
     </section>
-  )
+  );
 }
