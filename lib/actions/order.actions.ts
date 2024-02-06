@@ -45,6 +45,8 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
 };
 
 export const createOrder = async (order: any) => {
+  console.log('order', order);
+  
   // create a new order in sanity
   const newOrder = {
     ...order,
