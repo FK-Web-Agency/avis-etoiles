@@ -1,45 +1,46 @@
-import { createOrder } from '@/lib/actions';
+import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { createOrder } from '@/lib/actions/order.actions';
 
-export default async function handler(req:any, res:any) {
-  if (req.method === 'POST') {
-    const sig = req.headers['stripe-signature'];
-    let event;
+export async function POST(request: Request) {
+  console.log('webhook');
 
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-    } catch (err:any) {
-      console.log(`Webhook Error: ${err.message}`);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
+  const body = await request.text();
 
-    // Traiter l'événement
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
-      // Logique pour traiter l'événement checkout.session.completed
+  const sig = request.headers.get('stripe-signature') as string;
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-      const { id, amount_total, metadata } = event.data.object;
+  let event;
 
-      const order = {
-        stripeId: id,
-        plan: metadata?.plan || '',
-        buyerId: metadata?.buyerId || '',
-        totalAmount: amount_total,
-        createdAt: new Date(),
-      };
+  try {
+    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+  } catch (err: any) {
+    console.log('Webhook error', err.message);
 
-      console.log('order', order);
-
-      const newOrder = await createOrder(order);
-      return NextResponse.json({ message: 'OK', order: newOrder });
-    }
-
-    // Réponse à Stripe
-    res.json({ received: true });
-  } else {
-    res.setHeader('Allow', 'POST');
-    res.status(405).end('Method Not Allowed');
+    return NextResponse.json({ message: 'Webhook error', error: err });
   }
+
+  // Get the ID and type
+  const eventType = event.type;
+  console.log('event', event);
+
+  // CREATE
+  if (eventType === 'checkout.session.completed') {
+    const { id, amount_total, metadata } = event.data.object;
+
+    const order = {
+      stripeId: id,
+      plan: metadata?.plan || '',
+      buyerId: metadata?.buyerId || '',
+      totalAmount: amount_total,
+      createdAt: new Date(),
+    };
+
+    console.log('order', order);
+
+    const newOrder = await createOrder(order);
+    return NextResponse.json({ message: 'OK', order: newOrder });
+  }
+
+  return new Response('', { status: 200 });
 }
