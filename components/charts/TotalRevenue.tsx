@@ -1,3 +1,6 @@
+"use client"
+
+
 import ChartBar from './ChartBar';
 
 import { ApexOptions } from 'apexcharts';
