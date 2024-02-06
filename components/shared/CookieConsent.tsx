@@ -24,7 +24,7 @@ export default function CookieConsent() {
   };
 
   return (
-    <section className="fixed max-w-96 md:max-w-[90vw] p-4 mx-auto border border-gray-50 left-0 right-0 bottom-2 rounded-2xl bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60">
+    <section className="fixed max-w-96 md:right-2 md:mx-0 sm:left-[55vw] lg:left-[65vw] xl:left-[70vw] p-4 mx-auto border border-gray-50 left-0 right-0 bottom-2 rounded-2xl bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60">
       <span className="block h4-medium">🍪</span>
       <h2 className="p-medium-20 text-gray-900">Activer les cookies</h2>
 
