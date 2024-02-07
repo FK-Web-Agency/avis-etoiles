@@ -45,7 +45,7 @@ export default function Content() {
           </TableHeader>
           <TableBody>
             {members.map((user) => (
-              <TableRow className="border-gray-600">
+              <TableRow className="border-gray-600" key={user?.email}>
                 <TableCell className="font-medium">
                   <div className="flex items-center">
                     <div className="h-11 w-11 flex-shrink-0">
@@ -91,14 +91,14 @@ export default function Content() {
                 </TableCell>
                 <TableCell className="text-right ">
                   <div className="flex justify-center items-center gap-5">
-                    <ToggleRoleMemberButton user={user}>
+                    {/* <ToggleRoleMemberButton user={user}>
                       <Icons.Group
                         className={classNames(
                           user?.role === 'member' ? 'text-gray-900' : 'text-slate-100',
                           'transition-colors duration-200 w-4 h-4'
                         )}
                       />
-                    </ToggleRoleMemberButton>
+                    </ToggleRoleMemberButton> */}
 
                     <Button
                       onClick={() =>

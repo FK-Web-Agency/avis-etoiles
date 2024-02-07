@@ -27,11 +27,11 @@ export default function Sidebar({ children }: PropsWithChildren) {
                 <li>
                   <NavItems />
                 </li>
-                {role === 'admin' ? (
+                {/* {role === 'admin' ? (
                   <li>
                     <TeamsNav />
                   </li>
-                ): undefined}
+                ): undefined} */}
                 <li className="mt-auto">
                   <a
                     href="#"

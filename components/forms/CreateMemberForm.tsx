@@ -116,7 +116,7 @@ export default function CreateMemberForm() {
 
         setTimeout(() => {
           list('members');
-        }, 900);
+        }, 1000);
       }
     }
 

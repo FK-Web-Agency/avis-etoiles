@@ -118,11 +118,14 @@ export async function updateMemberInformation(id: string, user: any) {
 
 // update member role
 export async function updateMemberRole(id: string, role: string) {
+console.log(id, role, process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!);
+
+
   try {
     if (role === 'admin') {
       await clerkClient.organizations.createOrganizationMembership({
         userId: id,
-        role,
+        role: 'Admin',
         organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
       });
     } else {

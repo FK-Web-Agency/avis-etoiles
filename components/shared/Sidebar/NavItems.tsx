@@ -12,7 +12,7 @@ const navigation = {
   admin: [
     { name: 'Dashboard', href: '/dashboard/admin/overview', icon: Icons.Dashboard },
     { name: 'Membres', href: '/dashboard/admin/members/list', icon: Icons.Member },
-    { name: 'Équipe', href: '/dashboard/admin/teams/list', icon: Icons.Teams },
+   /*  { name: 'Équipe', href: '/dashboard/admin/teams/list', icon: Icons.Teams }, */
     { name: 'Jeu', href: '/dashboard/admin/game', icon: Icons.Game },
     /*  { name: 'Reports', href: '/dashboard/admin/report', icon: Icons.Reports, current: false }, */
   ],
