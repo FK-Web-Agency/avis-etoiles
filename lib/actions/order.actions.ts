@@ -7,12 +7,8 @@ import Stripe from 'stripe';
 export const checkoutOrder = async (order: any, withURL?: boolean) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const baseUrl =
-  process.env.NODE_ENV === 'development'
-    ? process.env.NEXT_PUBLIC_LOCALHOST_URL
-    : process.env.NEXT_PUBLIC_BASE_URL;
+    process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
 
-    console.log(order);
-    
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -48,8 +44,7 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
 };
 
 export const createOrder = async (order: any) => {
-  console.log('order', order);
-  
+
   // create a new order in sanity
   const newOrder = {
     ...order,

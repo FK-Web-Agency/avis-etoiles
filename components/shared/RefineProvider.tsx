@@ -48,7 +48,6 @@ export default function RefineProvider({ children }: PropsWithChildren) {
   }, []);
 
   if (role === null) return null;
-console.log('role', role);
 
   return (
     <Refine

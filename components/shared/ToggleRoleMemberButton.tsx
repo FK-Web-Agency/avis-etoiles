@@ -23,7 +23,10 @@ export default function ToggleRoleMemberButton({ children, user }: PropsWithChil
   const { toast } = useToast();
 
   const handleToggleRole = async function () {
-    const { status , message} = await updateMemberRole(user?.clerkId as string, user?.role === 'member' ? 'admin' : 'member');
+    const { status, message } = await updateMemberRole(
+      user?.clerkId as string,
+      user?.role === 'member' ? 'admin' : 'member'
+    );
 
     if (status === 'success') {
       toast({
@@ -31,8 +34,6 @@ export default function ToggleRoleMemberButton({ children, user }: PropsWithChil
         description: `Le rôle de ${user?.firstName} ${user?.lastName} a été mis à jour.`,
       });
     } else {
-      console.log(user,message);
-      
       toast({
         title: 'Erreur',
         description: `Une erreur est survenue lors de la mise à jour du rôle de ${user?.firstName} ${user?.lastName}.`,

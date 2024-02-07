@@ -95,7 +95,6 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
     const qrCodeUpload = await uploadFileToSanity(file);
 
-    console.log(qrCodeUpload);
 
     try {
       const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
@@ -110,7 +109,6 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
           winners: winners,
         },
         successNotification: (data, values:any, resource) => {
-          console.log(data, values, resource);
 
           const winnerWithQRCode = values?.values?.winners?.find(
             (winner:any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
