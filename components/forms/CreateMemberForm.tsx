@@ -89,19 +89,23 @@ export default function CreateMemberForm() {
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
 
-    const askConfirmation = confirm("Le prix de l'abonnement est de 0€, êtes-vous sûr de vouloir continuer ?");
+    const askConfirmation =
+      values?.subscription?.price == '0' || !values?.subscription?.price
+        ? confirm("Le prix de l'abonnement est de 0€, êtes-vous sûr de vouloir continuer ?")
+        : true;
 
     if (askConfirmation) {
       const startDate = formatToISOString(values?.subscription?.startDate);
       const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
-      const response: any = await createMember({...values,
+      const response: any = await createMember({
+        ...values,
         subscription: {
           ...values.subscription,
           startDate,
           expirationDate,
         },
-        });
+      });
 
       if (response?.status === 'error') {
         toast({
