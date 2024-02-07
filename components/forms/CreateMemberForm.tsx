@@ -21,8 +21,8 @@ enum Recurring {
 const MemberSchema = z.object({
   information: z.object({
     role: z.enum(['admin', 'member']).default('member'),
-    firstName: z.string().describe('Prénom'),
-    lastName: z.string().describe('Nom'),
+    firstName: z.string().describe('Prénom').optional(),
+    lastName: z.string().describe('Nom').optional(),
     email: z.string().email(),
     phoneNumber: z
       .string()
@@ -33,7 +33,8 @@ const MemberSchema = z.object({
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de téléphone doit être une valeur numérique',
       })
-      .describe('Numéro de téléphone'),
+      .describe('Numéro de téléphone')
+      .optional(),
     companyName: z.string().describe('Nom de la société'),
     siret: z
       .string()
@@ -46,20 +47,23 @@ const MemberSchema = z.object({
       .describe('Numéro SIRET ou SIREN')
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de SIRET/SIREN doit être une valeur numérique',
-      }),
+      })
+      .optional(),
   }),
   address: z
     .object({
-      street: z.string().describe('Rue'),
-      city: z.string().describe('Ville'),
+      street: z.string().describe('Rue').optional(),
+      city: z.string().describe('Ville').optional(),
       zipCode: z
         .string()
-        .describe('Code postal')
         .max(5)
         .refine((value) => !isNaN(Number(value)), {
           message: 'Le numéro de code postal doit être une valeur numérique',
-        }),
-      country: z.string().describe('Pays'),
+        })
+        .describe('Code postal')
+        .optional(),
+
+      country: z.string().describe('Pays').optional(),
     })
     .describe('Adresse Postale'),
   subscription: z.object({
@@ -76,7 +80,7 @@ const MemberSchema = z.object({
         return expirationDate;
       }),
     price: z.string().default('0').describe('Prix'),
-  }),
+  }).describe('Abonnement'),
 });
 
 export type MemberProps = z.infer<typeof MemberSchema>;
