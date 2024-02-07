@@ -38,7 +38,9 @@ export default function Content() {
     ],
   });
 
+ 
   const analytics = data?.data[0]?.analytics;
+
 
   const currentYear = new Date().getFullYear();
 
@@ -63,7 +65,10 @@ export default function Content() {
   const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews;
 
   // Get the total number of winners
-  const allWinners = winners?.data[0]?.winners.length;
+  const allWinners = winners?.total;
+
+
+
 
   return (
     <>

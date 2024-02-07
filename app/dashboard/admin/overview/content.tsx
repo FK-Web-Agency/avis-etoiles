@@ -15,11 +15,15 @@ export default function Content() {
     resource: process.env.NEXT_PUBLIC_SANITY_GAME_WINNERS,
   });
 
+  const { data: dataOrders } = useList({
+    resource: 'orders',
+  });
+
   if (isLoading) return <Spinner />;
 
   const allAnalytics = data?.data;
   const allWinners = dataWinner?.data;
-
+  const orders = dataOrders?.data;
   // Calculate the total revenue for a specific platform
   const calculateTotal = (platform: string) => {
     return allAnalytics?.reduce((total, analytic) => {
@@ -45,13 +49,17 @@ export default function Content() {
     return total + winner.winners.length;
   }, 0);
 
+  const totalYearSum = orders?.reduce((sum, order) => sum + order.totalAmount, 0);
+
+  const totalYearSumToString = Number((totalYearSum! / 100).toFixed(2));
+
   return (
     <>
       <h1 className="h4-medium text-white">Overview</h1>
 
       {/* Render the pie charts */}
       <section className="pie-container">
-        <PieChart title="Revenue Total" value={100} Icon={Icons.Euro} />
+        <PieChart title="Revenue Total" value={totalYearSumToString} Icon={Icons.Euro} />
         <PieChart title="Abonnés" value={totalSubscribers} Icon={Icons.Subscribe} />
         <PieChart title="Avis recueillis" value={totalReviews as number} Icon={Icons.Comment} />
         <PieChart title="Cadeaux gagnés" value={totalWinners!} Icon={Icons.Gift} />
