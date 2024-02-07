@@ -71,6 +71,7 @@ export default function ChooseRewards({
           <span className="p-semibold-14">Aucune Récompense</span>
         ) : (
           <div className="flex flex-col gap-5">
+            <p>Choississez au maximum 6 récompenses</p>
             {rewards.map((reward) => (
               <div
                 className="bg-gray-900 text-slate-100 p-2 shadow-lg rounded-lg flex items-center justify-between"
@@ -94,12 +95,18 @@ export default function ChooseRewards({
 
       <div>
         <Label>Récompense</Label>
-        <Input type="text" value={textEntered} onChange={handleChange} placeholder="Choissir une récompense..." />
+        <Input
+          disabled={rewards?.length === 6}
+          type="text"
+          value={textEntered}
+          onChange={handleChange}
+          placeholder="Choissir une récompense..."
+        />
       </div>
 
       <div>
         <div className="flex items-center gap-4 mb-4">
-          <Button disabled={!textEntered} variant="secondary" onClick={handleAddReward}>
+          <Button disabled={!textEntered || rewards?.length === 6} variant="secondary" onClick={handleAddReward}>
             Ajouter
           </Button>
           <Button
