@@ -21,7 +21,7 @@ export default function OurStory({ story_section }: OurStoryProps) {
               ))}
             </div>
           </div>
-          <div className="lg:flex lg:flex-auto lg:justify-center">
+          {/* <div className="lg:flex lg:flex-auto lg:justify-center">
             <dl className="w-64 space-y-8 xl:w-80">
               {story_section.stats.map((stat: any) => (
                 <div key={stat.label} className="flex flex-col-reverse gap-y-4">
@@ -30,7 +30,7 @@ export default function OurStory({ story_section }: OurStoryProps) {
                 </div>
               ))}
             </dl>
-          </div>
+          </div> */}
         </div>
 
 
