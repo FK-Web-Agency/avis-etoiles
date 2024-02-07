@@ -30,7 +30,7 @@ export default function LaunchWheel({
     },
   ]);
 
-  while (data.length < 6) {
+  while (data.length <= 6) {
     data.push({
       id: uuidv4(),
       text: 'Perdu',
