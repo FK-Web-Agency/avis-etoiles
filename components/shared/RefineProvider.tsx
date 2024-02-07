@@ -47,7 +47,7 @@ export default function RefineProvider({ children }: PropsWithChildren) {
       });
   }, []);
 
-  if (role === null) return null;
+  // if (role === null) return null;
 
   return (
     <Refine
