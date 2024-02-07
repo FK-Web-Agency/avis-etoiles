@@ -22,7 +22,7 @@ const WelcomeTemplate = (customer: WelcomeType) => (
         <Text style={{ ...text, marginBottom: '14px' }}>Bonjour {customer.companyName},</Text>
         <Text style={{ ...text, marginBottom: '14px' }}>
           Nous sommes ravis de vous accueillir parmi nous ! Merci d'avoir choisi Avis Étoiles. Vous faites désormais
-          partie d'une communauté dédiée à évolution des commerces et services via la récolte d'avis clients.
+          partie d'une communauté dédiée à l'évolution des commerces et services via la récolte d'avis clients.
         </Text>
 
         <Text style={{ ...text, marginBottom: '14px', fontWeight: 'bolder' }}>Vos informations de connexion :</Text>

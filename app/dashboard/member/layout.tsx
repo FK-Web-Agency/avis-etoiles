@@ -10,7 +10,7 @@ import '../../styles/globals.css';
 
 export default function layout({ children }: PropsWithChildren) {
   const { user } = useUser();
-  const { setUserIds : setMemberIds } = useDashboardStore();
+  const { setUserIds: setMemberIds } = useDashboardStore();
 
   const { data, isLoading } = useList({
     resource: 'gameConfig',
@@ -34,6 +34,7 @@ export default function layout({ children }: PropsWithChildren) {
     setMemberIds(ids);
   }, [user]);
 
+  console.log(data);
 
   /* 
   1) Changer le mot de passe
@@ -54,24 +55,22 @@ export default function layout({ children }: PropsWithChildren) {
     );
 
   if (data?.total === 0) {
-    setTimeout(() => {
-      return (
-        <html lang="fr" className="min-h-screen">
-          <head>
-            <title>Avis - Onboarding</title>
-            {/*  <script
+    return (
+      <html lang="fr" className="min-h-screen">
+        <head>
+          <title>Avis - Onboarding</title>
+          {/*  <script
       defer
     src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}></script> */}
-          </head>
+        </head>
 
-          <body className=" background-body">
-            <Onboarding user={user} />
+        <body className=" background-body">
+          <Onboarding user={user} />
 
-            <Toaster />
-          </body>
-        </html>
-      );
-    }, 500);
+          <Toaster />
+        </body>
+      </html>
+    );
   }
 
   return (
