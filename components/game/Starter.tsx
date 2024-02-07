@@ -127,7 +127,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
                       <span className="block p-medium-16 invert">
                         cliquez sur cette icone <span className="uppercase font-bold">en bas à droite</span>
                       </span>
-                      <Icons.Copy className="w-4 h-4" />
+                      <Icons.Copy className="w-8 h-8" />
                     </li>
                   </ul>
                 )}
