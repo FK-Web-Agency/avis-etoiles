@@ -159,7 +159,7 @@ export default function GenerateQRCode({ onSave, easel }: { onSave: (file: File)
                 <Image
                   key={index}
                   onClick={() => setEaselSelected(index)}
-                  src={urlForImage(easelPreview)}
+                  src={easelPreview && urlForImage(easelPreview)}
                   className={classNames(
                     'shadow-xl rounded-lg',
                     easelSelected === index
