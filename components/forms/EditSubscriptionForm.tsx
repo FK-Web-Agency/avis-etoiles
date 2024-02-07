@@ -17,8 +17,8 @@ export default function EditSubscription({ user }: any) {
     plan: z.enum(['essential', 'premium', 'enterprise']).default(user?.subscription?.plan).optional(),
     // @ts-ignore
     recurring: z.nativeEnum(Recurring).default(Recurring[user?.subscription?.recurring]).describe('Renouvellement'),
-    startDate: z.date().describe('Date de début').default(user?.subscription?.startDate),
-    expirationDate: z.date().describe('Date de fin').default(user?.subscription?.expirationDate),
+    startDate: z.date().describe('Date de début').default(new Date(user?.subscription?.startDate)),
+    expirationDate: z.date().describe('Date de fin').default(new Date(user?.subscription?.expirationDate)),
     price: z.string().default(user?.subscription?.price).describe('Prix').default(user?.subscription?.price),
   });
 

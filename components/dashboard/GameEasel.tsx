@@ -148,7 +148,7 @@ export default function GameEasel() {
     });
 
     toast({
-      description: 'Arrière plan supprimé avec succès',
+      description: 'Chevalet supprimé avec succès',
     });
   };
 

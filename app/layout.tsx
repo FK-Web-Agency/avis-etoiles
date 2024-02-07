@@ -7,7 +7,7 @@ export default function layout({ children }: PropsWithChildren) {
   return (
     <html lang="fr">
       <head></head>
-      <body className={` dark`}>
+      <body >
         <head>
           <link
             rel="icon"

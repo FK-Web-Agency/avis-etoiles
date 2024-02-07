@@ -11,8 +11,8 @@ export default function EditEmailAndNameForm({ email, firstName, lastName, clerk
   const { toast } = useToast();
   const { mutate } = useUpdate();
   const EmailSchema = z.object({
-    firstName: z.string().default(firstName),
-    lastName: z.string().default(lastName),
+    firstName: z.string().default(firstName).describe('Prénom'),
+    lastName: z.string().default(lastName).describe('Nom'),
     email: z.string().email().default(email),
   });
 
@@ -37,10 +37,17 @@ export default function EditEmailAndNameForm({ email, firstName, lastName, clerk
           lastName: values.lastName,
         },
       });
-    }
 
-    const params: any = status === 'success' ? successParams : errorParams;
-    toast(params);
+      toast({
+        description: 'Votre email a bien été mis à jour',
+      });
+    } else {
+      toast({
+        title: 'Erreur',
+        description: message,
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
