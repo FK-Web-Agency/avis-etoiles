@@ -11,7 +11,7 @@ import { classNames } from '@/helper';
 
 // Define the frequency options
 const frequencies = [
-  { value: 'month', label: 'Mois', priceSuffix: '/mois' },
+  { value: 'month', label: 'Mensuel', priceSuffix: '/mois' },
   { value: 'year', label: 'Annuel', priceSuffix: '/an' },
 ];
 
