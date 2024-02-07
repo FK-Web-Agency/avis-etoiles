@@ -69,7 +69,6 @@ export default async function Contact() {
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
-                  <Icons.Phone className="h-7 w-6 text-gray-400" aria-hidden="true" />
                 </dt>
                 <dd>
                   <Icons.Phone className="h-7 w-6 text-gray-400" aria-hidden="true" />

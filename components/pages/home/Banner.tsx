@@ -18,7 +18,7 @@ export default function Banner({ banner }: BannerType) {
           <h1 className="h1-bold">{banner?.title}</h1>
           <p className="p-regular-16 md:p-regular-20">{banner?.subtitle}</p>
           <Button size="lg" asChild variant={"gradient"} className="button w-full sm:w-fit text-slate-50">
-            <Link href="#events">Découvrir maintenant</Link>
+            <Link href="/features">Découvrir maintenant</Link>
           </Button>
         </div>
 
