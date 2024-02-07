@@ -4,6 +4,7 @@ import { BaseRecord, useList } from '@refinedev/core';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import ApexCharts from 'react-apexcharts';
 
@@ -73,9 +74,16 @@ export default function ExampleChart({
 }: {
   TotalRevenueSeries: { name: string; data: number[] }[];
 }) {
+  const [_window, set_window] = useState<null | (Window & typeof globalThis)>(null);
   const size: any = useWindowSize();
 
-  if (!window) return null;
+  useEffect(() => {
+    if (window) {
+      set_window(window);
+    }
+  }, []);
+
+  if (!_window) return null;
 
   return (
     <>
