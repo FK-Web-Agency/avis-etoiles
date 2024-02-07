@@ -51,14 +51,12 @@ export default async function Footer() {
                 <ul className="text-gray-400 flex flex-col gap-4">
                   <li className="flex gap-4">
                     <Icons.BuildingOffice className="h-7 w-6 text-gray-400" aria-hidden="true" />
-                    <Link href="#" className="hover:underline ">
-                      <p>
+                      <p className="hover:underline ">
                         {address?.street}
                         <br />
                         {address?.zipCode}, {address?.city} {address?.country}
                         <br />
                       </p>
-                    </Link>
                   </li>
                   <li className="flex items-center gap-4">
                     <Icons.Envelope className="h-7 w-6 text-gray-400" aria-hidden="true" />
