@@ -17,7 +17,7 @@ export default async function Home() {
   return (
     <main>
       <Banner {...{ banner }} />
-      {/* <Features {...{features_section}} /> */}
+      <Features {...{features_section}} />
       <Advantages {...{ advantages_section }} />
       <CallToAction {...{ call_to_action_section }} />
       <Story {...{ story_section }} />
