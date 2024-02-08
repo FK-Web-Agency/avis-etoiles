@@ -8,6 +8,8 @@ interface ItemFeatureProps extends HowItWorksProps {
 }
 
 export default function ItemFeature({ title, description, icon, index }: ItemFeatureProps) {
+  console.log(icon);
+  
   return (
     <li className="mb-10 ml-6 relative">
       <time className="block mb-2 text-sm font-normal leading-none text-gray-500">

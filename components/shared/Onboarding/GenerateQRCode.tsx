@@ -5,7 +5,7 @@ import { useOnboardingStore } from "@/store";
 import { useOne, useList } from "@refinedev/core";
 import { useState } from "react";
 
-export default function GenerateQRCode() {
+export default function GenerateQRCode({onSave}:any) {
   const [qrCode, setQrCode] = useState<null | string>();
   const [preview, setPreview] = useState<null | { print: () => string; download: (name: string) => void }>(null);
   const [easelSelected, setEaselSelected] = useState<null | number>(0);

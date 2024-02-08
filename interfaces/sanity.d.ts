@@ -27,6 +27,38 @@ const BannerSchema = DefaultSchema.merge(
   })
 );
 
+
+// Type Feature section
+const FeaturesSectionSchema = DefaultSchema.merge(
+  z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    features: z.array(
+      z.object({
+        title: z.string(),
+        subtitle: z.string().max(150),
+        icon: z.array(
+          z.union([
+            z.object({
+              type: z.literal('block'),
+              of: z.array(
+                z.object({
+                  type: z.literal('icon.manager'),
+                  title: z.literal('Inline Icon'),
+                })
+              ),
+            }),
+            z.object({
+              type: z.literal('icon.manager'),
+              title: z.literal('Block Icon'),
+            }),
+          ])
+        ),
+      })
+    ),
+  })
+);
+
 const IconManagerSchema = z.object({
   _type: z.literal('icon.manager'),
   icon: z.string(),
@@ -196,6 +228,9 @@ type DefaultProps = z.infer<typeof DefaultSchema>;
 
 // Type Banner section
 type BannerProps = z.infer<typeof BannerSchema>;
+
+// Type Feature section
+type FeatureProps = z.infer<typeof FeatureSchema>;
 
 // Type Icon manager
 type IconManagerProps = z.infer<typeof IconManagerSchema>;

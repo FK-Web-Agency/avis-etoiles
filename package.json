@@ -72,6 +72,7 @@
     "refine-sanity": "^1.1.1",
     "resend": "^2.1.0",
     "sanity": "^3.24.1",
+    "sanity-plugin-asset-source-unsplash": "^1.1.2",
     "sanity-plugin-icon-manager": "^1.3.1",
     "stripe": "^14.12.0",
     "styled-components": "^6.1.8",

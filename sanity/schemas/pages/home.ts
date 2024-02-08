@@ -13,6 +13,11 @@ const groups = [
     icon: () => '🏞️',
   },
   {
+    name: 'features_section',
+    title: 'Section des fonctionnalités',
+    icon: () => '🚀',
+  },
+  {
     name: 'advantages_section',
     title: 'Les avantages de la plateforme',
     icon: () => '🎯',
@@ -73,12 +78,77 @@ export default defineType({
       ],
     }),
 
+    // Features Section
+    defineField({
+      name: 'features_section',
+      title: 'Section des fonctionnalités',
+      description: "C'est la section qui présente les fonctionnalités de la plateforme",
+      type: 'object',
+      group: 'features_section',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Titre',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'subtitle',
+          title: 'Sous-titre',
+          type: 'text',
+          validation: (Rule: any) => Rule.required(),
+        }),
+        defineField({
+          name: 'features',
+          title: 'Les fonctionnalités de la plateforme',
+          description: "C'est la section qui présente les fonctionnalités de la plateforme",
+          type: 'array',
+          validation: (Rule: any) => Rule.required(),
+          of: [
+            {
+              type: 'object',
+              description: 'Fonctionnalités de la plateforme',
+              fields: [
+                defineField({
+                  name: 'title',
+                  title: 'Titre',
+                  type: 'string',
+                  validation: (Rule: any) => Rule.required(),
+                }),
+                defineField({
+                  name: 'subtitle',
+                  title: 'Description',
+                  type: 'text',
+                  validation: (Rule: any) => Rule.required(),
+                }),
+                defineField({
+                  name: 'icon',
+                  type: 'array',
+                  title: 'Icône',
+                  validation: (Rule: any) => Rule.required(),
+                  of: [
+                    {
+                      type: 'block',
+                      of: [{ type: 'icon.manager', title: 'Inline Icon' }],
+                    },
+                    {
+                      type: 'icon.manager',
+                      title: 'Block Icon',
+                    },
+                  ],
+                }),
+              ],
+            },
+          ],
+        }),
+      ],
+    }),
+
     // Advantages Section
     defineField({
       name: 'advantages_section',
       title: 'Les avantages',
-      description:
-        "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
+      description: "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
       type: 'object',
       group: 'advantages_section',
       fields: [
@@ -97,8 +167,7 @@ export default defineType({
         defineField({
           name: 'advantages',
           title: 'Les avantages de la plateforme',
-          description:
-            "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
+          description: "C'est la section qui présente les avantages de la plateforme section 2 après la bannière",
           type: 'array',
           validation: (Rule: any) => Rule.required(),
           of: [
@@ -145,8 +214,7 @@ export default defineType({
     defineField({
       name: 'call_to_action_section',
       title: 'Call to action',
-      description:
-        "C'est la section qui présente le call to action de la plateforme section 3 après les avantages",
+      description: "C'est la section qui présente le call to action de la plateforme section 3 après les avantages",
       type: 'object',
       group: 'call_to_action_section',
       // @ts-ignore
@@ -176,8 +244,7 @@ export default defineType({
     defineField({
       name: 'story_section',
       title: 'Notre histoire',
-      description:
-        "C'est la section qui présente l'histoire de la plateforme section 4 après le call to action",
+      description: "C'est la section qui présente l'histoire de la plateforme section 4 après le call to action",
       type: 'object',
       group: 'story_section',
       fields: [
