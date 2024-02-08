@@ -14,6 +14,12 @@ export default async function Home() {
     queries.GET_HOME_PAGE
   );
 
+
+  console.log(await client.fetch<SanityDocument>(
+    queries.GET_HOME_PAGE
+  ));
+  
+
   return (
     <main>
       <Banner {...{ banner }} />
