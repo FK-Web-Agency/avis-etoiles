@@ -19,6 +19,9 @@ export default function Content() {
     resource: 'orders',
   });
 
+  const {data:dataUsers} = useList({
+    resource: 'users'
+  })
   if (isLoading) return <Spinner />;
 
   const allAnalytics = data?.data;
@@ -43,7 +46,7 @@ export default function Content() {
   const totalInstagramSubscribers = calculateTotal('instagram');
   const totalReviews = calculateTotal('google');
 
-  const totalSubscribers = totalFacebookSubscribers! + totalInstagramSubscribers!;
+
 
   const totalWinners = allWinners?.reduce((total, winner) => {
     return total + winner.winners.length;
@@ -60,7 +63,7 @@ export default function Content() {
       {/* Render the pie charts */}
       <section className="pie-container">
         <PieChart title="Revenue Total" value={totalYearSumToString} Icon={Icons.Euro} />
-        <PieChart title="Abonnés" value={totalSubscribers} Icon={Icons.Subscribe} />
+        <PieChart title="Membres" value={dataUsers?.total!} Icon={Icons.Subscribe} />
         <PieChart title="Avis recueillis" value={totalReviews as number} Icon={Icons.Comment} />
         <PieChart title="Cadeaux gagnés" value={totalWinners!} Icon={Icons.Gift} />
       </section>
