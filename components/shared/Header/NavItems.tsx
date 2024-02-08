@@ -28,11 +28,11 @@ const NavItems = ({ isMobile = false }: { isMobile?: boolean }) => {
           );
 
         return (
-          <SheetClose asChild>
-            <li key={link.route} className={`${isActive && 'text-primary'} flex-center p-medium-16 whitespace-nowrap `}>
+          <li key={link.route} className={`${isActive && 'text-primary'} flex-center p-medium-16 whitespace-nowrap `}>
+            <SheetClose asChild>
               <Link href={link.route}>{link.label}</Link>
-            </li>
-          </SheetClose>
+            </SheetClose>
+          </li>
         );
       })}
     </ul>

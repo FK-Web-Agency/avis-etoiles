@@ -8,18 +8,16 @@ const MobileNav = () => {
     <nav className="lg:hidden">
       <Sheet>
         <SheetTrigger className="align-middle">
-          <Icons.BurgerMenu className="cursor-pointer" />
+          <Icons.Menu className="cursor-pointer w-6 h-6" />
         </SheetTrigger>
-        <SheetContent className="flex flex-col justify-between gap-6 bg-gray-800  lg:hidden">
-          <div className='flex flex-col gap-5'>
-            <Icons.Logo hrefNull  />
+        <SheetContent className="flex flex-col justify-between gap-6 bg-gray-400  bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-60 border-l border-gray-100  lg:hidden">
+          <div className="flex flex-col gap-5">
+            <Icons.Logo hrefNull />
             <Separator className="border border-gray-50" />
             <NavItems isMobile />
           </div>
 
-          <Link
-            href="#"
-            className="text-sm font-semibold leading-6 text-slate-50 bottom-5">
+          <Link href="#" className="text-sm font-semibold leading-6 text-slate-50 bottom-5">
             Demander une demo <span aria-hidden="true">&rarr;</span>
           </Link>
         </SheetContent>
