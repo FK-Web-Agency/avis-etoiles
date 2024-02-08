@@ -59,6 +59,9 @@ export default defineType({
         }),
       ],
     }),
+
+
+
     // Prices List Section
     defineField({
       name: 'prices_list_section',
@@ -82,6 +85,11 @@ export default defineType({
               title: 'Prix',
               type: 'number',
               validation: (Rule: any) => Rule.required(),
+            }),
+            defineField({
+              name: 'reduce_price',
+              title: 'Prix barré (annuel)',
+              type: 'number',
             }),
             defineField({
               name: 'description',

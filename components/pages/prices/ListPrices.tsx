@@ -23,10 +23,8 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
   const [frequency, setFrequency] = useState(frequencies[0]);
 
   // Function to handle frequency change
-  const handleFrequencyChange = () => {
- 
+  const handleFrequencyChange = () =>
     setFrequency((prev) => (prev.value === 'month' ? frequencies[1] : frequencies[0]));
-  };
 
   return (
     <>
@@ -56,7 +54,10 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
       {/* Prices grid */}
       <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         {prices_list_section.map((price) => {
-          const priceSubscribe = frequency.value === 'month' ? price.price : price.price * 12;
+          const priceAnnually = price.price * 12;
+          const priceSubscribe = frequency.value === 'month' ? price.price : price.reduce_price;
+
+          const reducePricePercentage = Math.round(((priceAnnually - price.reduce_price) / priceAnnually) * 100);
           return (
             <div
               key={price._id}
@@ -78,27 +79,35 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 {price.description}
               </p>
               {/* Price value */}
-              <p className="mt-6 flex items-baseline gap-x-1">
-                <span
-                  className={classNames(
-                    !price.price ? 'text-white' : 'text-gray-900',
-                    'text-4xl font-bold tracking-tight mb-8'
-                  )}>
-                  {price.price ? priceSubscribe : 'Personnaliser'}
-                </span>
-                {/* Price suffix */}
-                {price.price ? (
+              <div className="mt-6">
+                {frequency.value === 'year' && priceSubscribe && (
+                  <div className='flex gap-2 items-center'>
+                    <em className="line-through text-gray-400">{priceAnnually}€/an </em>
+                    <span className='p-medium-12 text-emerald-600'>-{reducePricePercentage}%</span>
+                  </div>
+                )}
+                <p className="flex items-baseline gap-x-1">
                   <span
                     className={classNames(
-                      !price.price ? 'text-gray-300' : 'text-gray-600',
-                      'text-sm font-semibold leading-6'
+                      !price.price ? 'text-white' : 'text-gray-900',
+                      'text-4xl font-bold tracking-tight mb-8 block'
                     )}>
-                    {frequency.priceSuffix}
+                    {price.price ? priceSubscribe : 'Personnaliser'}
                   </span>
-                ) : null}
-              </p>
+                  {/* Price suffix */}
+                  {price.price ? (
+                    <span
+                      className={classNames(
+                        !price.price ? 'text-gray-300' : 'text-gray-600',
+                        'text-sm font-semibold leading-6'
+                      )}>
+                      {frequency.priceSuffix}
+                    </span>
+                  ) : null}
+                </p>
+              </div>
               {/* Checkout button */}
-              <CheckoutButton key={price?._id} plan={{...price, frequency: frequency.value, price: priceSubscribe}} />
+              <CheckoutButton key={price?._id} plan={{ ...price, frequency: frequency.value, price: priceSubscribe }} />
               {/* Features list */}
               <ul
                 role="list"
