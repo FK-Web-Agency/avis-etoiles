@@ -27,6 +27,8 @@ const Item = ({ title, subtitle, icon }: FeatureProps['features'][0]) => {
 };
 
 export default function Features({ features_section }: FeaturesType) {
+  console.log(features_section);
+  
   return (
     <section className="bg-amber-100">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
