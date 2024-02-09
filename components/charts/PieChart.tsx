@@ -17,7 +17,7 @@ export default function PieChart({ title, value, Icon }: PieChartProps) {
         <h4 className="p-regular-14 text-gray-600">{title}</h4>
         <p className="p-bold-24 text-gray-900">{value}</p>
       </div>
-      {Icon && <Icon className="w-16 h-10" />}
+      {Icon }
     </div>
   );
 }

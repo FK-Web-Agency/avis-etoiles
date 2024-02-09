@@ -3,8 +3,15 @@
 import { PieChart, TotalRevenue } from '@/components/charts';
 import { Icons } from '@/components/shared';
 import { Spinner } from '@/components/shared';
+import { classNames } from '@/helper';
 import { IAnalytics } from '@/interfaces';
 import { useList } from '@refinedev/core';
+
+const IconOverview = ({ Icon, backgroundColor }: { Icon: any; backgroundColor: string }) => (
+  <div className={classNames('p-2 rounded-full', backgroundColor)}>
+    <Icon className="w-4 h-4 text-slate-50" />
+  </div>
+);
 
 export default function Content() {
   const { data, isLoading } = useList({
@@ -19,9 +26,9 @@ export default function Content() {
     resource: 'orders',
   });
 
-  const {data:dataUsers} = useList({
-    resource: 'users'
-  })
+  const { data: dataUsers } = useList({
+    resource: 'users',
+  });
   if (isLoading) return <Spinner />;
 
   const allAnalytics = data?.data;
@@ -46,8 +53,6 @@ export default function Content() {
   const totalInstagramSubscribers = calculateTotal('instagram');
   const totalReviews = calculateTotal('google');
 
-
-
   const totalWinners = allWinners?.reduce((total, winner) => {
     return total + winner.winners.length;
   }, 0);
@@ -60,12 +65,28 @@ export default function Content() {
     <>
       <h1 className="h4-medium text-white">Overview</h1>
 
-      {/* Render the pie charts */}
+      {/* Render the pie charts Icons.Euro*/}
       <section className="pie-container">
-        <PieChart title="Revenue Total" value={totalYearSumToString} Icon={Icons.Euro} />
-        <PieChart title="Membres" value={dataUsers?.total!} Icon={Icons.Subscribe} />
-        <PieChart title="Avis recueillis" value={totalReviews as number} Icon={Icons.Comment} />
-        <PieChart title="Cadeaux gagnés" value={totalWinners!} Icon={Icons.Gift} />
+        <PieChart
+          title="Revenue Total"
+          value={totalYearSumToString}
+          Icon={<IconOverview Icon={Icons.Euro} backgroundColor={'bg-red-300'} />}
+        />
+        <PieChart
+          title="Membres"
+          value={dataUsers?.total!}
+          Icon={<IconOverview Icon={Icons.Subscribe} backgroundColor={'bg-indigo-200'} />}
+        />
+        <PieChart
+          title="Avis recueillis"
+          value={totalReviews as number}
+          Icon={<IconOverview Icon={Icons.Comment} backgroundColor={'bg-black'} />}
+        />
+        <PieChart
+          title="Cadeaux gagnés"
+          value={totalWinners!}
+          Icon={<IconOverview Icon={Icons.Gift} backgroundColor={'bg-green-400'} />}
+        />
       </section>
 
       {/* Render the total revenue chart */}
