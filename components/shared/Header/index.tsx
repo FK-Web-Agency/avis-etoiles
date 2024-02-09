@@ -9,9 +9,7 @@ export default function Header() {
   return (
     <header>
       {/* -------------------- Desktop, laptop, and tablet view -------------------- */}
-      <nav
-        className="wrapper flex items-center justify-between"
-        aria-label="Global">
+      <nav className="wrapper flex items-center justify-between" aria-label="Global">
         <div className="flex lg:flex-1">
           <Icons.Logo />
         </div>
@@ -22,13 +20,14 @@ export default function Header() {
           <NavItems />
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link
-            href="/sign-in"
-            className="text-sm font-semibold leading-6 text-primary">
-            <Button variant={"gradient"}>
-              Se connecter <span className='ml-2' aria-hidden="true">&rarr;</span>
-            </Button>
-          </Link>
+          <Button asChild variant={'gradient'}>
+            <Link href="/dashboard" className="text-sm font-semibold leading-6 text-primary">
+              Espace Membre{' '}
+              <span className="ml-2" aria-hidden="true">
+                &rarr;
+              </span>
+            </Link>
+          </Button>
         </div>
       </nav>
       {/* ----------- Mobile menu, show/hide based on mobile menu state. ----------- */}
