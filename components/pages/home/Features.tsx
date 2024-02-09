@@ -8,7 +8,6 @@ type FeaturesType = {
 };
 
 const Item = ({ title, subtitle, icon }: FeatureProps['features'][0]) => {
-  console.log(icon[0]);
 
   return (
     <div>
@@ -27,7 +26,6 @@ const Item = ({ title, subtitle, icon }: FeatureProps['features'][0]) => {
 };
 
 export default function Features({ features_section }: FeaturesType) {
-  console.log('features_section', features_section);
   
   return (
     <section className="bg-amber-100">

@@ -17,8 +17,8 @@ const MobileNav = () => {
             <NavItems isMobile />
           </div>
 
-          <Link href="#" className="text-sm font-semibold leading-6 text-slate-50 bottom-5">
-            Demander une demo <span aria-hidden="true">&rarr;</span>
+          <Link href="/sign-in" className="text-sm font-semibold leading-6 text-slate-50 bottom-5">
+            Se connecter <span aria-hidden="true">&rarr;</span>
           </Link>
         </SheetContent>
       </Sheet>

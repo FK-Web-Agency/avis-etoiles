@@ -23,10 +23,10 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
-            href="#"
+            href="/sign-in"
             className="text-sm font-semibold leading-6 text-primary">
             <Button variant={"gradient"}>
-              Voir une demo <span className='ml-2' aria-hidden="true">&rarr;</span>
+              Se connecter <span className='ml-2' aria-hidden="true">&rarr;</span>
             </Button>
           </Link>
         </div>
