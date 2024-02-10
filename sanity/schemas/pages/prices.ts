@@ -92,12 +92,6 @@ export default defineType({
               type: 'number',
             }),
             defineField({
-              name: 'description',
-              title: 'Description',
-              type: 'string',
-              validation: (Rule: any) => Rule.required(),
-            }),
-            defineField({
               name: 'features',
               title: 'Fonctionnalités',
               type: 'array',
