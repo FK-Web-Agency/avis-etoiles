@@ -74,16 +74,13 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                 )}>
                 {price.title}
               </h3>
-              {/* Price description */}
-              <p className={classNames(!price.price ? 'text-gray-300' : 'text-gray-600', 'mt-4 text-sm leading-6')}>
-                {price.description}
-              </p>
+
               {/* Price value */}
               <div className="mt-6">
                 {frequency.value === 'year' && priceSubscribe && (
-                  <div className='flex gap-2 items-center'>
+                  <div className="flex gap-2 items-center">
                     <em className="line-through text-gray-400">{priceAnnually}€/an </em>
-                    <span className='p-medium-12 text-emerald-600'>-{reducePricePercentage}%</span>
+                    <span className="p-medium-12 text-emerald-600">-{reducePricePercentage}%</span>
                   </div>
                 )}
                 <p className="flex items-baseline gap-x-1">
