@@ -8,8 +8,8 @@ import { IAnalytics } from '@/interfaces';
 import { useList } from '@refinedev/core';
 
 const IconOverview = ({ Icon, backgroundColor }: { Icon: any; backgroundColor: string }) => (
-  <div className={classNames('p-2 rounded-full', backgroundColor)}>
-    <Icon className="w-4 h-4 text-slate-50" />
+  <div className={classNames('p-3 rounded-full', backgroundColor)}>
+    <Icon className="w-5 h-5 text-slate-50" />
   </div>
 );
 
@@ -70,22 +70,22 @@ export default function Content() {
         <PieChart
           title="Revenue Total"
           value={totalYearSumToString}
-          Icon={<IconOverview Icon={Icons.Euro} backgroundColor={'bg-red-300'} />}
+          Icon={<IconOverview Icon={Icons.Euro} backgroundColor={'bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900'} />}
         />
         <PieChart
-          title="Membres"
+          title="Abonnés"
           value={dataUsers?.total!}
-          Icon={<IconOverview Icon={Icons.Subscribe} backgroundColor={'bg-indigo-200'} />}
+          Icon={<IconOverview Icon={Icons.Subscribe} backgroundColor={'bg-gradient-to-r from-violet-300 to-violet-400'} />}
         />
         <PieChart
           title="Avis recueillis"
           value={totalReviews as number}
-          Icon={<IconOverview Icon={Icons.Comment} backgroundColor={'bg-black'} />}
+          Icon={<IconOverview Icon={Icons.Comment} backgroundColor={'bg-gradient-to-r from-rose-300 to-rose-500'} />}
         />
         <PieChart
           title="Cadeaux gagnés"
           value={totalWinners!}
-          Icon={<IconOverview Icon={Icons.Gift} backgroundColor={'bg-green-400'} />}
+          Icon={<IconOverview Icon={Icons.Gift} backgroundColor={'bg-gradient-to-r from-yellow-200 to-yellow-500'} />}
         />
       </section>
 
