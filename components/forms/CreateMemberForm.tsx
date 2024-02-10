@@ -20,7 +20,7 @@ enum Recurring {
 
 const MemberSchema = z.object({
   information: z.object({
-    role: z.enum(['admin', 'member']).default('member'),
+    // role: z.enum(['admin', 'member']).default('member'),
     firstName: z.string().describe('Prénom'),
     lastName: z.string().describe('Nom'),
     email: z.string().email(),

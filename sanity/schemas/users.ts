@@ -25,12 +25,7 @@ export default defineType({
       name: 'role',
       title: 'Rôle',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Admin', value: 'admin' },
-          { title: 'Membre', value: 'member' },
-        ],
-      },
+      initialValue: 'member',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

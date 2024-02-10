@@ -30,6 +30,7 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
       metadata: {
         plan: order.title,
         buyerId: 'order.buyerId',
+        seller: order.seller,
       },
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,

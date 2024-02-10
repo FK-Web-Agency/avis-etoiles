@@ -32,6 +32,7 @@ export default function CheckoutButton({ plan }: any) {
       title: plan.title,
       price: plan.price,
       frequency: plan.frequency,
+      seller: 'avisetoiles.com'
     };
 
     await checkoutOrder(order);
