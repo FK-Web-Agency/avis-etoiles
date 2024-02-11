@@ -3,6 +3,7 @@
 import { client } from '@/sanity/lib';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
+import sendEmail from './resend.actions';
 
 export const checkoutOrder = async (order: any) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -39,7 +40,20 @@ export const checkoutOrder = async (order: any) => {
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
     });
 
-    return session.url;
+
+
+    
+    // Send email
+    const { status } = await sendEmail({
+      email: order.email,
+      subject: 'Paiement de votre abonnement',
+      emailTemplate: 'payment',
+      url: session.url,
+    });
+
+    return status === 'success'
+      ? { status: 'success', message: 'Email envoyé avec succés', data: session }
+      : { status: 'error', message: "Une erreur s'est produite, merci de réessayer ultérieurement" };
   } catch (error) {
     throw error;
   }

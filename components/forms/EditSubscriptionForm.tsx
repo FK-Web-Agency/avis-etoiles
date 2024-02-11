@@ -36,7 +36,7 @@ export default function EditSubscription({ user }: any) {
         price: values?.price,
       };
 
-      const url = await checkoutOrder(order, true);
+      const url = await checkoutOrder(order);
 
       // Send a email to the user with the link Stripe
       resend = await sendEmail({

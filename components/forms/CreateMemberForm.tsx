@@ -94,12 +94,13 @@ export default function CreateMemberForm() {
   const { toast } = useToast();
   const { list } = useNavigation();
   const { userIds } = useDashboardStore();
+
   const { data } = useOne({
     resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS,
     id: userIds?.sanityId,
   });
 
-  console.log(userIds);
+  const seller = data?.data;
 
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
@@ -113,43 +114,62 @@ export default function CreateMemberForm() {
       const startDate = formatToISOString(values?.subscription?.startDate);
       const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
-      /*       const response: any = await createMember({
+      const response = await createMember({
         ...values,
         subscription: {
           ...values.subscription,
           startDate,
           expirationDate,
         },
-      }); */
-
-      const response: any = await checkoutOrder({
-        title: values?.subscription?.plan,
-        frequency: values?.subscription?.recurring,
-        price: values?.subscription?.price,
-        seller: {
-          type: 'reference',
-          _ref: 'seller',
-        },
       });
 
-      if (response?.status === 'error') {
+      // If there is an error, display the error message
+      if (response.status === 'error') {
         toast({
+          title: 'Erreur',
+          description: response.message,
           variant: 'destructive',
-          title: 'Uh oh! Quelque chose a mal tourné.',
-          description: response?.message,
         });
       } else {
-        toast({
-          description: 'Membre créé avec succès',
-        });
+        if (!values.subscription.free) {
+          const order = {
+            email: values?.information?.email,
+            title: values?.subscription?.plan,
+            frequency: values?.subscription?.recurring,
+            price: values?.subscription?.price,
+            seller: {
+              type: 'reference',
+              _ref: seller?._id,
+            },
+            subscription: {
+              ...values.subscription,
+              startDate,
+              expirationDate,
+            },
+          };
 
-        setTimeout(() => {
-          list('members');
-        }, 1000);
+          const { status, message } = await checkoutOrder(order);
+
+          if (status === 'error') {
+            toast({
+              variant: 'destructive',
+              title: 'Uh oh! Quelque chose a mal tourné.',
+              description: message,
+            });
+          } else {
+            toast({
+              description: message,
+            });
+
+            setTimeout(() => {
+              list('members');
+            }, 1000);
+          }
+        }
+
+        setLoading(false);
       }
     }
-
-    setLoading(false);
   };
 
   return (

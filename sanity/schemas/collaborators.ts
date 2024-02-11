@@ -12,7 +12,7 @@ export default defineType({
       name: 'clerkId',
       title: 'id du membre',
       type: 'string',
-      readOnly: true,
+      // readOnly: true,
       validation: (Rule) => Rule.required(),
     }),
     defineField({

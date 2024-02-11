@@ -32,7 +32,7 @@ export async function createMember(value: any) {
         },
         subscription: {
           free: value.subscription?.free,
-          status: value.subscription?.expirationDate ? true : false,
+          status: value.subscription?.free ? true : false,
           plan: value.subscription?.plan,
           startDate: formatDate(value.subscription?.startDate),
           expirationDate: formatDate(value.subscription?.expirationDate),
@@ -41,12 +41,12 @@ export async function createMember(value: any) {
     });
 
     // Send email
-    await sendEmail({
+/*     await sendEmail({
       email: value.information?.email,
       subject: "Confirmation d'adhesion",
       emailTemplate: 'welcome',
       password,
-    });
+    }); */
 
     return { status: 'success', message: 'Le membre a été créé avec succès.', password };
   } catch (error: any) {

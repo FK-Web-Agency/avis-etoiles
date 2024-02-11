@@ -1,16 +1,14 @@
 'use client';
 
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useList } from '@refinedev/core';
 import { Icons, Onboarding, Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
-import { useDashboardStore, useOnboardingStore } from '@/store';
 import '../../styles/globals.css';
 
 export default function layout({ children }: PropsWithChildren) {
   const { user } = useUser();
-  const { setUserIds: setMemberIds } = useDashboardStore();
 
   const { data, isLoading } = useList({
     resource: 'gameConfig',
@@ -22,19 +20,6 @@ export default function layout({ children }: PropsWithChildren) {
       },
     ],
   });
-
-  const { setUserIds } = useOnboardingStore();
-
-  const public_metadata = user?.publicMetadata;
-
-  useEffect(() => {
-    const ids = { clerkId: user?.id as string, sanityId: public_metadata?.userId as string };
-
-    setUserIds(ids);
-    setMemberIds(ids);
-  }, [user]);
-
-  console.log(data);
 
   /* 
   1) Changer le mot de passe

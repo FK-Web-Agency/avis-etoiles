@@ -15,13 +15,13 @@ export async function POST(req: any, res: any) {
   }
 
   // Create A link Stripe for payment
-  const order = {
+/*   const order = {
     id: body._id,
     title: body?.subscription?.plan,
     price: body?.subscription?.price,
   };
 
-  const url = await checkoutOrder(order, true);
+  const url = await checkoutOrder(order);
 
   // Send a email to the user with the link Stripe
   await sendEmail({
@@ -30,7 +30,7 @@ export async function POST(req: any, res: any) {
     emailTemplate: 'payment',
     companyName: body?.companyName,
     url,
-  });
+  }); */
 
   NextResponse.json({ success: true });
 }
