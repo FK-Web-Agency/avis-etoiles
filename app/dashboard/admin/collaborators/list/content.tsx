@@ -90,7 +90,7 @@ export default function Content() {
                             go({
                               to: {
                                 resource: 'collaborators',
-                                action: 'edit',
+                                action: 'show',
                                 id: user?._id,
                               },
                               type: 'push',

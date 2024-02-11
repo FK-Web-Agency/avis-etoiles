@@ -2,7 +2,7 @@ import { client } from '@/sanity/lib';
 
 export default async function createUser(user: any) {
   const doc = {
-    _type: 'users',
+    _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
     ...user,
   };
   try {

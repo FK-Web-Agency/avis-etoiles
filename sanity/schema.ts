@@ -13,7 +13,7 @@ import {
   gameWinners,
   winner,
 } from './schemas/game';
-import users from './schemas/users';
+import subscribers from './schemas/subscribers';
 import collaborators from './schemas/collaborators';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -29,7 +29,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     game,
     orders,
     collaborators,
-    users,
+    subscribers,
     analytic,
     gameBackgrounds,
     gameEasel,

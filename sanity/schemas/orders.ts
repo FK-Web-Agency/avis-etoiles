@@ -1,7 +1,7 @@
 import { defineType, defineField } from 'sanity';
 
 export default defineType({
-  name: 'orders',
+  name: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
   title: 'Order',
   type: 'document',
   fields: [
@@ -18,8 +18,9 @@ export default defineType({
     }),
     defineField({
       name: 'buyerId',
-      title: 'Client',
-      type: 'string',
+      title: 'Abonné',
+      type: 'reference',
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS! }],
     }),
     defineField({
       name: 'seller',
@@ -28,14 +29,22 @@ export default defineType({
       to: [{ type: 'team-collaborators' }],
     }),
     defineField({
-      name: 'totalAmount',
+      name: 'price',
       title: 'Prix total',
       type: 'number',
+    }),
+    defineField({
+      name: 'interval',
+      title: 'Intervale',
+      type: 'string',
     }),
     defineField({
       name: 'createdAt',
       title: 'Payé le',
       type: 'date',
+      options:{
+        dateFormat: 'DD-MM-YYYY',
+      }
     }),
   ],
 });

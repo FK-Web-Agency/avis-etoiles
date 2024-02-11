@@ -5,7 +5,7 @@ import React from 'react';
 export default function page() {
   return (
     <>
-      <GoBack resource="teams" action="list" label="Créer un colaboarteur" />
+      <GoBack resource="collaborators" action="list" label="Créer un colaboarteur" />
       <CreateTeamForm />
     </>
   );

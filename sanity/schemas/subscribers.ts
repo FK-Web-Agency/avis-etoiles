@@ -3,10 +3,10 @@ import { client } from '../lib';
 import { Icons } from '@/components/shared';
 
 export default defineType({
-  name: 'users',
-  title: 'Les Membres',
+  name: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+  title: 'Les Abonnés (Entreprises)',
   type: 'document',
-  icon: Icons.User,
+  icon: Icons.BuildingOffice,
   fields: [
     defineField({
       name: 'companyName',
@@ -136,7 +136,7 @@ export default defineType({
             list: [
               { title: 'Essentiel', value: 'essential' },
               { title: 'Pro', value: 'premium' },
-              { title: 'Entreprise', value: 'enterprise' },
+              { title: 'Étoile', value: 'etoile' },
             ],
           },
         }),

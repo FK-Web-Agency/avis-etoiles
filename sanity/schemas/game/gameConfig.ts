@@ -10,7 +10,7 @@ export default defineType({
       title: 'Membre',
       type: 'reference',
       description: 'Configuration du jeu pour un membre en particulier',
-      to: [{ type: 'users' }],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS! }],
     }),
     defineField({
       name: 'logo',

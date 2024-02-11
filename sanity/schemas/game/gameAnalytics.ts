@@ -12,7 +12,7 @@ export default defineType({
       name: 'user',
       title: 'Member',
       type: 'reference',
-      to: [{ type: 'users' }],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS! }],
     }),
     defineField({
       name: 'analytics',

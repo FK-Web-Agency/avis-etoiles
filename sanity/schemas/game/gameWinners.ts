@@ -11,7 +11,7 @@ export default defineType({
       name: 'user',
       title: 'Propriétaire du report',
       type: 'reference',
-      to: [{ type: 'users' }],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS! }],
     }),
     defineField({
       name: 'winners',
