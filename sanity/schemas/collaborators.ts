@@ -3,7 +3,7 @@ import { client } from '../lib';
 import { Icons } from '@/components/shared';
 
 export default defineType({
-  name: 'team-members',
+  name: 'team-collaborators',
   title: "Collaborateurs",
   type: 'document',
   icon: Icons.Teams,
@@ -39,11 +39,11 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+/*     defineField({
       name: 'imageURL',
       title: 'Photo',
       type: 'string',
-    }),
+    }), */
 
     defineField({
       name: 'email',

@@ -58,7 +58,7 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button variant={'destructive'}>{children}</Button>
+        <Button variant={'destructive'}  className='px-4 py-2'>{children}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

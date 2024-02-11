@@ -23,11 +23,11 @@ const resources = {
       },
     },
     {
-      name: 'teams',
-      list: '/dashboard/admin/teams/list',
-      create: '/dashboard/admin/teams/create',
-      show: '/dashboard/admin/teams/show/:id',
-      edit: '/dashboard/admin/teams/edit/:id',
+      name: 'collaborators',
+      list: '/dashboard/admin/collaborators/list',
+      create: '/dashboard/admin/collaborators/create',
+      show: '/dashboard/admin/collaborators/show/:id',
+      edit: '/dashboard/admin/collaborators/edit/:id',
       meta: {
         canDelete: true,
       },

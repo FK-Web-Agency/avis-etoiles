@@ -13,8 +13,8 @@ enum Role {
 
 const TeamSchema = z.object({
   role: z.enum([Role.Admin, Role.Commercial]).default(Role.Commercial).describe('Rôle'),
-  firstName: z.string().describe('Nom'),
-  lastName: z.string().describe('Prénom'),
+  firstName: z.string().describe('Prénom'),
+  lastName: z.string().describe('Nom'),
   phone: z.string().describe('Téléphone'),
   email: z.string().email().describe('Email'),
 });
@@ -26,11 +26,10 @@ export default function CreateTeamForm() {
   const { list } = useNavigation();
 
   const handleAction = async (values: Team) => {
-    const { clerkId, password, photo } = await createTeam(values);
+    const { clerkId, password } = await createTeam(values);
 
     const teammate = {
       clerkId,
-      photo,
       createdAt: new Date().toISOString(),
       ...values,
       role: values?.role === Role.Commercial ? 'commercial' : 'admin',
@@ -63,7 +62,7 @@ export default function CreateTeamForm() {
                 variant: 'destructive',
               });
 
-          return list('teams');
+          return list('collaborators');
         },
       }
     );

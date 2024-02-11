@@ -25,7 +25,7 @@ export default defineType({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
-      to: [{ type: 'team-members' }],
+      to: [{ type: 'team-collaborators' }],
     }),
     defineField({
       name: 'totalAmount',

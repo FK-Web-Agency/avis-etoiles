@@ -70,7 +70,7 @@ export async function createTeam(value: any) {
   });
 
   console.log(teamMember);
-  return {clerkId: teamMember.id, password, photo: teamMember.imageUrl};
+  return {clerkId: teamMember.id, password};
 }
 // Update email address
 export async function updateMemberEmail(id: string, user: any) {
