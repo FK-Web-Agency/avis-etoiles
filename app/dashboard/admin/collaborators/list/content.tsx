@@ -10,7 +10,7 @@ import { classNames } from '@/helper';
 export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
-    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_MEMBERS!,
+    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
   });
 
   const { data: ordersData } = useList({

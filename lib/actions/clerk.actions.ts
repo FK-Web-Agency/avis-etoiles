@@ -2,7 +2,6 @@
 
 import { clerkClient } from '@clerk/nextjs';
 import { generate } from 'generate-password';
-import { MemberProps } from '@/components/forms/CreateMemberForm';
 import { formatDate } from '@/helper';
 import sendEmail from './resend.actions';
 

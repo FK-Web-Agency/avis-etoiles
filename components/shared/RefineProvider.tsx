@@ -5,7 +5,8 @@ import routerProvider from '@refinedev/nextjs-router/app';
 import dataProvider from 'refine-sanity';
 import { PropsWithChildren, useEffect } from 'react';
 import { client } from '@/sanity/lib';
-import { useDashboardStore } from '@/store';
+import { useDashboardStore, useOnboardingStore } from '@/store';
+import { useUser } from '@clerk/nextjs';
 
 const resources = {
   admin: [
@@ -43,6 +44,11 @@ const resources = {
 
 export default function RefineProvider({ children }: PropsWithChildren) {
   const { role, setRole } = useDashboardStore();
+  const { user } = useUser();
+  const { setUserIds: setMemberIds } = useDashboardStore();
+  const { setUserIds } = useOnboardingStore();
+
+  const public_metadata = user?.publicMetadata;
 
   useEffect(() => {
     fetch('/api/user')
@@ -51,6 +57,13 @@ export default function RefineProvider({ children }: PropsWithChildren) {
         setRole(role);
       });
   }, []);
+
+  useEffect(() => {
+    const ids = { clerkId: user?.id as string, sanityId: public_metadata?.userId as string };
+
+    setUserIds(ids);
+    setMemberIds(ids);
+  }, [user]);
 
   if (role === null) return null;
 

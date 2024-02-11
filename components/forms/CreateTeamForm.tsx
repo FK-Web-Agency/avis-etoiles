@@ -37,7 +37,7 @@ export default function CreateTeamForm() {
 
     mutate(
       {
-        resource: process.env.NEXT_PUBLIC_SANITY_TEAM_MEMBERS!,
+        resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
         values: teammate,
       },
       {

@@ -11,12 +11,14 @@ import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { useNavigation } from '@refinedev/core';
+import { useList, useNavigation, useOne } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { formatToISOString } from '@/helper';
+import { checkoutOrder } from '@/lib/actions';
+import { useDashboardStore } from '@/store';
 
 enum Recurring {
   monthly = 'Mois',
@@ -30,7 +32,7 @@ const MemberSchema = z.object({
     firstName: z.string().describe('Prénom'),
     lastName: z.string().describe('Nom'),
     email: z.string().email(),
-    phoneNumber: z
+    phone: z
       .string()
       .describe('Numéro de téléphone')
       .max(22, {
@@ -91,6 +93,13 @@ export default function CreateMemberForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { list } = useNavigation();
+  const { userIds } = useDashboardStore();
+  const { data } = useOne({
+    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS,
+    id: userIds?.sanityId,
+  });
+
+  console.log(userIds);
 
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
@@ -104,12 +113,22 @@ export default function CreateMemberForm() {
       const startDate = formatToISOString(values?.subscription?.startDate);
       const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
-      const response: any = await createMember({
+      /*       const response: any = await createMember({
         ...values,
         subscription: {
           ...values.subscription,
           startDate,
           expirationDate,
+        },
+      }); */
+
+      const response: any = await checkoutOrder({
+        title: values?.subscription?.plan,
+        frequency: values?.subscription?.recurring,
+        price: values?.subscription?.price,
+        seller: {
+          type: 'reference',
+          _ref: 'seller',
         },
       });
 

@@ -9,6 +9,12 @@ export default defineType({
   icon: Icons.BuildingOffice,
   fields: [
     defineField({
+      name: 'seller',
+      title: 'Vendeur',
+      type: 'reference',
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!}],
+    }),
+    defineField({
       name: 'companyName',
       title: "Nom de l'entreprise",
       type: 'string',
@@ -159,7 +165,7 @@ export default defineType({
         defineField({
           name: 'startDate',
           title: 'Date de début',
-          type: 'date',
+          type: 'datetime',
           options: {
             dateFormat: 'DD-MM-YYYY',
           },
@@ -167,7 +173,7 @@ export default defineType({
         defineField({
           name: 'expirationDate',
           title: "Date d'expiration",
-          type: 'date',
+          type: 'datetime',
           options: {
             dateFormat: 'DD-MM-YYYY',
           },

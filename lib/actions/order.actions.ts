@@ -4,7 +4,7 @@ import { client } from '@/sanity/lib';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
 
-export const checkoutOrder = async (order: any, withURL?: boolean) => {
+export const checkoutOrder = async (order: any) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const baseUrl =
     process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
@@ -36,16 +36,16 @@ export const checkoutOrder = async (order: any, withURL?: boolean) => {
       success_url: `${baseUrl}/prices/success`,
       cancel_url: `${baseUrl}/prices/`,
       locale: 'fr',
+      expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
     });
 
-    return withURL ? session.url : redirect(session.url!);
+    return session.url;
   } catch (error) {
     throw error;
   }
 };
 
 export const createOrder = async (order: any) => {
-
   // create a new order in sanity
   const newOrder = {
     ...order,
