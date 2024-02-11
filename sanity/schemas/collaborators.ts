@@ -3,8 +3,8 @@ import { client } from '../lib';
 import { Icons } from '@/components/shared';
 
 export default defineType({
-  name: 'teams',
-  title: 'L\'équipe',
+  name: 'team-members',
+  title: "Collaborateurs",
   type: 'document',
   icon: Icons.Teams,
   fields: [
@@ -40,6 +40,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'imageURL',
+      title: 'Photo',
+      type: 'string',
+    }),
+
+    defineField({
       name: 'email',
       title: 'Email',
       type: 'string',
@@ -47,7 +53,7 @@ export default defineType({
         Rule.required()
           .email()
           .custom(async (email, schema) => {
-            const filter = `*[_type == "users" && email == $email]`;
+            const filter = `*[_type == "teams" && email == $email]`;
             const params = { email };
 
             const duplicateEmails = await client.fetch(filter, params);
@@ -60,5 +66,24 @@ export default defineType({
           })
           .error('Email already exists'),
     }),
+    defineField({
+      name: 'phone',
+      title: 'Téléphone',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'createdAt',
+      title: 'Créé le',
+      type: 'datetime',
+    }),
   ],
+
+  preview: {
+    select: {
+      title: 'firstName',
+      subtitle: 'lastName',
+      media: 'photo',
+    },
+  },
 });

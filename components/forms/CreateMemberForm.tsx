@@ -1,6 +1,12 @@
 'use client';
 // TODO : check if email is sent
+/* 
+TODO 
 
+1- envoyer un email pour le paiement
+2 - Mettre a jour sanity apres le paiement
+3 - envoyer un email pour la confirmation de l'abonnement
+*/
 import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';

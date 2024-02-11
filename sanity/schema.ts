@@ -14,7 +14,7 @@ import {
   winner,
 } from './schemas/game';
 import users from './schemas/users';
-import teams from './schemas/teams';
+import collaborators from './schemas/collaborators';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -28,7 +28,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     about,
     game,
     orders,
-    teams,
+    collaborators,
     users,
     analytic,
     gameBackgrounds,

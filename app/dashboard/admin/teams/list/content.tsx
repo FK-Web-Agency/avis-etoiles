@@ -10,14 +10,7 @@ import { classNames } from '@/helper';
 export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
-    resource: 'users',
-    filters: [
-      {
-        field: 'role',
-        operator: 'eq',
-        value: 'admin',
-      },
-    ],
+    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_MEMBERS!,
   });
 
   const teams = data?.data || [];
@@ -26,7 +19,15 @@ export default function Content() {
     <section>
       <>
         <div className="flex justify-between items-center mb-8">
-          <h1 className="h4-medium text-white">Toutes équipes</h1>
+          <h1 className="h4-medium text-white">Toutes l'équipe</h1>
+
+          <Button
+            onClick={() => go({ to: { resource: 'teams', action: 'create' } })}
+            variant={'secondary'}
+            className="rounded">
+            <Icons.AddMember className="w-4 h-4" />
+            <span className="ml-2">Ajouter Équipier</span>
+          </Button>
         </div>
         {isLoading ? (
           <TableSkeleton />

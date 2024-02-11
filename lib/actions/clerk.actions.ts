@@ -6,11 +6,12 @@ import { MemberProps } from '@/components/forms/CreateMemberForm';
 import { formatDate } from '@/helper';
 import sendEmail from './resend.actions';
 
+const password = generate({
+  length: 10,
+  numbers: true,
+});
+// Create member
 export async function createMember(value: any) {
-  const password = generate({
-    length: 10,
-    numbers: true,
-  });
   try {
     // Create user
     await clerkClient.users.createUser({
@@ -50,11 +51,27 @@ export async function createMember(value: any) {
 
     return { status: 'success', message: 'Le membre a été créé avec succès.', password };
   } catch (error: any) {
-
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
 
+// Create teams
+export async function createTeam(value: any) {
+  // Create user
+  const teamMember = await clerkClient.users.createUser({
+    emailAddress: [value.email],
+    password,
+    firstName: value.firstName,
+    lastName: value.lastName,
+    publicMetadata: {
+      phoneNumber: value.phoneNumber,
+      role: value.information?.role,
+    },
+  });
+
+  console.log(teamMember);
+  return {clerkId: teamMember.id, password, photo: teamMember.imageUrl};
+}
 // Update email address
 export async function updateMemberEmail(id: string, user: any) {
   try {
@@ -118,8 +135,6 @@ export async function updateMemberInformation(id: string, user: any) {
 
 // update member role
 export async function updateMemberRole(id: string, role: string) {
-
-
   try {
     if (role === 'admin') {
       await clerkClient.organizations.createOrganizationMembership({

@@ -57,20 +57,34 @@ export async function POST(req: Request) {
   if (eventType === 'user.created') {
     const { id, email_addresses, image_url, first_name, last_name, public_metadata } = evt.data;
 
-    const user = {
-      clerkId: id,
-      email: email_addresses[0].email_address,
-      phone: public_metadata.phoneNumber,
-      photo: image_url,
-      firstName: first_name,
-      lastName: last_name,
+    let user;
 
-      role: public_metadata.role,
-      companyName: public_metadata.companyName,
-      siret: public_metadata.siret,
-      address: public_metadata.address,
-      subscription: public_metadata.subscription,
-    };
+    if (public_metadata.role === 'member') {
+      user = {
+        clerkId: id,
+        email: email_addresses[0].email_address,
+        phone: public_metadata.phoneNumber,
+        photo: image_url,
+        firstName: first_name,
+        lastName: last_name,
+
+        role: public_metadata.role,
+        companyName: public_metadata.companyName,
+        siret: public_metadata.siret,
+        address: public_metadata.address,
+        subscription: public_metadata.subscription,
+      };
+    } else {
+      user = {
+        clerkId: id,
+        role: public_metadata.role,
+        email: email_addresses[0].email_address,
+        phone: public_metadata.phoneNumber,
+        photo: image_url,
+        firstName: first_name,
+        lastName: last_name,
+      };
+    }
 
     const newUser: any = await createUser(user);
 
@@ -86,20 +100,34 @@ export async function POST(req: Request) {
   if (eventType === 'user.updated') {
     const { id, email_addresses, image_url, first_name, last_name, public_metadata } = evt.data;
 
-    const user = {
-      clerkId: id,
-      email: email_addresses[0].email_address,
-      phone: public_metadata.phoneNumber,
-      // photo: image_url,
-      firstName: first_name,
-      lastName: last_name,
+    let user: any;
 
-      role: public_metadata.role,
-      companyName: public_metadata.companyName,
-      siret: public_metadata.siret,
-      address: public_metadata.address,
-      subscription: public_metadata.subscription,
-    };
+    if (public_metadata.role === 'member') {
+      user = {
+        clerkId: id,
+        email: email_addresses[0].email_address,
+        phone: public_metadata.phoneNumber,
+        photo: image_url,
+        firstName: first_name,
+        lastName: last_name,
+
+        role: public_metadata.role,
+        companyName: public_metadata.companyName,
+        siret: public_metadata.siret,
+        address: public_metadata.address,
+        subscription: public_metadata.subscription,
+      };
+    } else {
+      user = {
+        clerkId: id,
+        role: public_metadata.role,
+        email: email_addresses[0].email_address,
+        phone: public_metadata.phoneNumber,
+        photo: image_url,
+        firstName: first_name,
+        lastName: last_name,
+      };
+    }
 
     await updateUser({
       user,

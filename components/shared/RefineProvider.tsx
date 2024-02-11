@@ -3,10 +3,9 @@
 import { Refine } from '@refinedev/core';
 import routerProvider from '@refinedev/nextjs-router/app';
 import dataProvider from 'refine-sanity';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { client } from '@/sanity/lib';
 import { useDashboardStore } from '@/store';
-import { useToast } from '@/components/ui';
 
 const resources = {
   admin: [
@@ -26,6 +25,12 @@ const resources = {
     {
       name: 'teams',
       list: '/dashboard/admin/teams/list',
+      create: '/dashboard/admin/teams/create',
+      show: '/dashboard/admin/teams/show/:id',
+      edit: '/dashboard/admin/teams/edit/:id',
+      meta: {
+        canDelete: true,
+      },
     },
   ],
   member: [

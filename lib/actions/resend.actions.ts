@@ -2,7 +2,7 @@
 
 import { Resend } from 'resend';
 
-import { Contact, Welcome, Payment, ResetPassword, RequestForContact, Winner } from '@/emails';
+import { Contact, Welcome, Payment, ResetPassword, RequestForContact, Winner, WelcomeToTeam } from '@/emails';
 
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY!);
 
@@ -16,10 +16,12 @@ function getEmailTemplate(templateName: string, data: any) {
       return Payment(data);
     case 'reset-password':
       return ResetPassword(data);
-      case 'request-for-contact':
-        return RequestForContact(data);
-        case 'winner':
-          return Winner(data);
+    case 'request-for-contact':
+      return RequestForContact(data);
+    case 'winner':
+      return Winner(data);
+    case 'welcome-to-team':
+      return WelcomeToTeam(data);
     default:
       throw new Error(`Email template ${templateName} not found.`);
   }
