@@ -19,19 +19,13 @@ export async function POST(request: Request) {
     const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     let invoice = '';
     let order: any = {};
-    let orderId;
-
-    const db = createClient({
-      url: process.env.PRODUCTS_REST_API_URL!,
-      token: process.env.PRODUCTS_REST_API_TOKEN!,
-    });
 
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
       // Traitement pour le paiement d'une facture réussi
       invoice = event.data.object.invoice_pdf as string;
 
-      kv.set('invoice', invoice);
+      await kv.set('invoice', invoice);
     } else if (event.type === 'checkout.session.completed') {
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
