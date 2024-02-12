@@ -22,48 +22,45 @@ export async function POST(request: Request) {
     let orderId;
 
     // Traitement basé sur le type d'événement Stripe
-    switch (event.type) {
-      case 'invoice.payment_succeeded':
-        // Traitement pour le paiement d'une facture réussi
-        invoice = event.data.object.invoice_pdf as string;
-        console.log('invoice', invoice);
-        console.log('order id', orderId);
+    if (event.type === 'invoice.payment_succeeded') {
+      // Traitement pour le paiement d'une facture réussi
+      invoice = event.data.object.invoice_pdf as string;
+      console.log('invoice', invoice);
+      console.log('order id', orderId);
+    } else if (event.type === 'checkout.session.completed') {
+      // Traitement pour une session de paiement terminée
+      const { id, amount_total, metadata } = event.data.object;
 
-        break;
-      case 'checkout.session.completed':
-        // Traitement pour une session de paiement terminée
-        const { id, amount_total, metadata } = event.data.object;
+      const buyer = JSON.parse(metadata?.buyer as string);
+      const seller = JSON.parse(metadata?.seller as string);
+      const subscription = JSON.parse(metadata?.subscription as string);
 
-        const buyer = JSON.parse(metadata?.buyer as string);
-        const seller = JSON.parse(metadata?.seller as string);
-        const subscription = JSON.parse(metadata?.subscription as string);
+      // Mise à jour de l'abonnement de l'acheteur
+      subscription.status = true;
+      await updateUser({
+        id: buyer._ref,
+        user: subscription,
+      });
 
-        // Mise à jour de l'abonnement de l'acheteur
-        subscription.status = true;
-        await updateUser({
-          id: buyer._ref,
-          user: subscription,
-        });
+      // Création de l'objet de commande
+      order = {
+        stripeId: id,
+        plan: metadata?.plan || '',
+        frequency: metadata?.frequency || '',
+        buyer,
+        seller,
+        price: amount_total,
+        createdAt: new Date().toISOString(),
+        invoice,
+      };
+      console.log('order', order, invoice);
 
-        // Création de l'objet de commande
-        order = {
-          stripeId: id,
-          plan: metadata?.plan || '',
-          frequency: metadata?.frequency || '',
-          buyer,
-          seller,
-          price: amount_total,
-          createdAt: new Date().toISOString(),
-          invoice,
-        };
-        console.log('order', order, invoice);
+      // Création de la commande dans la base de données
+      const newOrder = await createOrder(order);
 
-        // Création de la commande dans la base de données
-        const newOrder = await createOrder(order);
-
-        orderId = newOrder._id;
-        // Réponse de succès avec la nouvelle commande
-        return NextResponse.json({ message: 'OK', order: newOrder });
+      orderId = newOrder._id;
+      // Réponse de succès avec la nouvelle commande
+      return NextResponse.json({ message: 'OK', order: newOrder });
     }
   } catch (err: any) {
     // Gestion des erreurs liées aux webhooks
