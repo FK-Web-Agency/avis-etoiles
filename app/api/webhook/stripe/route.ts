@@ -41,12 +41,13 @@ export async function POST(request: Request) {
       frequency: metadata?.frequency || '',
       buyer,
       seller,
-      totalAmount: amount_total,
+      price: amount_total,
       createdAt: formatDate(new Date()),
     };
 
     // Create the order in the database
     const newOrder = await createOrder(order);
+    console.log(newOrder);
 
     // Update the buyer's subscription
     subscription.status = true;
