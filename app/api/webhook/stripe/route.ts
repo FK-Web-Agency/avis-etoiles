@@ -1,9 +1,9 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
-import { formatDate } from '@/helper'; // Utilisé pour formater les dates si nécessaire
 import updateUser from '@/sanity/lib/members/updateUser'; // Mise à jour des utilisateurs dans Sanity
 import { client } from '@/sanity/lib'; // Client Sanity pour les opérations de base de données
+import kv, { createClient } from '@vercel/kv';
 
 // Fonction asynchrone pour gérer les requêtes POST
 export async function POST(request: Request) {
@@ -21,23 +21,17 @@ export async function POST(request: Request) {
     let order: any = {};
     let orderId;
 
+    const db = createClient({
+      url: process.env.PRODUCTS_REST_API_URL!,
+      token: process.env.PRODUCTS_REST_API_TOKEN!,
+    });
+
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
       // Traitement pour le paiement d'une facture réussi
       invoice = event.data.object.invoice_pdf as string;
 
-      console.log('orderId Invoice', orderId);
-
-      if (orderId) {
-        // Mise à jour de la commande avec le lien de la facture
-        await client.patch(orderId).set({ invoice }).commit();
-      } else {
-        const newOrder = await createOrder({ invoice });
-        orderId = newOrder._id;
-      }
-
-      console.log('invoice', invoice);
-      console.log('order id', orderId);
+      kv.set('invoice', invoice);
     } else if (event.type === 'checkout.session.completed') {
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
@@ -53,6 +47,8 @@ export async function POST(request: Request) {
         user: subscription,
       });
 
+      const invoice = await kv.get('invoice');
+
       // Création de l'objet de commande
       order = {
         stripeId: id,
@@ -64,21 +60,14 @@ export async function POST(request: Request) {
         createdAt: new Date().toISOString(),
         invoice,
       };
-      console.log('order', orderId);
+
+      console.log('order', invoice);
 
       // Création de la commande dans la base de données
-      if (orderId) {
-        // Mise à jour de la commande existante
-        const updateOrder = await client.patch(orderId).set(order).commit();
+      const newOrder = await createOrder(order);
 
-        return NextResponse.json({ message: 'OK', order: updateOrder });
-      } else {
-        const newOrder = await createOrder(order);
-
-        orderId = newOrder._id;
-        // Réponse de succès avec la nouvelle commande
-        return NextResponse.json({ message: 'OK', order: newOrder });
-      }
+      // Réponse de succès avec la nouvelle commande
+      return NextResponse.json({ message: 'OK', order: newOrder });
     }
   } catch (err: any) {
     // Gestion des erreurs liées aux webhooks
