@@ -39,11 +39,11 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+/*     defineField({
       name: 'photo',
       title: 'Photo',
       type: 'url',
-    }),
+    }), */
     defineField({
       name: 'email',
       title: 'Email',

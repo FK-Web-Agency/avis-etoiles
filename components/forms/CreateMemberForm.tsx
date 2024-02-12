@@ -143,7 +143,6 @@ export default function CreateMemberForm() {
         // Create a new subscriber
         const user = {
           clerkId: response.clerkId,
-          photo: response.photo,
           role: 'member',
           address: values.address,
           ...values.information,

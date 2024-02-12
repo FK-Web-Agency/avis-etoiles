@@ -87,11 +87,11 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-    defineField({
+/*     defineField({
       name: 'photo',
       title: 'Photo',
       type: 'url',
-    }),
+    }), */
     defineField({
       name: 'address',
       title: 'Adresse',
