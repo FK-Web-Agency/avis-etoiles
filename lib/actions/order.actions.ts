@@ -79,7 +79,7 @@ export const createOrder = async (order: any) => {
   // create a new order in sanity
   const newOrder = {
     ...order,
-    _type: 'orders',
+    _type: process.env.NEXT_PUBLIC_SANITY_ORDERS,
   };
   const result = await client.create(newOrder);
   return result;

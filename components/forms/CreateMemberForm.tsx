@@ -186,6 +186,9 @@ export default function CreateMemberForm() {
                   }),
                 };
 
+
+                console.log(order);
+                
                 // Checkout the order
                 const { status, message } = await checkoutOrder(order);
 
