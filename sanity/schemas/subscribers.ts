@@ -12,7 +12,7 @@ export default defineType({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
-      to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!}],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!}],
     }),
     defineField({
       name: 'companyName',

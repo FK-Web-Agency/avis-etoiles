@@ -6,7 +6,7 @@ interface UpdateUserProps {
     email: string;
     firstName: string;
     lastName: string;
-  };
+  } | any;
 }
 
 export default async function updateUser({ id, user }: UpdateUserProps) {

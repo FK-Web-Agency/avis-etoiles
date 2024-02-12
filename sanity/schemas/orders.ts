@@ -17,7 +17,7 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'buyerId',
+      name: 'buyer',
       title: 'Abonné',
       type: 'reference',
       to: [{ type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS! }],
@@ -26,7 +26,7 @@ export default defineType({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
-      to: [{ type: 'team-collaborators' }],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!}],
     }),
     defineField({
       name: 'price',
@@ -34,8 +34,8 @@ export default defineType({
       type: 'number',
     }),
     defineField({
-      name: 'interval',
-      title: 'Intervale',
+      name: 'frequency',
+      title: 'Fréquence',
       type: 'string',
     }),
     defineField({

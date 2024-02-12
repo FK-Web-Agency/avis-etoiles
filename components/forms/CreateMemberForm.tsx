@@ -1,17 +1,10 @@
+// Import dependencies
 'use client';
-// TODO : check if email is sent
-/* 
-TODO 
-
-1- envoyer un email pour le paiement
-2 - Mettre a jour sanity apres le paiement
-3 - envoyer un email pour la confirmation de l'abonnement
-*/
 import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { useList, useNavigation, useOne } from '@refinedev/core';
+import { useCreate, useList, useNavigation, useOne } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
@@ -20,12 +13,14 @@ import { formatToISOString } from '@/helper';
 import { checkoutOrder } from '@/lib/actions';
 import { useDashboardStore } from '@/store';
 
+// Define recurring options
 enum Recurring {
   monthly = 'Mois',
   yearly = 'Année',
   punctual = 'Ponctuel',
 }
 
+// Define the schema for the member form
 const MemberSchema = z.object({
   information: z.object({
     // role: z.enum(['admin', 'member']).default('member'),
@@ -90,11 +85,14 @@ const MemberSchema = z.object({
 export type MemberProps = z.infer<typeof MemberSchema>;
 
 export default function CreateMemberForm() {
+  // Define state variables
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { list } = useNavigation();
   const { userIds } = useDashboardStore();
+  const { mutate } = useCreate();
 
+  // Fetch data for the current user
   const { data } = useOne({
     resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS,
     id: userIds?.sanityId,
@@ -104,18 +102,22 @@ export default function CreateMemberForm() {
 
   console.log(seller);
 
+  // Handle form submission
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
 
+    // Ask for confirmation if the subscription price is 0
     const askConfirmation =
       values?.subscription?.price == '0' || !values?.subscription?.price
-        ? confirm("Le prix de l'abonnement est de 0€, êtes-vous sûr de vouloir continuer ?")
+        ? confirm('The subscription price is 0€, are you sure you want to continue?')
         : true;
 
     if (askConfirmation) {
+      // Format start and expiration dates
       const startDate = formatToISOString(values?.subscription?.startDate);
       const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
+      // Create a new member
       const response = await createMember({
         ...values,
         subscription: {
@@ -128,54 +130,80 @@ export default function CreateMemberForm() {
       // If there is an error, display the error message
       if (response.status === 'error') {
         toast({
-          title: 'Erreur',
+          title: 'Error',
           description: response.message,
           variant: 'destructive',
         });
       } else {
         const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
-        
-        if (!values.subscription.free) {
-          const order = {
-            email: values?.information?.email,
-            title: values?.subscription?.plan,
-            frequency: recurring,
-            price: values?.subscription?.price,
-            buyer: {
 
+        // Create a new subscriber
+        const user = {
+          clerkId: response.clerkId,
+          role: 'member',
+          address: values.address,
+          ...values.information,
+          price: Number(values.subscription.price),
+          subscription: {
+            ...values.subscription,
+            recurring,
+            startDate,
+            expirationDate,
+          },
+        };
+
+        mutate(
+          {
+            resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+            values: user,
+          },
+          {
+            onSuccess: async (data) => {
+              if (!values.subscription.free) {
+                const order = {
+                  email: values?.information?.email,
+                  title: values?.subscription?.plan,
+                  frequency: recurring,
+                  price: values?.subscription?.price,
+                  buyer: JSON.stringify({
+                    type: 'reference',
+                    // @ts-ignore
+                    _ref: data?._id,
+                  }),
+                  seller: JSON.stringify({
+                    type: 'reference',
+                    _ref: seller?._id,
+                  }),
+                  subscription: JSON.stringify({
+                    ...values.subscription,
+                    recurring,
+                    startDate,
+                    expirationDate,
+                  }),
+                };
+
+                // Checkout the order
+                const { status, message } = await checkoutOrder(order);
+
+                if (status === 'error') {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Uh oh! Something went wrong.',
+                    description: message,
+                  });
+                } else {
+                  toast({
+                    description: message,
+                  });
+
+                  setTimeout(() => {
+                    list('members');
+                  }, 1000);
+                }
+              }
             },
-            seller: {
-              type: 'reference',
-              _ref: seller?._id,
-            },
-            subscription: {
-              ...values.subscription,
-              recurring,
-              startDate,
-              expirationDate,
-            },
-          };
-
-          console.log(order);
-
-          const { status, message } = await checkoutOrder(order);
-
-          if (status === 'error') {
-            toast({
-              variant: 'destructive',
-              title: 'Uh oh! Quelque chose a mal tourné.',
-              description: message,
-            });
-          } else {
-            toast({
-              description: message,
-            });
-
-            setTimeout(() => {
-              list('members');
-            }, 1000);
           }
-        }
+        );
 
         setLoading(false);
       }
@@ -220,7 +248,7 @@ export default function CreateMemberForm() {
         },
       }}
       className="text-slate-100">
-      <AutoFormSubmit loading={loading}>Créer un membre</AutoFormSubmit>
+      <AutoFormSubmit loading={loading}>Create Member</AutoFormSubmit>
     </AutoForm>
   );
 }

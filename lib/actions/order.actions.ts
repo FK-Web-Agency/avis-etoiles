@@ -1,7 +1,6 @@
 'use server';
 
 import { client } from '@/sanity/lib';
-import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
 import sendEmail from './resend.actions';
 
@@ -30,19 +29,20 @@ export const checkoutOrder = async (order: any) => {
       ],
       metadata: {
         plan: order.title,
-        buyerId: order.buyerId,
+        buyer: order.buyer,
         seller: order.seller,
+        subscription: order.subscription,
       },
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,
       cancel_url: `${baseUrl}/prices/`,
       locale: 'fr',
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+      invoice_creation: {
+        enabled: true,
+      },
     });
 
-
-
-    
     // Send email
     const { status } = await sendEmail({
       email: order.email,
@@ -52,7 +52,7 @@ export const checkoutOrder = async (order: any) => {
     });
 
     return status === 'success'
-      ? { status: 'success', message: 'Email envoyé avec succés', data: session }
+      ? { status: 'success', message: 'Abonné crée avec success, un email a été envoyé', data: session }
       : { status: 'error', message: "Une erreur s'est produite, merci de réessayer ultérieurement" };
   } catch (error) {
     throw error;

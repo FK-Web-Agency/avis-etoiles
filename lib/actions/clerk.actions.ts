@@ -13,7 +13,7 @@ const password = generate({
 export async function createMember(value: any) {
   try {
     // Create user
-    await clerkClient.users.createUser({
+    const response = await clerkClient.users.createUser({
       emailAddress: [value.information?.email],
       password,
       firstName: value.information?.firstName,
@@ -41,14 +41,14 @@ export async function createMember(value: any) {
     });
 
     // Send email
-/*     await sendEmail({
+    await sendEmail({
       email: value.information?.email,
       subject: "Confirmation d'adhesion",
       emailTemplate: 'welcome',
       password,
-    }); */
+    });
 
-    return { status: 'success', message: 'Le membre a été créé avec succès.', password };
+    return { status: 'success', message: 'Le membre a été créé avec succès.', clerkId: response.id, password };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
@@ -69,7 +69,7 @@ export async function createTeam(value: any) {
   });
 
   console.log(teamMember);
-  return {clerkId: teamMember.id, password};
+  return { clerkId: teamMember.id, password };
 }
 // Update email address
 export async function updateMemberEmail(id: string, user: any) {

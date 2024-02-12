@@ -13,7 +13,7 @@ import { fr } from 'date-fns/locale/fr';
 export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
-    resource: 'users',
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
   });
 
   const members = data?.data || [];

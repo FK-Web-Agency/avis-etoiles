@@ -3,7 +3,7 @@ import { client } from '../lib';
 import { Icons } from '@/components/shared';
 
 export default defineType({
-  name: 'team-collaborators',
+  name:  process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
   title: "Collaborateurs",
   type: 'document',
   icon: Icons.Teams,
@@ -39,12 +39,11 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-/*     defineField({
-      name: 'imageURL',
+    defineField({
+      name: 'photo',
       title: 'Photo',
-      type: 'string',
-    }), */
-
+      type: 'url',
+    }),
     defineField({
       name: 'email',
       title: 'Email',

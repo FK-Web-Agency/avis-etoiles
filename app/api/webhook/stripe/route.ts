@@ -2,6 +2,7 @@ import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions';
 import { formatDate } from '@/helper';
+import updateUser from '@/sanity/lib/members/updateUser';
 
 export async function POST(request: Request) {
   // Parse the request body
@@ -27,18 +28,29 @@ export async function POST(request: Request) {
   // Handle 'checkout.session.completed' event
   if (eventType === 'checkout.session.completed') {
     const { id, amount_total, metadata } = event.data.object;
+console.log(event.data.object);
 
+    const buyer = JSON.parse(metadata?.buyerId as string);
+    const seller = JSON.parse(metadata?.sellerId as string);
     // Create an order object
     const order = {
       stripeId: id,
       plan: metadata?.plan || '',
-      buyerId: metadata?.buyerId || '',
+      frequency: metadata?.frequency || '',
+      buyer,
+      seller,
       totalAmount: amount_total,
       createdAt: formatDate(new Date()),
     };
 
     // Create the order in the database
     const newOrder = await createOrder(order);
+
+    // Update the buyer's subscription
+    await updateUser({
+      id: buyer._ref,
+      user: metadata?.subscription
+    })
 
     // Return success response with the new order
     return NextResponse.json({ message: 'OK', order: newOrder });
