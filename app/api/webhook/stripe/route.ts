@@ -30,8 +30,8 @@ export async function POST(request: Request) {
     const { id, amount_total, invoice, metadata } = event.data.object;
     console.log(event.data.object);
 
-    const buyer = JSON.parse(metadata?.buyerId as string);
-    const seller = JSON.parse(metadata?.sellerId as string);
+    const buyer = JSON.parse(metadata?.buyer as string);
+    const seller = JSON.parse(metadata?.seller as string);
     const subscription = JSON.parse(metadata?.subscription as string);
     // Create an order object
     order = {
