@@ -1,6 +1,6 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { createOrder, retrieveInvoice } from '@/lib/actions/order.actions';
+import { createOrder } from '@/lib/actions/order.actions';
 import { formatDate } from '@/helper';
 import updateUser from '@/sanity/lib/members/updateUser';
 
