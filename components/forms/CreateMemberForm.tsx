@@ -102,6 +102,8 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
+  console.log(seller);
+
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
 
@@ -131,22 +133,30 @@ export default function CreateMemberForm() {
           variant: 'destructive',
         });
       } else {
+        const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
+        
         if (!values.subscription.free) {
           const order = {
             email: values?.information?.email,
             title: values?.subscription?.plan,
-            frequency: values?.subscription?.recurring,
+            frequency: recurring,
             price: values?.subscription?.price,
+            buyer: {
+
+            },
             seller: {
               type: 'reference',
               _ref: seller?._id,
             },
             subscription: {
               ...values.subscription,
+              recurring,
               startDate,
               expirationDate,
             },
           };
+
+          console.log(order);
 
           const { status, message } = await checkoutOrder(order);
 

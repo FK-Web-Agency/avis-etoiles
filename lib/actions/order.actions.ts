@@ -30,7 +30,7 @@ export const checkoutOrder = async (order: any) => {
       ],
       metadata: {
         plan: order.title,
-        buyerId: 'order.buyerId',
+        buyerId: order.buyerId,
         seller: order.seller,
       },
       mode: 'subscription',

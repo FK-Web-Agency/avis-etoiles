@@ -86,7 +86,7 @@ export async function POST(req: Request) {
       };
     }
 
-    const newUser: any = await createUser(user);
+/*     const newUser: any = await createUser(user);
 
     if (newUser) {
       await clerkClient.users.updateUserMetadata(id, {
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
           userId: newUser._id,
         },
       });
-    }
+    } */
   }
 
   if (eventType === 'user.updated') {
