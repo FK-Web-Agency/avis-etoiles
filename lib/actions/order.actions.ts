@@ -63,9 +63,11 @@ export const checkoutOrder = async (order: any) => {
 };
 
 export const retrieveInvoice = async (invoiceId: string) => {
+  console.log(invoiceId);
+  
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   try {
-    const invoice = await stripe.invoices.retrieve(invoiceId);
+    const invoice = await stripe.invoices.retrieve("in_1OiyDlJ4ZeV5iA6R0UGOy26S");
     return invoice;
   } catch (error) {
     console.log(error);
