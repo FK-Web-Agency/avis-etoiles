@@ -1,29 +1,20 @@
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 type Data = {
   message: string;
 };
 
-// Next.js will by default parse the body, which can lead to invalid signatures
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 const secret = process.env.SANITY_REVALIDATE_SECRET!;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const signature = req.headers[SIGNATURE_HEADER_NAME] as string;
+export async function POST(req: NextRequest) {
+  const signature = req.headers.get(SIGNATURE_HEADER_NAME) as string;
+  //.headers[SIGNATURE_HEADER_NAME]
   const body = await readBody(req); // Read the body into a string
 
-  if (req.method !== 'POST') {
-    return res.status(401).json({ message: 'Must be a POST request' });
-  }
-
   if (!isValidSignature(body, signature, secret)) {
-    res.status(401).json({ message: 'Invalid signature' });
+    NextResponse.json({ message: 'Invalid signature', status: 401 });
     return;
   }
 
@@ -32,15 +23,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     switch (type) {
       case 'post':
-        await res.revalidate(`/projects/${slug.current}`); // The particular project
-        await res.revalidate(`/projects`); // The Projects page
-        await res.revalidate(`/`); // The landing page featured projects
-        return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
+        await revalidatePath(`/projects/${slug.current}`); // The particular project
+        await revalidatePath(`/projects`); // The Projects page
+        await revalidatePath(`/`, 'page'); // The landing page featured projects
+        return NextResponse.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
     }
 
-    return res.json({ message: 'No managed type' });
+    return NextResponse.json({ message: 'No managed type' });
   } catch (err) {
-    return res.status(500).send({ message: 'Error revalidating' });
+    return NextResponse.json({ message: 'Error revalidating' });
   }
 }
 
