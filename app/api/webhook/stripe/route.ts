@@ -19,12 +19,16 @@ export async function POST(request: Request) {
     const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     let invoice = '';
     let order: any = {};
+    let orderId;
 
     // Traitement basé sur le type d'événement Stripe
     switch (event.type) {
       case 'invoice.payment_succeeded':
         // Traitement pour le paiement d'une facture réussi
         invoice = event.data.object.invoice_pdf as string;
+        console.log('invoice', invoice);
+        console.log('order id', orderId);
+
         break;
       case 'checkout.session.completed':
         // Traitement pour une session de paiement terminée
@@ -57,6 +61,7 @@ export async function POST(request: Request) {
         // Création de la commande dans la base de données
         const newOrder = await createOrder(order);
 
+        orderId = newOrder._id;
         // Réponse de succès avec la nouvelle commande
         return NextResponse.json({ message: 'OK', order: newOrder });
     }
