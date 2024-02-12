@@ -38,7 +38,7 @@ export const checkoutOrder = async (order: any) => {
       cancel_url: `${baseUrl}/prices/`,
       locale: 'fr',
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-      invoice_creation: {
+      automatic_tax: {
         enabled: true,
       },
     });
@@ -57,6 +57,12 @@ export const checkoutOrder = async (order: any) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const retrieveInvoice = async (invoiceId: string) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const invoice = await stripe.invoices.retrieve(invoiceId);
+  return invoice;
 };
 
 export const createOrder = async (order: any) => {

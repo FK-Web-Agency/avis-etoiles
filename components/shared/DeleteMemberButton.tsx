@@ -30,7 +30,7 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
     try {
       // delete the user from the database (sanity)
       mutate({
-        resource: 'users',
+        resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
         id,
       });
 

@@ -1,6 +1,6 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { createOrder } from '@/lib/actions/order.actions';
+import { createOrder, retrieveInvoice } from '@/lib/actions/order.actions';
 import { formatDate } from '@/helper';
 import updateUser from '@/sanity/lib/members/updateUser';
 
@@ -27,8 +27,11 @@ export async function POST(request: Request) {
 
   // Handle 'checkout.session.completed' event
   if (eventType === 'checkout.session.completed') {
-    const { id, amount_total, metadata } = event.data.object;
-console.log(event.data.object);
+    const { id, amount_total, invoice, metadata } = event.data.object;
+    console.log(event.data.object);
+
+    const invoiceRetrieve = await retrieveInvoice(invoice as string);
+    console.log(invoiceRetrieve);
 
     const buyer = JSON.parse(metadata?.buyerId as string);
     const seller = JSON.parse(metadata?.sellerId as string);
@@ -49,8 +52,8 @@ console.log(event.data.object);
     // Update the buyer's subscription
     await updateUser({
       id: buyer._ref,
-      user: metadata?.subscription
-    })
+      user: JSON.parse(metadata?.subscription as string),
+    });
 
     // Return success response with the new order
     return NextResponse.json({ message: 'OK', order: newOrder });

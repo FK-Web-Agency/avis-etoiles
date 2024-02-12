@@ -140,12 +140,13 @@ export default function CreateMemberForm() {
         // Create a new subscriber
         const user = {
           clerkId: response.clerkId,
+          photo: response.photo,
           role: 'member',
           address: values.address,
           ...values.information,
-          price: Number(values.subscription.price),
           subscription: {
             ...values.subscription,
+            price: Number(values.subscription.price),
             recurring,
             startDate,
             expirationDate,
@@ -158,7 +159,9 @@ export default function CreateMemberForm() {
             values: user,
           },
           {
-            onSuccess: async (data) => {
+            onSuccess: async (data: any) => {
+              console.log(data);
+
               if (!values.subscription.free) {
                 const order = {
                   email: values?.information?.email,
@@ -167,7 +170,6 @@ export default function CreateMemberForm() {
                   price: values?.subscription?.price,
                   buyer: JSON.stringify({
                     type: 'reference',
-                    // @ts-ignore
                     _ref: data?._id,
                   }),
                   seller: JSON.stringify({

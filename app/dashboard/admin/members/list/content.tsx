@@ -79,7 +79,7 @@ export default function Content() {
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
                   <p className="text-white ">
-                    {user?.subscription?.expirationDate ? (
+                    {user?.subscription?.expirationDate && user?.subscription?.status ? (
                       formatDistance(new Date(user?.subscription?.expirationDate), new Date(), {
                         addSuffix: true,
                         locale: fr,
@@ -91,14 +91,6 @@ export default function Content() {
                 </TableCell>
                 <TableCell className="text-right ">
                   <div className="flex justify-center items-center gap-5">
-                    {/* <ToggleRoleMemberButton user={user}>
-                      <Icons.Group
-                        className={classNames(
-                          user?.role === 'member' ? 'text-gray-900' : 'text-slate-100',
-                          'transition-colors duration-200 w-4 h-4'
-                        )}
-                      />
-                    </ToggleRoleMemberButton> */}
 
                     <Button
                       onClick={() =>
