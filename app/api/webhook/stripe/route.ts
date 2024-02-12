@@ -14,9 +14,8 @@ export async function POST(request: Request) {
   const endpointSecret = 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F';
 
   let event;
-  let order: any = {
-    invoice: '',
-  };
+  let invoice = '';
+  let order: any = {};
 
   try {
     // Construct the Stripe event using the request body, signature, and endpoint secret
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
     const { invoice_pdf } = event.data.object;
     console.log('invoice', order);
 
-    order.invoice = invoice_pdf as string;
+    invoice = invoice_pdf as string;
   }
 
   // Handle 'checkout.session.completed' event
@@ -67,10 +66,10 @@ export async function POST(request: Request) {
     });
   }
 
-  console.log('order', order);
+  console.log('order', order, invoice);
 
   // Create the order in the database
-  const newOrder = await createOrder(order);
+  const newOrder = await createOrder({ ...order, invoice });
 
   // Return success response with the new order
   return NextResponse.json({ message: 'OK', order: newOrder });
