@@ -32,6 +32,7 @@ export const checkoutOrder = async (order: any) => {
         buyer: order.buyer,
         seller: order.seller,
         subscription: order.subscription,
+        frequency: order.frequency,
       },
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,

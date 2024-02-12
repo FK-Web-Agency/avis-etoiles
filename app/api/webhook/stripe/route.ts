@@ -25,6 +25,15 @@ export async function POST(request: Request) {
   // Get the type of the Stripe event
   const eventType = event.type;
   let order = {};
+
+  if (eventType === 'invoice.payment_succeeded') {
+    const { invoice_pdf } = event.data.object;
+    order = {
+      ...order,
+      invoice: invoice_pdf,
+    };
+  }
+
   // Handle 'checkout.session.completed' event
   if (eventType === 'checkout.session.completed') {
     const { id, amount_total, invoice, metadata } = event.data.object;
@@ -42,13 +51,10 @@ export async function POST(request: Request) {
       buyer,
       seller,
       price: amount_total,
-      createdAt: formatDate(new Date()),
+      createdAt: new Date().toISOString(),
     };
-
     // Create the order in the database
     const newOrder = await createOrder(order);
-    console.log(newOrder);
-
     // Update the buyer's subscription
     subscription.status = true;
     await updateUser({
@@ -60,13 +66,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
-  if (eventType === 'invoice.payment_succeeded') {
-    const { invoice_pdf } = event.data.object;
-    order = {
-      ...order,
-      invoice: invoice_pdf,
-    };
-  }
   // Return empty response with 200 status
   return new Response('', { status: 200 });
 }
