@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     console.log('invoice', order);
 
     // @ts-ignore
-    request?.invoice = invoice_pdf;
+    order?.invoice = invoice_pdf;
   }
 
   // Handle 'checkout.session.completed' event
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const seller = JSON.parse(metadata?.seller as string);
     const subscription = JSON.parse(metadata?.subscription as string);
  // @ts-ignore
-    console.log('req invoice',req?.invoice);
+    console.log('req invoice',order);
     
     // Create an order object
     order = {
