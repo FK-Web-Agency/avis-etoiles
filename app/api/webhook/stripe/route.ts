@@ -25,6 +25,17 @@ export async function POST(request: Request) {
     if (event.type === 'invoice.payment_succeeded') {
       // Traitement pour le paiement d'une facture réussi
       invoice = event.data.object.invoice_pdf as string;
+
+      console.log('orderId Invoice', orderId);
+
+      if (orderId) {
+        // Mise à jour de la commande avec le lien de la facture
+        await client.patch(orderId).set({ invoice }).commit();
+      } else {
+        const newOrder = await createOrder({ invoice });
+        orderId = newOrder._id;
+      }
+
       console.log('invoice', invoice);
       console.log('order id', orderId);
     } else if (event.type === 'checkout.session.completed') {
@@ -53,14 +64,21 @@ export async function POST(request: Request) {
         createdAt: new Date().toISOString(),
         invoice,
       };
-      console.log('order', order, invoice);
+      console.log('order', orderId);
 
       // Création de la commande dans la base de données
-      const newOrder = await createOrder(order);
+      if (orderId) {
+        // Mise à jour de la commande existante
+        const updateOrder = await client.patch(orderId).set(order).commit();
 
-      orderId = newOrder._id;
-      // Réponse de succès avec la nouvelle commande
-      return NextResponse.json({ message: 'OK', order: newOrder });
+        return NextResponse.json({ message: 'OK', order: updateOrder });
+      } else {
+        const newOrder = await createOrder(order);
+
+        orderId = newOrder._id;
+        // Réponse de succès avec la nouvelle commande
+        return NextResponse.json({ message: 'OK', order: newOrder });
+      }
     }
   } catch (err: any) {
     // Gestion des erreurs liées aux webhooks
