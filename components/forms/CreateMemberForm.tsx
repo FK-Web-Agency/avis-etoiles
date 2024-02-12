@@ -172,11 +172,11 @@ export default function CreateMemberForm() {
                   frequency: recurring,
                   price: values?.subscription?.price,
                   buyer: JSON.stringify({
-                    type: 'reference',
+                    _type: 'reference',
                     _ref: data?._id,
                   }),
                   seller: JSON.stringify({
-                    type: 'reference',
+                    _type: 'reference',
                     _ref: seller?._id,
                   }),
                   subscription: JSON.stringify({

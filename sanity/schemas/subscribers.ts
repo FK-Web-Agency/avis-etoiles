@@ -90,7 +90,7 @@ export default defineType({
     defineField({
       name: 'photo',
       title: 'Photo',
-      type: 'string',
+      type: 'url',
     }),
     defineField({
       name: 'address',
