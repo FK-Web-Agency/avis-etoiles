@@ -69,6 +69,7 @@
     "react-hook-form": "^7.49.3",
     "react-icons": "^4.12.0",
     "react-phone-number-input": "^3.3.9",
+    "react-to-pdf": "^1.0.1",
     "refine-sanity": "^1.1.1",
     "resend": "^2.1.0",
     "sanity": "^3.24.1",

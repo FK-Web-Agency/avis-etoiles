@@ -12,6 +12,11 @@ export default defineType({
       title: 'Logo',
       type: 'image',
     }),
+    defineField({
+      name: 'vat',
+      title: 'TVA',
+      type: 'string',
+    }),
     // Mentions légales
     defineField({
       name: 'legalNotice',

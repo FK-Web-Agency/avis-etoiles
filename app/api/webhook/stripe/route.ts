@@ -35,11 +35,12 @@ export async function POST(request: Request) {
 
     const buyer = JSON.parse(metadata?.buyerId as string);
     const seller = JSON.parse(metadata?.sellerId as string);
+    const subscription = JSON.parse(metadata?.subscription as string);
     // Create an order object
     const order = {
       stripeId: id,
       plan: metadata?.plan || '',
-      frequency: metadata?.frequency || '',
+      frequency: metadata?.frequency || '', 
       buyer,
       seller,
       totalAmount: amount_total,
@@ -50,9 +51,10 @@ export async function POST(request: Request) {
     const newOrder = await createOrder(order);
 
     // Update the buyer's subscription
+    subscription.status = true;
     await updateUser({
       id: buyer._ref,
-      user: JSON.parse(metadata?.subscription as string),
+      user: subscription,
     });
 
     // Return success response with the new order

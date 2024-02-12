@@ -50,6 +50,7 @@ const MemberSchema = z.object({
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de SIRET/SIREN doit être une valeur numérique',
       }),
+    vat: z.string().describe('TVA'),
   }),
   address: z
     .object({
@@ -134,6 +135,8 @@ export default function CreateMemberForm() {
           description: response.message,
           variant: 'destructive',
         });
+
+        setLoading(false);
       } else {
         const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
 

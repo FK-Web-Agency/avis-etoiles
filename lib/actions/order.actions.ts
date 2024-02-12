@@ -41,6 +41,9 @@ export const checkoutOrder = async (order: any) => {
       automatic_tax: {
         enabled: true,
       },
+      tax_id_collection: {
+        enabled: true,
+      },
     });
 
     // Send email
@@ -61,8 +64,13 @@ export const checkoutOrder = async (order: any) => {
 
 export const retrieveInvoice = async (invoiceId: string) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const invoice = await stripe.invoices.retrieve(invoiceId);
-  return invoice;
+  try {
+    const invoice = await stripe.invoices.retrieve(invoiceId);
+    return invoice;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const createOrder = async (order: any) => {

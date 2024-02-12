@@ -21,6 +21,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'vat',
+      title: 'TVA',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'clerkId',
       title: 'id du membre',
       type: 'string',
@@ -152,8 +158,8 @@ export default defineType({
           type: 'string',
           options: {
             list: [
-              { title: 'Mensuel', value: 'monthly' },
-              { title: 'Annuel', value: 'yearly' },
+              { title: 'Mensuel', value: 'month' },
+              { title: 'Annuel', value: 'year' },
             ],
           },
         }),
