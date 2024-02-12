@@ -30,9 +30,6 @@ export async function POST(request: Request) {
     const { id, amount_total, invoice, metadata } = event.data.object;
     console.log(event.data.object);
 
-    const invoiceRetrieve = await retrieveInvoice(invoice as string);
-    console.log(invoiceRetrieve);
-
     const buyer = JSON.parse(metadata?.buyerId as string);
     const seller = JSON.parse(metadata?.sellerId as string);
     const subscription = JSON.parse(metadata?.subscription as string);
@@ -40,7 +37,7 @@ export async function POST(request: Request) {
     const order = {
       stripeId: id,
       plan: metadata?.plan || '',
-      frequency: metadata?.frequency || '', 
+      frequency: metadata?.frequency || '',
       buyer,
       seller,
       totalAmount: amount_total,
@@ -61,6 +58,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
+  if (eventType === 'invoice.payment_succeeded') {
+    //const { invoice } = event.data.object;
+   // const invoiceRetrieve = await retrieveInvoice(invoice as string);
+    console.log(event.data.object);
+  }
   // Return empty response with 200 status
   return new Response('', { status: 200 });
 }
