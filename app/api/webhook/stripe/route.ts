@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions';
 import { formatDate } from '@/helper';
 import updateUser from '@/sanity/lib/members/updateUser';
+import { client } from '@/sanity/lib';
 
 export async function POST(request: Request) {
   // Parse the request body
@@ -24,14 +25,17 @@ export async function POST(request: Request) {
 
   // Get the type of the Stripe event
   const eventType = event.type;
-  let order = {};
+  let order: any = {};
 
   if (eventType === 'invoice.payment_succeeded') {
     const { invoice_pdf } = event.data.object;
-    order = {
-      ...order,
-      invoice: invoice_pdf,
-    };
+    console.log('invoice', order);
+
+    client
+      .patch(order?._id)
+      .set({ invoice: invoice_pdf })
+      .commit()
+      .then((res) => console.log('invoice', res));
   }
 
   // Handle 'checkout.session.completed' event
@@ -53,20 +57,19 @@ export async function POST(request: Request) {
       price: amount_total,
       createdAt: new Date().toISOString(),
     };
-
+    // Create the order in the database
+    const newOrder = await createOrder(order);
     // Update the buyer's subscription
     subscription.status = true;
     await updateUser({
       id: buyer._ref,
       user: subscription,
     });
+
+    // Return success response with the new order
+    return NextResponse.json({ message: 'OK', order: newOrder });
   }
-  console.log(order);
-  
-  // Create the order in the database
-  const newOrder = await createOrder(order);
-  // Return success response with the new order
-  return NextResponse.json({ message: 'OK', order: newOrder });
+
   // Return empty response with 200 status
   return new Response('', { status: 200 });
 }
