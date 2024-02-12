@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     console.log('invoice', order);
 
     // @ts-ignore
-    req?.invoice = invoice_pdf;
+    request?.invoice = invoice_pdf;
   }
 
   // Handle 'checkout.session.completed' event
