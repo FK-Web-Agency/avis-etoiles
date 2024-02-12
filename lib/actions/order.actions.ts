@@ -64,10 +64,10 @@ export const checkoutOrder = async (order: any) => {
 
 export const retrieveInvoice = async (invoiceId: string) => {
   console.log(invoiceId);
-  
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   try {
-    const invoice = await stripe.invoices.retrieve("in_1OiyDlJ4ZeV5iA6R0UGOy26S");
+    const invoice = await stripe.invoices.retrieve('in_1OiyDlJ4ZeV5iA6R0UGOy26S');
     return invoice;
   } catch (error) {
     console.log(error);
@@ -81,6 +81,6 @@ export const createOrder = async (order: any) => {
     ...order,
     _type: 'orders',
   };
-  const result = client.create(newOrder);
+  const result = await client.create(newOrder);
   return result;
 };

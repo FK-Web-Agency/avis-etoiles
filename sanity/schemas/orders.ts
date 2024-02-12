@@ -26,7 +26,12 @@ export default defineType({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
-      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!}],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS! }],
+    }),
+    defineField({
+      name: 'invoice',
+      title: 'Facture',
+      type: 'url',
     }),
     defineField({
       name: 'price',
@@ -42,9 +47,9 @@ export default defineType({
       name: 'createdAt',
       title: 'Payé le',
       type: 'date',
-      options:{
+      options: {
         dateFormat: 'DD-MM-YYYY',
-      }
+      },
     }),
   ],
 });

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   // Get the type of the Stripe event
   const eventType = event.type;
-
+  let order = {};
   // Handle 'checkout.session.completed' event
   if (eventType === 'checkout.session.completed') {
     const { id, amount_total, invoice, metadata } = event.data.object;
@@ -34,7 +34,8 @@ export async function POST(request: Request) {
     const seller = JSON.parse(metadata?.sellerId as string);
     const subscription = JSON.parse(metadata?.subscription as string);
     // Create an order object
-    const order = {
+    order = {
+      ...order,
       stripeId: id,
       plan: metadata?.plan || '',
       frequency: metadata?.frequency || '',
@@ -59,9 +60,11 @@ export async function POST(request: Request) {
   }
 
   if (eventType === 'invoice.payment_succeeded') {
-    //const { invoice } = event.data.object;
-   // const invoiceRetrieve = await retrieveInvoice(invoice as string);
-    console.log(event.data.object);
+    const { invoice_pdf } = event.data.object;
+    order = {
+      ...order,
+      invoice: invoice_pdf,
+    };
   }
   // Return empty response with 200 status
   return new Response('', { status: 200 });
