@@ -31,11 +31,8 @@ export async function POST(request: Request) {
     const { invoice_pdf } = event.data.object;
     console.log('invoice', order);
 
-    client
-      .patch(order?._id)
-      .set({ invoice: invoice_pdf })
-      .commit()
-      .then((res) => console.log('invoice', res));
+    // @ts-ignore
+    req?.invoice = invoice_pdf;
   }
 
   // Handle 'checkout.session.completed' event
@@ -46,6 +43,9 @@ export async function POST(request: Request) {
     const buyer = JSON.parse(metadata?.buyer as string);
     const seller = JSON.parse(metadata?.seller as string);
     const subscription = JSON.parse(metadata?.subscription as string);
+ // @ts-ignore
+    console.log('req invoice',req?.invoice);
+    
     // Create an order object
     order = {
       ...order,
