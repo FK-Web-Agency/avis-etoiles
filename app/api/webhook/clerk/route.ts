@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         clerkId: id,
         email: email_addresses[0].email_address,
         phone: public_metadata.phoneNumber,
-        photo: image_url,
+        //  photo: image_url,
         firstName: first_name,
         lastName: last_name,
 
@@ -80,13 +80,13 @@ export async function POST(req: Request) {
         role: public_metadata.role,
         email: email_addresses[0].email_address,
         phone: public_metadata.phoneNumber,
-        photo: image_url,
+        //   photo: image_url,
         firstName: first_name,
         lastName: last_name,
       };
     }
 
-/*     const newUser: any = await createUser(user);
+    /*     const newUser: any = await createUser(user);
 
     if (newUser) {
       await clerkClient.users.updateUserMetadata(id, {
@@ -107,7 +107,7 @@ export async function POST(req: Request) {
         clerkId: id,
         email: email_addresses[0].email_address,
         phone: public_metadata.phoneNumber,
-        photo: image_url,
+       // photo: image_url,
         firstName: first_name,
         lastName: last_name,
 
@@ -123,7 +123,7 @@ export async function POST(req: Request) {
         role: public_metadata.role,
         email: email_addresses[0].email_address,
         phone: public_metadata.phoneNumber,
-        photo: image_url,
+      //  photo: image_url,
         firstName: first_name,
         lastName: last_name,
       };
