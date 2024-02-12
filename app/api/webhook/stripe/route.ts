@@ -34,11 +34,6 @@ export async function POST(request: Request) {
     console.log('invoice', order);
 
     order.invoice = invoice_pdf as string;
-    // Create the order in the database
-    const newOrder = await createOrder(order);
-
-    // Return success response with the new order
-    return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
   // Handle 'checkout.session.completed' event
@@ -71,6 +66,14 @@ export async function POST(request: Request) {
       user: subscription,
     });
   }
+
+  console.log('order', order);
+
+  // Create the order in the database
+  const newOrder = await createOrder(order);
+
+  // Return success response with the new order
+  return NextResponse.json({ message: 'OK', order: newOrder });
 
   // Return empty response with 200 status
   return new Response('', { status: 200 });
