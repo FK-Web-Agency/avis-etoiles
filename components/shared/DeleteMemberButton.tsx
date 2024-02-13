@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteMember } from '@/lib/actions/clerk.actions';
-import { BaseRecord, useDelete, useNavigation } from '@refinedev/core';
+import { BaseRecord, useDelete, useDeleteMany, useList, useNavigation, useUpdate } from '@refinedev/core';
 import React, { PropsWithChildren } from 'react';
 import {
   Button,
@@ -24,27 +24,78 @@ type DeleteProps = {
 
 export default function DeleteMemberButton({ user, id, children }: PropsWithChildren<DeleteProps>) {
   const { toast } = useToast();
-  const { mutate } = useDelete();
+  const { mutate } = useUpdate();
   const { list } = useNavigation();
+  const { data } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
+  });
+
+  console.log(data);
+
   const handleDelete = async function () {
     try {
-      // delete the user from the database (sanity)
-      mutate({
-        resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-        id,
-      });
+      /*       mutateDeleteMany(
+        {
+          resource: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
+          // @ts-ignore
+          ids: data?.data.map((order) => order._id),
+        },
+        {
+          onSuccess() {
+            // delete the user from the database (sanity)
+            mutate(
+              {
+                resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+                id,
+              },
+              {
+                async onSuccess() {
+                  // delete the user from the auth database (clerk)
+                 
+                },
+                onError(error) {
+                  console.log(error);
+                  
+                  toast({
+                    title: 'Erreur',
+                    description: error.message,
+                    variant: 'destructive',
+                  });
+                },
+              }
+            );
+          },
+        }
+      );
+ */
 
-      // delete the user from the auth database (clerk)
       await deleteMember(user?.clerkId as string);
 
-      toast({
-        title: 'Membre supprimé',
-        description: `Le membre ${user?.firstName} ${user?.lastName} a été supprimé.`,
-      });
-      setTimeout(() => {
-        // redirect to members list
-        list('members');
-      }, 900);
+      mutate(
+        {
+          resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+          id,
+          values: { disabled: true },
+        },
+        {
+          onSuccess() {
+            toast({
+              title: 'Membre supprimé',
+              description: `Le membre ${user?.firstName} ${user?.lastName} a été supprimé.`,
+            });
+          },
+
+          onError(error) {
+            toast({
+              title: 'Erreur',
+              description: "Une erreur s'est produite lors de la suppression du membre",
+              variant: 'destructive',
+            });
+          },
+        }
+      );
+
+      list('members');
     } catch (error: any) {
       toast({
         title: 'Erreur',
@@ -52,13 +103,14 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
         variant: 'destructive',
       });
     }
-
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button variant={'destructive'}  className='px-4 py-2'>{children}</Button>
+        <Button variant={'destructive'} className="px-4 py-2">
+          {children}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

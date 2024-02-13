@@ -15,6 +15,12 @@ export default defineType({
       to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!}],
     }),
     defineField({
+      name: 'disabled',
+      title: 'Désactivé',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'companyName',
       title: "Nom de l'entreprise",
       type: 'string',

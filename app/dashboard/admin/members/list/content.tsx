@@ -2,22 +2,7 @@
 
 import { useList, useGo } from '@refinedev/core';
 
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui';
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
@@ -25,19 +10,7 @@ import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 import { useState } from 'react';
-
-// Fonction pour calculer les pages à afficher
-function calculatePagesToShow(current: number, max: number) {
-  let start = Math.max(current - 2, 1);
-  let end = Math.min(start + 4, max);
-
-  // Ajuster le début si on est proche de la fin
-  if (end === max) {
-    start = Math.max(end - 4, 1);
-  }
-
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
+import { PaginationTable } from '@/components/dashboard';
 
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +18,13 @@ export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+    filters: [
+      {
+        field: 'disabled',
+        operator: 'eq',
+        value: 'false',
+      },
+    ],
     pagination: {
       pageSize: 10,
       current: currentPage,
@@ -52,11 +32,8 @@ export default function Content() {
   });
 
   const members = data?.data || [];
-  console.log(data);
 
   const maxPage = Math.ceil(data?.total! / 10);
-
-  const pagesToShow = calculatePagesToShow(currentPage, maxPage);
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));
@@ -64,14 +41,14 @@ export default function Content() {
   return (
     <>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="h4-medium text-white">Tous les Members</h1>
+        <h1 className="h4-medium text-white">Tous les Abonnés</h1>
 
         <Button
           onClick={() => go({ to: { resource: 'members', action: 'create' } })}
           variant={'secondary'}
           className="rounded">
           <Icons.AddMember className="w-4 h-4" />
-          <span className="ml-2">Ajouter Membre</span>
+          <span className="ml-2">Ajouter Abonné</span>
         </Button>
       </div>
       {isLoading ? (
@@ -93,7 +70,11 @@ export default function Content() {
                   <TableCell className="font-medium">
                     <div className="flex items-center">
                       <div className="h-11 w-11 flex-shrink-0">
-                        <img className="h-11 w-11 rounded-full" src={user.photo} alt="" />
+                        <img
+                          className="h-11 w-11 rounded-full"
+                          src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.companyName}`}
+                          alt=""
+                        />
                       </div>
                       <div className="ml-4">
                         <div className="font-medium text-gray-100">
@@ -144,6 +125,22 @@ export default function Content() {
                           go({
                             to: {
                               resource: 'members',
+                              action: 'show',
+                              id: user?._id,
+                            },
+                            type: 'push',
+                          })
+                        }
+                        variant={'ghost'}
+                        size={'sm'}
+                        className="border-2 border-gray-100 text-gray-100 hover:text-gray-900">
+                        <Icons.Eye className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          go({
+                            to: {
+                              resource: 'members',
                               action: 'edit',
                               id: user?._id,
                             },
@@ -166,49 +163,8 @@ export default function Content() {
               ))}
             </TableBody>
           </Table>
-          {maxPage > 1 && (
-            <Pagination className="mt-8">
-              <PaginationContent className="text-slate-50">
-                <PaginationItem>
-                  <PaginationPrevious href="#" onClick={handlePrevPage} />
-                </PaginationItem>
-                {currentPage > 3 && (
-                  <>
-                    <PaginationItem>
-                      <PaginationLink href="#" onClick={() => setCurrentPage(1)}>
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                  </>
-                )}
-                {pagesToShow.map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink href="#" isActive={page === currentPage} onClick={() => setCurrentPage(page)}>
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                {currentPage < maxPage - 2 && (
-                  <>
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#" onClick={() => setCurrentPage(maxPage)}>
-                        {maxPage}
-                      </PaginationLink>
-                    </PaginationItem>
-                  </>
-                )}
-                <PaginationItem hidden={currentPage === maxPage}>
-                  <PaginationNext href="#" onClick={handleNextPage} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          )}
+
+          <PaginationTable {...{ currentPage, maxPage, setCurrentPage, handleNextPage, handlePrevPage }} />
         </div>
       ) : (
         <div className="flex-center flex-col">
