@@ -26,6 +26,7 @@ export async function POST(request: Request) {
         pdf: invoice_pdf,
         url: hosted_invoice_url,
       };
+
       await kv.set('invoice', invoice);
     } else if (event.type === 'checkout.session.completed') {
       // Traitement pour une session de paiement terminée
