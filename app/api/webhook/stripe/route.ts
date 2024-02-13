@@ -61,6 +61,7 @@ export async function POST(request: Request) {
       // Création de la commande dans la base de données
       const newOrder = await createOrder(order);
 
+      await kv.del('invoice');
       // Réponse de succès avec la nouvelle commande
       return NextResponse.json({ message: 'OK', order: newOrder });
     }

@@ -58,7 +58,7 @@ export default defineType({
     defineField({
       name: 'createdAt',
       title: 'Payé le',
-      type: 'date',
+      type: 'datetime',
       options: {
         dateFormat: 'DD-MM-YYYY',
       },
