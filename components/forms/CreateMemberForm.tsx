@@ -180,6 +180,7 @@ export default function CreateMemberForm() {
                   }),
                   subscription: JSON.stringify({
                     ...values.subscription,
+                    status: false,
                     recurring,
                     startDate,
                     expirationDate,

@@ -17,6 +17,7 @@ export default function Content() {
   });
 
   const members = data?.data || [];
+console.log(members);
 
   return (
     <>

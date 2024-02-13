@@ -16,8 +16,6 @@ export async function POST(request: Request) {
   try {
     // Construction de l'événement Stripe à partir du corps de la requête, de la signature, et du secret de l'endpoint
     const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
-    let invoice = '';
-    let order: any = {};
 
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
@@ -37,17 +35,15 @@ export async function POST(request: Request) {
       const seller = JSON.parse(metadata?.seller as string);
       const subscription = JSON.parse(metadata?.subscription as string);
 
-      // Mise à jour de l'abonnement de l'acheteur
-      subscription.status = true;
       await updateUser({
         id: buyer._ref,
-        user: subscription,
+        user: { ...subscription, status: true },
       });
 
       const invoice = await kv.get('invoice');
 
       // Création de l'objet de commande
-      order = {
+      const order = {
         stripeId: id,
         plan: metadata?.plan || '',
         frequency: metadata?.frequency || '',
