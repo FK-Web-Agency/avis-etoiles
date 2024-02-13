@@ -2,8 +2,7 @@ import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
 import updateUser from '@/sanity/lib/members/updateUser'; // Mise à jour des utilisateurs dans Sanity
-import { client } from '@/sanity/lib'; // Client Sanity pour les opérations de base de données
-import kv, { createClient } from '@vercel/kv';
+import  { kv } from '@vercel/kv';
 
 // Fonction asynchrone pour gérer les requêtes POST
 export async function POST(request: Request) {
