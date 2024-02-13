@@ -2,7 +2,7 @@ import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
 import updateUser from '@/sanity/lib/members/updateUser'; // Mise à jour des utilisateurs dans Sanity
-import  { kv } from '@vercel/kv';
+import { kv } from '@vercel/kv';
 
 // Fonction asynchrone pour gérer les requêtes POST
 export async function POST(request: Request) {
@@ -21,9 +21,13 @@ export async function POST(request: Request) {
 
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
+      const { invoice_pdf, hosted_invoice_url } = event.data.object;
       // Traitement pour le paiement d'une facture réussi
-      invoice = event.data.object.invoice_pdf as string;
 
+      const invoice = {
+        pdf: invoice_pdf,
+        url: hosted_invoice_url,
+      };
       await kv.set('invoice', invoice);
     } else if (event.type === 'checkout.session.completed') {
       // Traitement pour une session de paiement terminée
@@ -53,8 +57,6 @@ export async function POST(request: Request) {
         createdAt: new Date().toISOString(),
         invoice,
       };
-
-      console.log('order', invoice);
 
       // Création de la commande dans la base de données
       const newOrder = await createOrder(order);

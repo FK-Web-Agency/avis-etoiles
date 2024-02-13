@@ -31,7 +31,19 @@ export default defineType({
     defineField({
       name: 'invoice',
       title: 'Facture',
-      type: 'url',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'pdf',
+          title: 'PDF',
+          type: 'url',
+        }),
+        defineField({
+          name: 'url',
+          title: 'URL',
+          type: 'url',
+        }),
+      ],
     }),
     defineField({
       name: 'price',
