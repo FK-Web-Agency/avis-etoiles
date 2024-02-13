@@ -18,6 +18,7 @@ export default defineType({
       name: 'disabled',
       title: 'Désactivé',
       type: 'boolean',
+      description: 'Désactiver l\'abonné',
       initialValue: false,
     }),
     defineField({

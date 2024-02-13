@@ -18,13 +18,13 @@ export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-    filters: [
+/*     filters: [
       {
         field: 'disabled',
         operator: 'eq',
-        value: 'false',
+        value: false,
       },
-    ],
+    ], */
     pagination: {
       pageSize: 10,
       current: currentPage,
@@ -34,6 +34,9 @@ export default function Content() {
   const members = data?.data || [];
 
   const maxPage = Math.ceil(data?.total! / 10);
+
+  console.log(members);
+  
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));

@@ -50,7 +50,7 @@ const MemberSchema = z.object({
       .refine((value) => !isNaN(Number(value)), {
         message: 'Le numéro de SIRET/SIREN doit être une valeur numérique',
       }),
-    vat: z.string().describe('TVA'),
+    vat: z.string().describe('TVA').optional(),
   }),
   address: z
     .object({
@@ -58,11 +58,11 @@ const MemberSchema = z.object({
       city: z.string().describe('Ville'),
       zipCode: z
         .string()
-        .describe('Code postal')
         .max(5)
         .refine((value) => !isNaN(Number(value)), {
           message: 'Le numéro de code postal doit être une valeur numérique',
-        }),
+        })
+        .describe('Code postal'),
       country: z.string().describe('Pays'),
     })
     .describe('Adresse Postale'),
@@ -187,9 +187,8 @@ export default function CreateMemberForm() {
                   }),
                 };
 
-
                 console.log(order);
-                
+
                 // Checkout the order
                 const { status, message } = await checkoutOrder(order);
 

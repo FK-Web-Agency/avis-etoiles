@@ -68,6 +68,7 @@ export async function POST(req: Request) {
         //  photo: image_url,
         firstName: first_name,
         lastName: last_name,
+        disabled: false,
 
         role: public_metadata.role,
         companyName: public_metadata.companyName,
