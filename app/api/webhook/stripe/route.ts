@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
       await updateUser({
         id: buyer._ref,
-        user: { ...subscription, status: true },
+        user: { subscription: { ...subscription, status: true } },
       });
 
       const invoice = await kv.get('invoice');
