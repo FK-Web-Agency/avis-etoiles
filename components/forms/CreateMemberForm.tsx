@@ -118,9 +118,13 @@ export default function CreateMemberForm() {
       const startDate = formatToISOString(values?.subscription?.startDate);
       const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
-      // Create a new member
+      // Create a new member in Clerk
       const response = await createMember({
         ...values,
+        seller: {
+          _type: 'reference',
+          _ref: seller?._id,
+        },
         subscription: {
           ...values.subscription,
           startDate,

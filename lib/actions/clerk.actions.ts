@@ -37,6 +37,7 @@ export async function createMember(value: any) {
           startDate: formatDate(value.subscription?.startDate),
           expirationDate: formatDate(value.subscription?.expirationDate),
         },
+        seller: value.seller,
       },
     });
 
@@ -48,7 +49,13 @@ export async function createMember(value: any) {
       password,
     });
 
-    return { status: 'success', message: 'Le membre a été créé avec succès.', clerkId: response.id, photo: response.imageUrl, password };
+    return {
+      status: 'success',
+      message: 'Le membre a été créé avec succès.',
+      clerkId: response.id,
+      photo: response.imageUrl,
+      password,
+    };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
