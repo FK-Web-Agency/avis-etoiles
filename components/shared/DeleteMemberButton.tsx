@@ -26,11 +26,11 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
   const { toast } = useToast();
   const { mutate } = useUpdate();
   const { list } = useNavigation();
-  const { data } = useList({
+/*   const { data } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
-  });
+  }); */
 
-  console.log(data);
+
 
   const handleDelete = async function () {
     try {

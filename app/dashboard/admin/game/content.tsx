@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 export default function Content() {
   const tabs = [
     { id: 1, name: 'Cadeau Mutualisé', Icon: Icons.GiftMutual, Content: MutualGift },
-    { id: 2, name: 'Arrière Plan', Icon: Icons.Images, Content: GameBackground },
+//    { id: 2, name: 'Arrière Plan', Icon: Icons.Images, Content: GameBackground },
     { id: 3, name: 'Chevalet', Icon: Icons.Easel, Content: GameEasel },
   ];
 
@@ -20,7 +20,7 @@ export default function Content() {
       <h1 className="h4-medium text-white mb-8">Paramétres du jeu</h1>
 
       <Tabs defaultValue={tabs[0].name} className="w-full flex-center flex-items-start flex-col sm:justify-start">
-        <TabsList className="h-min w-[70vw] grid justify-center items-center sm:w-[50vw] sm:flex sm:justify-between sm:items-start bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
+        <TabsList className="h-min w-[70vw] grid justify-center items-center sm:w-96 sm:flex sm:justify-between sm:items-start bg-gray-300 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
           {tabs.map((tab) => (
             <TabsTrigger className="flex-center flex-col gap-2 w-52" key={tab.id} value={tab.name}>
               <tab.Icon className="w-6 h-6" />

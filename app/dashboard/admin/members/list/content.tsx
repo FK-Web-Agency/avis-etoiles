@@ -5,7 +5,26 @@ import Link from 'next/link';
 import { useList, useGo } from '@refinedev/core';
 import Stripe from 'stripe';
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui';
 import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
@@ -18,6 +37,7 @@ export default function Content() {
   const [allSubscribers, setAllSubscribers] = useState<Stripe.Subscription[] | null>(null);
   const [session, setSession] = useState<any>(null);
   const [seller, setSeller] = useState<any>(null);
+  const [unpaidNumber, setUnpaidNumber] = useState(0);
   const go = useGo();
 
   const { data, isLoading } = useList({
@@ -68,6 +88,90 @@ export default function Content() {
         <TableSkeleton />
       ) : members?.length > 0 ? (
         <div>
+          <div className={classNames(unpaidNumber ? '' : 'hidden')}>
+            <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s)</h3>
+            <Carousel className="w-96 ml-10 mb-8">
+              <CarouselContent>
+                {members.map((user) => {
+                  const userSubscription = allSubscribers?.find((subscriber) => {
+                    const buyer = JSON.parse(subscriber.metadata.buyer);
+
+                    return buyer._ref === user._id;
+                  });
+
+                  const sellerSubscription = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
+
+                  const subscriptionIsActive = userSubscription?.status === 'active';
+
+                  const unPaid = session?.payment_status === 'unpaid';
+
+                  const sessionSeller = session && JSON.parse(session?.metadata?.seller);
+
+                  client
+                    .fetch(
+                      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
+                        sellerSubscription?._ref || sessionSeller?._ref
+                      }"]`
+                    )
+                    .then((res) => {
+                      if (seller) return;
+                      setSeller(res[0]);
+                    });
+
+                  if (!subscriptionIsActive) return;
+
+                  if (unpaidNumber)
+                    return (
+                      <CarouselItem key={user?.email}>
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>
+                              {user.firstName} {user.lastName}
+                            </CardTitle>
+                            <CardDescription>{user.companyName}</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <p>Contacter</p>
+
+                            <ul>
+                              <li className="flex items-center gap-2">
+                                <Icons.Phone className="w-4 h-4" />
+                                <Link href={`tel:${user?.phone}`}>{user.phone}</Link>
+                              </li>
+
+                              <li className="flex items-center gap-2">
+                                <Icons.Envelope className="w-4 h-4" />
+                                <Link href={`mailto:${user?.email}`}>{user.email}</Link>
+                              </li>
+                            </ul>
+                          </CardContent>
+                          <CardFooter>
+                            <ul>
+                              <li>
+                                {' '}
+                                <span className="font-bold">Status</span> :{' '}
+                                {subscriptionIsActive ? 'Actif' : unPaid ? 'Paiement en attente' : 'Inactif'}
+                              </li>
+                              <li>
+                                {' '}
+                                <span className="font-bold">Vendu par</span> : {seller?.firstName} {seller?.lastName}
+                              </li>
+                            </ul>
+                            <p></p>
+                            <p></p>
+                          </CardFooter>
+                        </Card>
+                      </CarouselItem>
+                    );
+
+                  setUnpaidNumber(unpaidNumber + 1);
+                })}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
           <Table>
             <TableHeader className="bg-background">
               <TableRow>
@@ -97,18 +201,17 @@ export default function Content() {
 
                 const sessionSeller = session && JSON.parse(session?.metadata?.seller);
 
-                console.log(sellerSubscription?._ref || sessionSeller?._ref);
-
-                client
-                  .fetch(
-                    `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
-                      sellerSubscription?._ref || sessionSeller?._ref
-                    }"]`
-                  )
-                  .then((res) => {
-                    if (seller) return;
-                    setSeller(res[0]);
-                  });
+                if (!seller) {
+                  client
+                    .fetch(
+                      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
+                        sellerSubscription?._ref || sessionSeller?._ref
+                      }"]`
+                    )
+                    .then((res) => {
+                      setSeller(res[0]);
+                    });
+                }
 
                 return (
                   <TableRow className="border-gray-600" key={user?.email}>
@@ -214,7 +317,6 @@ export default function Content() {
               })}
             </TableBody>
           </Table>
-
           <PaginationTable {...{ currentPage, maxPage, setCurrentPage, handleNextPage, handlePrevPage }} />
         </div>
       ) : (
