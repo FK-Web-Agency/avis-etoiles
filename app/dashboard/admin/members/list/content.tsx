@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useList, useGo, useOne } from '@refinedev/core';
-import { formatDistance } from 'date-fns';
-import { fr } from 'date-fns/locale/fr';
 import Stripe from 'stripe';
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
@@ -12,12 +10,14 @@ import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import { PaginationTable } from '@/components/dashboard';
-import { getAllSubscribers } from '@/lib/actions/stripe.actions';
+import { getAllSubscribers, getSession } from '@/lib/actions/stripe.actions';
+import { client } from '@/sanity/lib';
 
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [allSubscribers, setAllSubscribers] = useState<Stripe.Subscription[]>([]);
-
+  const [allSubscribers, setAllSubscribers] = useState<Stripe.Subscription[] | null>(null);
+  const [session, setSession] = useState<any>(null);
+  const [seller, setSeller] = useState<any>(null);
   const go = useGo();
 
   const { data, isLoading } = useList({
@@ -48,8 +48,6 @@ export default function Content() {
     fetchSubscribers();
   }, [members]);
 
-  console.log(allSubscribers);
-
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));
 
@@ -66,7 +64,7 @@ export default function Content() {
           <span className="ml-2">Ajouter Abonné</span>
         </Button>
       </div>
-      {isLoading ? (
+      {isLoading || !allSubscribers ? (
         <TableSkeleton />
       ) : members?.length > 0 ? (
         <div>
@@ -81,15 +79,36 @@ export default function Content() {
             </TableHeader>
             <TableBody>
               {members.map((user) => {
-                const userSubscription = allSubscribers.find((subscriber) => {
+                const userSubscription = allSubscribers?.find((subscriber) => {
                   const buyer = JSON.parse(subscriber.metadata.buyer);
 
                   return buyer._ref === user._id;
                 });
 
-                const seller = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
+                getSession({ subscriberId: user?._id }).then((res) => {
+                  setSession(res);
+                });
+
+                const sellerSubscription = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
 
                 const subscriptionIsActive = userSubscription?.status === 'active';
+
+                const unPaid = session?.payment_status === 'unpaid';
+
+                const sessionSeller = session && JSON.parse(session?.metadata?.seller);
+
+                console.log(sellerSubscription?._ref || sessionSeller?._ref);
+
+                client
+                  .fetch(
+                    `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
+                      sellerSubscription?._ref || sessionSeller?._ref
+                    }"]`
+                  )
+                  .then((res) => {
+                    if (seller) return;
+                    setSeller(res[0]);
+                  });
 
                 return (
                   <TableRow className="border-gray-600" key={user?.email}>
@@ -99,12 +118,12 @@ export default function Content() {
                           <img
                             className="h-11 w-11 rounded-full"
                             src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.companyName}`}
-                            alt=""
+                            alt="avatar"
                           />
                         </div>
                         <div className="ml-4">
                           <div className="font-medium text-gray-100">
-                            {user.firstName} {user.lastName}{' '}
+                            {user.firstName} {user.lastName}
                           </div>
                           <div className="font-medium text-gray-100 p-regular-12">{user.companyName} </div>
                           <div className="mt-1 text-gray-500 flex items-center gap-2">
@@ -124,7 +143,11 @@ export default function Content() {
                           />
                         </div>
                         <div className="hidden text-white sm:block">
-                          {subscriptionIsActive ? <span>Actif</span> : <span className="text-gray-500">Inactif</span>}
+                          {subscriptionIsActive ? (
+                            <span>Actif</span>
+                          ) : (
+                            <span className="text-gray-500">{unPaid ? 'Paiement en attente' : 'Inactif'} </span>
+                          )}
                         </div>
                       </div>
                     </TableCell>
@@ -141,7 +164,7 @@ export default function Content() {
                             type: 'push',
                           })
                         }
-                        className="text-white text-left">
+                        className="text-white text-left hover:underline hover:bg-transparent">
                         {seller?.firstName} {seller?.lastName}
                       </Button>
                     </TableCell>

@@ -183,7 +183,10 @@ export default function CreateMemberForm() {
                     _type: 'reference',
                     _ref: data?.data?._id,
                   }),
-                  seller: JSON.stringify(seller),
+                  seller: JSON.stringify({
+                    _type: 'reference',
+                    _ref: seller?._id,
+                  }),
                   subscription: JSON.stringify({
                     ...values.subscription,
                     status: false,
