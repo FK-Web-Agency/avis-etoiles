@@ -1,10 +1,12 @@
 'use client';
 
-import { useList } from '@refinedev/core';
+import { useGo, useList, useMany } from '@refinedev/core';
 import { Spinner } from '@/components/shared';
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import { formatDate } from '@/helper';
 
 export default function Content({ id }: { id: string }) {
+  const go = useGo();
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_ORDERS,
     filters: [
@@ -16,10 +18,16 @@ export default function Content({ id }: { id: string }) {
     ],
   });
 
+  const buyerIds = data?.data?.map((order) => order.buyer._ref) || [];
+
+  const { data: dataBuyers } = useMany({
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+    ids: buyerIds,
+  });
+
   if (isLoading) return <Spinner />;
 
   const orders = data?.data;
-  console.log(orders);
 
   return (
     <div>
@@ -34,27 +42,47 @@ export default function Content({ id }: { id: string }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders?.map((order) => (
-            <TableRow className="border-gray-600">
-              <TableCell className="font-medium">{order?.stripeId}</TableCell>
+          {orders?.map((order) => {
+            const buyer = dataBuyers?.data?.find((buyer) => buyer._id === order.buyer._ref);
+            return (
+              <TableRow className="border-gray-600">
+                <TableCell className="font-medium text-white">{order?.stripeId.substring(0, 12) + '...'}</TableCell>
 
-              <TableCell className="font-medium">
-                <div className="flex-center text-slate-50">{order?.buyer}</div>
-              </TableCell>
+                <TableCell className="font-medium">
+                  <div className="text-slate-50">
+                    <Button
+                      variant={'ghost'}
+                      className='hover:underline hover:bg-transparent'
+                      onClick={() =>
+                        go({
+                          to: {
+                            resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+                            action: 'show',
+                            id: order.buyer._ref,
+                          },
+                        })
+                      }>
+                      {buyer?.firstName} {buyer?.lastName}
+                      <br />
+                      {buyer?.companyName}
+                    </Button>
+                  </div>
+                </TableCell>
 
-              <TableCell >
-                <div className="flex-center text-slate-50">{order?.price}</div>
-              </TableCell>
+                <TableCell>
+                  <div className="flex-center text-slate-50">{order?.price / 100} €</div>
+                </TableCell>
 
-              <TableCell >
-                <div className="flex-center text-slate-50">{order?.price}</div>
-              </TableCell>
+                <TableCell>
+                  <div className=" text-slate-50">{order?.frequency === 'month' ? 'Mois' : 'Année'}</div>
+                </TableCell>
 
-              <TableCell >
-                <div className="flex-center text-slate-50">{order?.createdAt}</div>
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell>
+                  <div className=" text-slate-50">{formatDate(order?.createdAt)}</div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
