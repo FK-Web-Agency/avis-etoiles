@@ -31,7 +31,7 @@ export default function UploadLogo({ onSave, logo }: UploadLogoProps) {
         description: 'Votre logo a été mis à jour',
       });
 
-      setStep('chooseBackground');
+      setStep('chooseRewards');
     } catch (error: any) {
       toast({
         title: 'Erreur',

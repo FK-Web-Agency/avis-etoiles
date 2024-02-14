@@ -28,6 +28,10 @@ export const getSession = async ({ subscriberId }: { subscriberId: string }) => 
   return session;
 };
 
+
+
+
+
 export const cancelSubscription = async ({ clerkId }: { clerkId: string }) => {
   const subscriberSanity = await client.fetch(
     `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && clerkId == $clerkId]{_id}[0]`,

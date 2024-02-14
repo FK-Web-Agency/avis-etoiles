@@ -6,6 +6,8 @@ import updateUser from '@/sanity/lib/members/updateUser';
 import deleteUser from '@/sanity/lib/members/deleteUser';
 import handleUserRole from '@/sanity/lib/members/handleUserRole';
 import { cancelSubscription } from '@/lib/actions/stripe.actions';
+import { client } from '@/sanity/lib';
+import { clerkClient } from '@clerk/nextjs';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -88,6 +90,17 @@ export async function POST(req: Request) {
       };
     }
 
+    const newUser = await client.fetch(
+      `*[_type == '${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}' && clerkId == $clerkId][0]`,
+      { clerkId: id }
+    );
+    if (newUser) {
+      await clerkClient.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id,
+        },
+      });
+    }
     /*     const newUser: any = await createUser(user);
 
     if (newUser) {

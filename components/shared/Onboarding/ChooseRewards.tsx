@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Input, Label, useToast } from '@/components/ui';
 import { Icons } from '@/components/shared';
 import { useOnboardingStore } from '@/store';
@@ -17,6 +17,8 @@ export default function ChooseRewards({
   const [rewards, setRewards] = useState<string[]>(gameConfig?.rewards || rewardsDb || []);
   const { toast } = useToast();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);
 
   // Add a reward to the list
@@ -30,6 +32,7 @@ export default function ChooseRewards({
 
     setRewards([...rewards, textEntered]);
     setTextEntered('');
+    inputRef.current?.focus();
   };
 
   // Edit a reward from the list
@@ -96,6 +99,7 @@ export default function ChooseRewards({
       <div>
         <Label>Récompense</Label>
         <Input
+          ref={inputRef}
           disabled={rewards?.length === 6}
           type="text"
           value={textEntered}

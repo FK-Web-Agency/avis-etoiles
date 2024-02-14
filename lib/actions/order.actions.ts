@@ -64,7 +64,7 @@ export const checkoutOrder = async (order: any) => {
     });
 
     // Save the session in KV
-    await kv.set(`subscriber:${order.email}`, {
+    await kv.set(`subscriber:${order.id}`, {
       payment: {
         status: 'pending',
         session_id: session.id,
@@ -154,7 +154,7 @@ export const checkoutSubscription = async (order: any) => {
     });
 
     // Save the session in KV
-    await kv.set(`subscriber:${order.email}`, {
+    await kv.set(`subscriber:${order.id}`, {
       payment: {
         status: 'pending',
         session_id: session.id,

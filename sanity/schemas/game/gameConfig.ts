@@ -22,22 +22,6 @@ export default defineType({
       title: 'QR Code',
       type: 'image',
     }),
-    // chevalet
-    defineField({
-      name: 'easel',
-      title: 'easel',
-      type: 'image',
-    }),
-    defineField({
-      name: 'background',
-      title: 'Arrière plan',
-      type: 'image',
-    }),
-    defineField({
-      name: 'color',
-      title: 'Couleur',
-      type: 'string',
-    }),
     defineField({
       name: 'actions',
       title: 'Actions',
@@ -72,7 +56,19 @@ export default defineType({
     defineField({
       name: 'numberWinners',
       title: 'Nombre de gagnants',
-      type: 'number',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'winners',
+          title: 'Gagnants',
+          type: 'number',
+        }),
+        defineField({
+          name: 'attempts',
+          title: 'Tentatives',
+          type: 'number',
+        }),
+      ],
     }),
     defineField({
       name: 'secretCode',

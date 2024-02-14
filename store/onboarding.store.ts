@@ -89,7 +89,7 @@ const GameConfigSchema = z.object({
   color: z.string().optional(),
   actions: z.array(z.object({ socialNetworkName: z.string(), value: z.string(), _key: z.string() })).optional(),
   rewards: z.array(z.string()).optional(),
-  numberWinners: z.number().optional(),
+  numberWinners: z.object({ winners: z.number().optional(), attempts: z.number().optional() }).optional(),
   secretCode: z.string().optional(),
   qrCode: z.any().optional(),
   easel: z.any().optional(),
@@ -108,7 +108,7 @@ type Onboarding = z.infer<typeof OnboardingSchema>;
 type UserIdsProps = z.infer<typeof UserIds>;
 
 const useOnboardingStore = create<Onboarding>((set) => ({
-  step: steps.createPassword,
+  step: steps.uploadLogo,
   userIds: {
     clerkId: undefined,
     sanityId: undefined,

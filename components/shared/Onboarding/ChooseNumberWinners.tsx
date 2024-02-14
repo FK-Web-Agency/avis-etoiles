@@ -14,19 +14,29 @@ export default function ChooseNumberWinners() {
       .string()
       .min(1)
       .describe('Nombre de gagnants')
-      .default(gameConfig.numberWinners ? (String(gameConfig.numberWinners) as string) : ''),
+      .default(gameConfig.numberWinners?.winners ? (String(gameConfig.numberWinners?.winners) as string) : ''),
+    attempts: z
+      .string()
+      .min(1)
+      .describe('Sur combien de tentatives')
+      .default(gameConfig.numberWinners?.attempts ? (String(gameConfig.numberWinners?.attempts) as string) : ''),
   });
 
   type ChooseNumberWinnersSchemaType = z.infer<typeof ChooseNumberWinnersSchema>;
 
   const handleSubmit = function (values: ChooseNumberWinnersSchemaType) {
-    if (!isNaN(Number(values.winners)) && Number(values.winners) > 0) {
-      setGameConfig({ numberWinners: Number(values.winners) });
+    if (
+      !isNaN(Number(values.winners)) &&
+      Number(values.winners) > 0 &&
+      !isNaN(Number(values.attempts)) &&
+      Number(values.attempts) > 0
+    ) {
+      setGameConfig({ numberWinners: { winners: Number(values.winners), attempts: Number(values.attempts) } });
 
       setStep('chooseSecretCode');
 
       return toast({
-        description: `Nombre de gagnants : ${values.winners} a bien été enregistré`,
+        description: `Nombre de gagnants : ${values.winners}/${values.attempts} a bien été enregistré`,
       });
     }
 

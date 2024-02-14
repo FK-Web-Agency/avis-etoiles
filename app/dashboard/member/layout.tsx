@@ -6,9 +6,11 @@ import { useList } from '@refinedev/core';
 import { Icons, Onboarding, Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
 import '../../styles/globals.css';
+import { BannerUnpaid } from '@/components/dashboard';
 
 export default function layout({ children }: PropsWithChildren) {
   const { user } = useUser();
+  const id = user?.publicMetadata.userId;
 
   const { data, isLoading } = useList({
     resource: 'gameConfig',
@@ -16,7 +18,7 @@ export default function layout({ children }: PropsWithChildren) {
       {
         field: 'user._ref',
         operator: 'contains',
-        value: user?.publicMetadata.userId,
+        value: id,
       },
     ],
   });
@@ -50,6 +52,8 @@ export default function layout({ children }: PropsWithChildren) {
         </head>
 
         <body className=" background-body">
+          <BannerUnpaid sanityId={id as string} />
+
           <Onboarding user={user} />
 
           <Toaster />
@@ -68,6 +72,7 @@ export default function layout({ children }: PropsWithChildren) {
       </head>
 
       <body className=" background-body">
+        <BannerUnpaid sanityId={id as string} />
         {<Sidebar>{children}</Sidebar>}
 
         <Toaster />

@@ -175,6 +175,7 @@ export default function CreateMemberForm() {
 
               if (!values.subscription.free) {
                 const order = {
+                  id: data?.data?._id,
                   email: values?.information?.email,
                   title: values?.subscription?.plan,
                   frequency: recurring,

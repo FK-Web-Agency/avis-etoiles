@@ -30,6 +30,7 @@ export default function Onboarding({ user }: { user: any }) {
   const { toast } = useToast();
 
   const { step, gameConfig, userIds, setStep } = useOnboardingStore();
+console.log(userIds);
 
   // Components for each step
   const Content = step?.Content;
@@ -47,10 +48,10 @@ export default function Onboarding({ user }: { user: any }) {
     switch (step.title) {
       case 'Télécharger votre logo':
         setStep('chooseBackground');
-        setPreviousNavigation({ status: true, step: 'Choisir votre arrière plan' });
+        setPreviousNavigation({ status: true, step: 'Choisir vos cadeaux' });
         break;
 
-      case 'Choisir votre arrière plan':
+/*       case 'Choisir votre arrière plan':
         setStep('chooseColor');
         setPreviousNavigation({ status: true, step: 'Choisir vos couleurs' });
         break;
@@ -59,7 +60,7 @@ export default function Onboarding({ user }: { user: any }) {
         setStep('chooseRewards');
         setPreviousNavigation({ status: true, step: 'Choisir vos cadeaux' });
         break;
-
+ */
       case 'Choisir vos cadeaux':
         setStep('chooseActions');
         setPreviousNavigation({ status: true, step: 'Choisir vos actions' });
@@ -102,13 +103,13 @@ export default function Onboarding({ user }: { user: any }) {
         setStep('chooseRewards');
         break;
 
-      case 'Choisir vos cadeaux':
+/*       case 'Choisir vos cadeaux':
         setStep('chooseColor');
         break;
 
       case 'Choisir vos couleurs':
         setStep('chooseBackground');
-        break;
+        break; */
 
       default:
         setStep('uploadLogo');
@@ -171,7 +172,7 @@ export default function Onboarding({ user }: { user: any }) {
     <main className="wrapper flex flex-col gap-8">
       <div>
         <h1 className="h4-medium text-white mb-4">
-          Bienvenu <span className="capitalize">{user?.firstName}</span>
+          Bienvenue <span className="capitalize">{user?.firstName}</span>
         </h1>
         <p>
           pour votre première connexion il faut configurer votre espace personnel et personnalisé votre jeu de la

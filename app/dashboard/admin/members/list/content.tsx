@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useList, useGo, useOne } from '@refinedev/core';
+import { useList, useGo } from '@refinedev/core';
 import Stripe from 'stripe';
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
