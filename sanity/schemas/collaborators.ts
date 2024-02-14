@@ -9,6 +9,13 @@ export default defineType({
   icon: Icons.Teams,
   fields: [
     defineField({
+      name: 'disabled',
+      title: 'Désactivé',
+      type: 'string',
+      description: 'Désactiver l\'abonné',
+      initialValue: "false",
+    }),
+    defineField({
       name: 'clerkId',
       title: 'id du membre',
       type: 'string',

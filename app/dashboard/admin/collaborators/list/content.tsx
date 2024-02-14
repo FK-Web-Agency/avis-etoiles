@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useList, useGo } from '@refinedev/core';
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
-import { DeleteMemberButton, Icons, ToggleRoleMemberButton } from '@/components/shared';
+import { DeleteCollaboratorButton, DeleteMemberButton, Icons, ToggleRoleMemberButton } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import { classNames } from '@/helper';
 
@@ -11,6 +11,13 @@ export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
+    filters: [
+      {
+        field: 'disabled',
+        operator: 'eq',
+        value: 'false',
+      },
+    ],
   });
 
   const { data: ordersData } = useList({
@@ -82,7 +89,6 @@ export default function Content() {
                       <div className="flex-center text-slate-50">{numOrders.length}</div>
                     </TableCell>
 
-
                     <TableCell className="text-right">
                       <div className="flex justify-center items-center gap-5">
                         <Button
@@ -118,11 +124,11 @@ export default function Content() {
                           className="rounded border-2 border-gray-100 text-gray-100 hover:text-gray-900 px-4 py-2">
                           <Icons.Edit className="w-4 h-4" />
                         </Button>
-                        <DeleteMemberButton user={user} id={user?._id}>
+                        <DeleteCollaboratorButton user={user} id={user?._id}>
                           <>
                             <Icons.Delete className="w-4 h-4" />
                           </>
-                        </DeleteMemberButton>
+                        </DeleteCollaboratorButton>
                       </div>
                     </TableCell>
                   </TableRow>
