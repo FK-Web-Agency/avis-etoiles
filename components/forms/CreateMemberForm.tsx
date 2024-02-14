@@ -212,9 +212,9 @@ export default function CreateMemberForm() {
                     description: message,
                   });
 
-                  /* setTimeout(() => {
+                  setTimeout(() => {
                     list('members');
-                  }, 1000); */
+                  }, 1000);
                 }
               }
             },
