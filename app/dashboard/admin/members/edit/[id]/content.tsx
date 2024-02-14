@@ -12,7 +12,7 @@ interface ContentProps {
 
 export default function Content({ id }: ContentProps) {
   const { data, isLoading, isError } = useOne({
-    resource: 'users',
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
     id,
   });
 
@@ -52,16 +52,6 @@ export default function Content({ id }: ContentProps) {
                 <Icons.Delete className="w-4 h-4 mr-2" />
                 <span className="text-slate-100">Supprimer</span>
               </DeleteMemberButton>
-
-              <ToggleRoleMemberButton user={user}>
-                <Icons.Group
-                  className={classNames(
-                    user?.role === 'member' ? 'text-gray-900' : 'text-green-500',
-                    'transition-colors duration-200 w-4 h-4 mr-2'
-                  )}
-                />
-                <span className="text-gray-900">Changer de rôle</span>
-              </ToggleRoleMemberButton>
             </div>
           </>
         )}

@@ -5,9 +5,11 @@ import { updateMemberInformation } from '@/lib/actions/clerk.actions';
 export default function EditInformation({ user }: { user: any }) {
   const { toast } = useToast();
 
+  console.log('user', user);
+  
   // Schema for the form
   const EditInformationSchema = z.object({
-    role: z.enum(['admin', 'member']).default(user?.role).optional(),
+    //role: z.enum(['admin', 'member']).default(user?.role).optional(),
     companyName: z.string().min(2).max(100).describe('Nom de la société').default(user?.companyName).optional(),
     phoneNumber: z
       .string()
