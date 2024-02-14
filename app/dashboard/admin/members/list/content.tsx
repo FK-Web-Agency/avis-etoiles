@@ -19,11 +19,11 @@ export default function Content() {
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
     filters: [
-     /*  {
+      {
         field: 'disabled',
         operator: 'eq',
         value: false,
-      }, */
+      },
     ],
     pagination: {
       pageSize: 10,

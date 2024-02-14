@@ -144,7 +144,7 @@ export default function CreateMemberForm() {
       } else {
         const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
 
-        // Create a new subscriber
+        // Create a new subscriber in Sanity
         const user = {
           clerkId: response.clerkId,
           role: 'member',
@@ -157,6 +157,11 @@ export default function CreateMemberForm() {
             startDate,
             expirationDate,
           },
+          seller: {
+            _type: 'reference',
+            _ref: seller?._id,
+          },
+          disabled: false,
         };
 
         mutate(
