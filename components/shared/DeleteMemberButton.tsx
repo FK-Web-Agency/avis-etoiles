@@ -48,7 +48,7 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
         {
           resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
           id,
-          values: { disabled: true },
+          values: { disabled: "true" },
         },
         {
           onSuccess() {

@@ -93,6 +93,12 @@ export const checkoutSubscription = async (order: any) => {
   const baseUrl =
     process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
 
+  const startDate = new Date(JSON.parse(order.subscription).startDate);
+  const now = new Date();
+
+  const compareNowAndStartDate = startDate.getTime() <= now.getTime();
+  const billingCycleAnchor = compareNowAndStartDate ? undefined : Math.floor(startDate.getTime() / 1000);
+
   try {
     const session = await stripe.checkout.sessions.create({
       customer_email: order.email,
@@ -138,11 +144,11 @@ export const checkoutSubscription = async (order: any) => {
           seller: order.seller,
         },
 
-        billing_cycle_anchor: new Date(JSON.parse(order.subscription).startDate).getTime() / 1000,
+        billing_cycle_anchor: billingCycleAnchor,
       },
       discounts: [
         {
-          coupon: '7bsyeRqB',
+          coupon: compareNowAndStartDate ? undefined : '7bsyeRqB',
         },
       ],
     });

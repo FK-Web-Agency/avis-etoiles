@@ -101,7 +101,7 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
-  console.log(seller);
+  console.log("seller", seller);
 
   // Handle form submission
   const handleAction = async function (values: MemberProps) {
@@ -161,7 +161,7 @@ export default function CreateMemberForm() {
             _type: 'reference',
             _ref: seller?._id,
           },
-          disabled: false,
+          disabled: "false",
         };
 
         mutate(
@@ -183,10 +183,7 @@ export default function CreateMemberForm() {
                     _type: 'reference',
                     _ref: data?.data?._id,
                   }),
-                  seller: JSON.stringify({
-                    _type: 'reference',
-                    _ref: seller?._id,
-                  }),
+                  seller: JSON.stringify(seller),
                   subscription: JSON.stringify({
                     ...values.subscription,
                     status: false,
@@ -215,9 +212,9 @@ export default function CreateMemberForm() {
                     description: message,
                   });
 
-                  setTimeout(() => {
+                  /* setTimeout(() => {
                     list('members');
-                  }, 1000);
+                  }, 1000); */
                 }
               }
             },

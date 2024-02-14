@@ -17,9 +17,9 @@ export default defineType({
     defineField({
       name: 'disabled',
       title: 'Désactivé',
-      type: 'boolean',
+      type: 'string',
       description: 'Désactiver l\'abonné',
-      initialValue: false,
+      initialValue: "false",
     }),
     defineField({
       name: 'companyName',
