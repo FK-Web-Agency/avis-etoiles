@@ -1,15 +1,15 @@
 'use client';
 
 import { useList, useGo } from '@refinedev/core';
+import Link from 'next/link';
+import { formatDistance } from 'date-fns';
+import { fr } from 'date-fns/locale/fr';
+import { useState } from 'react';
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
-import Link from 'next/link';
-import { formatDistance } from 'date-fns';
-import { fr } from 'date-fns/locale/fr';
-import { useState } from 'react';
 import { PaginationTable } from '@/components/dashboard';
 
 export default function Content() {
@@ -18,13 +18,13 @@ export default function Content() {
   const go = useGo();
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-/*     filters: [
-      {
+    filters: [
+     /*  {
         field: 'disabled',
         operator: 'eq',
         value: false,
-      },
-    ], */
+      }, */
+    ],
     pagination: {
       pageSize: 10,
       current: currentPage,
@@ -36,7 +36,6 @@ export default function Content() {
   const maxPage = Math.ceil(data?.total! / 10);
 
   console.log(members);
-  
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));

@@ -31,7 +31,6 @@ export default defineType({
       name: 'vat',
       title: 'TVA',
       type: 'string',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'clerkId',

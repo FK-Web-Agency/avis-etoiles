@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteMember } from '@/lib/actions/clerk.actions';
-import { BaseRecord, useDelete, useDeleteMany, useList, useNavigation, useUpdate } from '@refinedev/core';
+import { BaseRecord, useList, useNavigation, useUpdate } from '@refinedev/core';
 import React, { PropsWithChildren } from 'react';
 import {
   Button,
@@ -34,42 +34,15 @@ export default function DeleteMemberButton({ user, id, children }: PropsWithChil
 
   const handleDelete = async function () {
     try {
-      /*       mutateDeleteMany(
-        {
-          resource: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
-          // @ts-ignore
-          ids: data?.data.map((order) => order._id),
-        },
-        {
-          onSuccess() {
-            // delete the user from the database (sanity)
-            mutate(
-              {
-                resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-                id,
-              },
-              {
-                async onSuccess() {
-                  // delete the user from the auth database (clerk)
-                 
-                },
-                onError(error) {
-                  console.log(error);
-                  
-                  toast({
-                    title: 'Erreur',
-                    description: error.message,
-                    variant: 'destructive',
-                  });
-                },
-              }
-            );
-          },
-        }
-      );
- */
+      const { status } = await deleteMember(user?.clerkId as string);
 
-      await deleteMember(user?.clerkId as string);
+      if (status === 'error') {
+        return toast({
+          title: 'Erreur',
+          description: "Une erreur s'est produite lors de la suppression du membre",
+          variant: 'destructive',
+        });
+      }
 
       mutate(
         {

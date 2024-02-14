@@ -1,7 +1,6 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { createOrder } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
-import updateUser from '@/sanity/lib/members/updateUser'; // Mise à jour des utilisateurs dans Sanity
+import { createOrder, sendInvoice } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
 import { kv } from '@vercel/kv';
 
 // Fonction asynchrone pour gérer les requêtes POST
@@ -19,27 +18,34 @@ export async function POST(request: Request) {
 
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
-      const { invoice_pdf, hosted_invoice_url } = event.data.object;
-      // Traitement pour le paiement d'une facture réussi
+      const { invoice_pdf, hosted_invoice_url, id } = event.data.object;
 
+      // Traitement pour le paiement d'une facture réussi
       const invoice = {
         pdf: invoice_pdf,
         url: hosted_invoice_url,
       };
 
+      // Enregistrement de la facture dans KV
       await kv.set('invoice', invoice);
+
+      // Envoi de la facture au client via Stripe API
+      // Ça ne fonctionne pas en mode test
+      const sendInvoiceToCustomer = await sendInvoice(id);
+      // Envoi de la réponse de succès
+      return NextResponse.json({ message: 'OK', sendInvoiceToCustomer });
     } else if (event.type === 'checkout.session.completed') {
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
 
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
-      const subscription = JSON.parse(metadata?.subscription as string);
+      /*       const subscription = JSON.parse(metadata?.subscription as string);
 
       await updateUser({
         id: buyer._ref,
         user: { subscription: { ...subscription, status: true } },
-      });
+      }); */
 
       const invoice = await kv.get('invoice');
 
@@ -59,6 +65,8 @@ export async function POST(request: Request) {
       const newOrder = await createOrder(order);
 
       await kv.del('invoice');
+      await kv.del(`subscriber:${buyer.email}`);
+
       // Réponse de succès avec la nouvelle commande
       return NextResponse.json({ message: 'OK', order: newOrder });
     }

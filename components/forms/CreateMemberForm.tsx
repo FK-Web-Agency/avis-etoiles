@@ -10,7 +10,7 @@ import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescrip
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { formatToISOString } from '@/helper';
-import { checkoutOrder } from '@/lib/actions';
+import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 import { useDashboardStore } from '@/store';
 
 // Define recurring options
@@ -190,7 +190,10 @@ export default function CreateMemberForm() {
                 console.log(order);
 
                 // Checkout the order
-                const { status, message } = await checkoutOrder(order);
+                const { status, message } =
+                  values.subscription.recurring === 'Ponctuel'
+                    ? await checkoutOrder(order)
+                    : await checkoutSubscription(order);
 
                 if (status === 'error') {
                   toast({

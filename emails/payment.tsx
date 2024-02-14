@@ -10,14 +10,15 @@ export default function PaymentTemplate({ companyName, url }: KoalaWelcomeEmailP
   return (
     <Html>
       <Head />
-      <Preview>The sales intelligence platform that helps you uncover qualified leads.</Preview>
+      <Preview>Merci d'effectuer le paiement de votre abonnement</Preview>
       <Body style={main}>
         <Container style={container}>
           <Text style={title}>Avis Étoiles 🎁</Text>
 
           <Text style={paragraph}>Hi {companyName},</Text>
           <Text style={paragraph}>
-            Vous trouverez ci-dessous le lien pour effectuer le paiement de votre abonnement.
+            Vous trouverez ci-dessous le lien pour effectuer le paiement de votre abonnement. Ce lien est valable pour
+            24 heures.
           </Text>
           <Section style={btnContainer}>
             <Button style={button} href={url}>
