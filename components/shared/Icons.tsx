@@ -33,6 +33,7 @@ import { ImStatsDots } from 'react-icons/im';
 import { FaImages } from "react-icons/fa6";
 import { IoMdDownload } from "react-icons/io";
 import { SiTestin } from "react-icons/si"; 
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -107,6 +108,7 @@ const Icons = {
   Easel: (props: IconProps) => <PiPresentationThin {...props} />,
   Images: (props: IconProps) => <FaImages {...props} />,
   Download: (props: IconProps) => <IoMdDownload {...props} />,
+  Invoice: (props: IconProps) => <LiaFileInvoiceDollarSolid {...props} />,
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,

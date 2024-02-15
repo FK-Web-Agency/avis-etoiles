@@ -1,9 +1,11 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'mutualReward',
   title: 'Cadeau mutuelisé',
   type: 'document',
+  icon: Icons.Gift,
   fields: [
     defineField({
       name: 'title',

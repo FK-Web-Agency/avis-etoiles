@@ -9,3 +9,5 @@ export { default as gameConfig } from './gameConfig';
 export { default as gameEasel } from './gameEasel';
 
 export { default as gameMutualReward } from './gameMutualReward';
+export { default as gameSetting } from './gameSetting';
+export { default as sandbox } from './sandbox';

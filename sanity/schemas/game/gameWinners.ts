@@ -3,7 +3,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'gameWinners',
-  title: 'Les reports de victoire',
+  title: 'Les reports sur les gagnants',
   type: 'document',
   icon: Icons.Trophy,
   fields: [

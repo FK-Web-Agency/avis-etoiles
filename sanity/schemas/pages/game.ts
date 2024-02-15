@@ -1,3 +1,4 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 const groups = [
@@ -15,8 +16,9 @@ const groups = [
 
 export default defineType({
   name: 'game',
-  title: 'Page de jeu',
+  title: 'Pages du Jeu',
   type: 'document',
+  icon: Icons.Game,
   groups,
   fields: [
     defineField({
@@ -47,6 +49,12 @@ export default defineType({
           validation: (Rule: any) => Rule.required(),
         }),
       ],
+    }),
+
+    defineField({
+      name: 'settings',
+      title: 'Design du jeu',
+      type: 'gameSetting',
     }),
   ],
 });

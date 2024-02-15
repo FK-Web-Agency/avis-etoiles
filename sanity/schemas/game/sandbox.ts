@@ -1,9 +1,11 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
   type: 'document',
   name: 'sandbox',
-  title: 'Jeu de test',
+  title: 'Paramétres du Jeu de test',
+  icon: Icons.Test,
   fields: [
     defineField({
       name: 'seller',

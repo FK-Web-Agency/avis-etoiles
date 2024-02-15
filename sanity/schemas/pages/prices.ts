@@ -25,7 +25,8 @@ const groups = [
 
 export default defineType({
   name: 'prices',
-  title: '🤑 Page Tarifications',
+  title: 'Page Tarifications',
+  icon: () => '💸',
   type: 'document',
   groups,
   fields: [

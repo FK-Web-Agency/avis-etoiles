@@ -1,9 +1,11 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
   type: 'document',
   name: 'gameConfig',
-  title: 'Jeu',
+  title: 'Paramétres du Jeu par les Abonnés',
+  icon: Icons.Settings,
   fields: [
     defineField({
       name: 'user',

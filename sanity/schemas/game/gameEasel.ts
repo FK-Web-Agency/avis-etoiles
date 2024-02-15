@@ -1,9 +1,11 @@
+import { Icons } from '@/components/shared';
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
   // gameEasel = chevalet
   name: 'gameEasel',
-  title: 'Les chevalets',
+  title: 'Les Modèles de Chevalet',
+  icon: Icons.Easel,
   type: 'document',
   description: 'Les chevalets pour afficher les QR Codes',
   fields: [

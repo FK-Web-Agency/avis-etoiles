@@ -1,8 +1,10 @@
+import { Icons } from '@/components/shared';
 import { defineType, defineField } from 'sanity';
 
 export default defineType({
   name: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
-  title: 'Order',
+  title: 'Les commandes',
+  icon: Icons.Invoice,
   type: 'document',
   fields: [
     defineField({
