@@ -62,6 +62,17 @@ const actionsList: Action[] = [
     placeholder: 'Entrez votre URL',
     label: 'URL page Facebook',
   },
+  {
+    title: 'tiktok',
+    Icon: Icons.Tiktok,
+    Description: () => (
+      <small>
+        Renseigner l'URL de votre page Tiktok l'utilisateur sera rediriger vers ce lien lors de sa quatriéme visite
+      </small>
+    ),
+    placeholder: 'Entrez votre URL',
+    label: 'URL page Tiktok',
+  },
 ];
 
 function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConfig[]) => void; actionsDb?: any[] }) {

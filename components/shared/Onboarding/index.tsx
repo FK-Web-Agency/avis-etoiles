@@ -29,7 +29,7 @@ export default function Onboarding({ user }: { user: any }) {
   const nextButtonRef = useRef(null);
   const { toast } = useToast();
 
-  const { step, gameConfig, userIds, setStep } = useOnboardingStore();
+  const { step, gameConfig, userIds, setStep, setGameConfig } = useOnboardingStore();
 console.log(userIds);
 
   // Components for each step
@@ -158,6 +158,9 @@ console.log(userIds);
         title: 'Succès',
         description: 'Votre jeu de la roulette a été configuré avec succès',
       });
+
+
+      setGameConfig({})
     } catch (error: any) {
       toast({
         title: 'Erreur',

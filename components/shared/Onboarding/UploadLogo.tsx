@@ -12,7 +12,7 @@ type UploadLogoProps = {
   logo?: ImageSanity;
 };
 
-export default function UploadLogo({ onSave, logo }: UploadLogoProps) {
+export default function UploadLogo({ onSave, logo, }: UploadLogoProps) {
   const [file, setFile] = useState<null | File>(null);
   const { toast } = useToast();
   const { setGameConfig, setStep } = useOnboardingStore();

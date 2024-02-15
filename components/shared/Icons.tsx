@@ -15,7 +15,7 @@ import {
 } from 'react-icons/io5';
 import { MdDashboard } from 'react-icons/md';
 import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
-import { FaRegArrowAltCircleUp,FaArrowCircleDown, FaInstagram, FaFacebookSquare, FaUser, FaGifts } from 'react-icons/fa';
+import { FaRegArrowAltCircleUp,FaArrowCircleDown, FaInstagram, FaFacebookSquare, FaUser, FaGifts, FaTiktok } from 'react-icons/fa';
 import { FiEdit3 } from 'react-icons/fi';
 import { ImSpinner9 } from 'react-icons/im';
 import { PiFloppyDiskDuotone, PiPresentationThin } from 'react-icons/pi';
@@ -111,5 +111,6 @@ const Icons = {
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,
   Facebook: (props: IconProps) => <FaFacebookSquare {...props} />,
+  Tiktok: (props: IconProps) => <FaTiktok {...props} />,
 };
 export default Icons;
