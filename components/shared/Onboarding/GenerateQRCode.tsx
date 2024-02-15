@@ -28,7 +28,7 @@ export default function GenerateQRCode({ onSave, sandbox }: any) {
       let qrCode;
 
       if (sandbox) {
-        qrCode = await QRCode.toDataURL(`${baseUrl}/game/${buyerCompanyName}?sandbox=true`);
+        qrCode = await QRCode.toDataURL(`${baseUrl}/game/${buyerCompanyName?.split(' ').join('-')}?sandbox=true`);
       } else {
         qrCode = await QRCode.toDataURL(`${baseUrl}/game/${userIds?.sanityId}`);
       }

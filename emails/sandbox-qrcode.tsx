@@ -12,7 +12,7 @@ export const SandboxQrcode = (values: any) => (
   <Html>
     <Head />
     <Tailwind>
-      <Preview>Votre démo gratuit - Avis Étoiles</Preview>
+      <Preview>Votre démo gratuit </Preview>
       <Body className="font-sans bg-white">
         <Container className="mx-auto my-0 px-5">
           <Heading className="text-3xl ">Demo d'Avis Étoiles</Heading>
@@ -27,7 +27,7 @@ export const SandboxQrcode = (values: any) => (
           <Text className="mb-4">
             Vous pouvez utiliser ce QR Code pour accéder à votre démo gratuit pendant 24H après ce délai ce QR code ne
             sera plus fonctionnel. Si vous souhaitez continuer à utiliser notre service, n'hésitez pas à nous contacter
-            <Link href="mailto:contact@avisetoiles.com">contact@avisetoiles.com</Link>
+          {' '}  <Link href="mailto:contact@avisetoiles.com">contact@avisetoiles.com</Link>
           </Text>
 
           <Text>Si vous rencontrez des problèmes pour accéder à votre récompense, n'hésitez pas à nous contacter</Text>
