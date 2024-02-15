@@ -53,8 +53,6 @@ export default function page({ params: { name } }: SandboxProps) {
     }
   }, [subscriberData]);
 
-  console.log('config', config);
-
   useEffect(() => {
     setWheelData({
       id: subscriberData?._id,
