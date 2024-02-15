@@ -32,7 +32,7 @@ import { BsGift } from 'react-icons/bs';
 import { ImStatsDots } from 'react-icons/im';
 import { FaImages } from "react-icons/fa6";
 import { IoMdDownload } from "react-icons/io";
-
+import { GrTest } from "react-icons/gr";
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 type LogoProps = {
@@ -101,6 +101,7 @@ const Icons = {
   User: (props: IconProps) => <FaUser {...props} />,
   Trophy: (props: IconProps) => <GoTrophy {...props} />,
   Copy: (props: IconProps) => <IoCopy {...props} />,
+  Test: (props: IconProps) => <GrTest {...props} />,
   GiftMutual: (props: IconProps) => <FaGifts {...props} />,
   Easel: (props: IconProps) => <PiPresentationThin {...props} />,
   Images: (props: IconProps) => <FaImages {...props} />,

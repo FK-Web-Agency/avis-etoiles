@@ -15,6 +15,7 @@ const navigation = {
     { name: 'Collaborateurs', href: '/dashboard/admin/collaborators/list', icon: Icons.Teams },
     { name: 'Jeu', href: '/dashboard/admin/game', icon: Icons.Game },
     { name: 'Création de chevalet', href: '/dashboard/admin/easel', icon: Icons.Easel },
+    {name: 'Jeu de test', href: '/dashboard/admin/sandbox', icon: Icons.Test},
     /*  { name: 'Reports', href: '/dashboard/admin/report', icon: Icons.Reports, current: false }, */
   ],
   member: [
