@@ -41,6 +41,8 @@ const PREVIEW_WIDTH = 1414;
 const PREVIEW_HEIGHT = 2000;
 
 const Settings = ({ onChange, config }: any) => {
+  console.log(config);
+  
   return (
     <div className="flex flex-col gap-8 mt-4">
       <div>
@@ -142,16 +144,19 @@ export default function GameEasel() {
   if (isLoading) return <Spinner />;
 
   const handleDelete = (id: string) => {
-    mutate({
-      resource: process.env.NEXT_PUBLIC_SANITY_GAME_EASEL!,
-      id,
-    });
+    const askConfirmation = confirm('Voulez-vous vraiment supprimer ce chevalet ?');
 
-    toast({
-      description: 'Chevalet supprimé avec succès',
-    });
+    if (askConfirmation) {
+      mutate({
+        resource: process.env.NEXT_PUBLIC_SANITY_GAME_EASEL!,
+        id,
+      });
+
+      toast({
+        description: 'Chevalet supprimé avec succès',
+      });
+    }
   };
-
   const handleAction = async (e: any) => {
     e.preventDefault();
     try {
@@ -202,10 +207,10 @@ export default function GameEasel() {
   };
 
   const onChangeLogo = {
-    x: (e: any) => setLogoConfig({ ...qrCodeConfig, x: e.target.value }),
-    y: (e: any) => setLogoConfig({ ...qrCodeConfig, y: e.target.value }),
-    width: (e: any) => setLogoConfig({ ...qrCodeConfig, width: e.target.value }),
-    height: (e: any) => setLogoConfig({ ...qrCodeConfig, height: e.target.value }),
+    x: (e: any) => setLogoConfig({ ...logoConfig, x: e.target.value }),
+    y: (e: any) => setLogoConfig({ ...logoConfig, y: e.target.value }),
+    width: (e: any) => setLogoConfig({ ...logoConfig, width: e.target.value, height: e.target.value }),
+    height: (e: any) => setLogoConfig({ ...logoConfig, width: e.target.value, height: e.target.value }),
   };
 
   const onChangeQRCode = {

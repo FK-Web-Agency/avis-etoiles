@@ -31,7 +31,7 @@ import { TbTargetArrow } from 'react-icons/tb';
 import { BsGift } from 'react-icons/bs';
 import { ImStatsDots } from 'react-icons/im';
 import { FaImages } from "react-icons/fa6";
-
+import { IoMdDownload } from "react-icons/io";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -104,7 +104,7 @@ const Icons = {
   GiftMutual: (props: IconProps) => <FaGifts {...props} />,
   Easel: (props: IconProps) => <PiPresentationThin {...props} />,
   Images: (props: IconProps) => <FaImages {...props} />,
-
+  Download: (props: IconProps) => <IoMdDownload {...props} />,
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,
