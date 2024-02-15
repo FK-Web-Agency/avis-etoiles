@@ -2,14 +2,31 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   type: 'document',
-  name: 'gameConfig',
-  title: 'Jeu',
+  name: 'sandbox',
+  title: 'Jeu de test',
   fields: [
     defineField({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
       to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS! }],
+    }),
+    defineField({
+      name: 'buyer',
+      title: 'Acheteur',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'email',
+          title: 'Email',
+          type: 'string',
+        }),
+        defineField({
+          name: 'companyName',
+          title: "Nom de l'entreprise",
+          type: 'string',
+        }),
+      ],
     }),
     defineField({
       name: 'logo',
@@ -74,6 +91,11 @@ export default defineType({
       title: 'Code secret',
       description: 'Code secret pour confirmer la recupération de la récompense',
       type: 'string',
+    }),
+    defineField({
+      name: 'createdAt',
+      title: 'Créé le',
+      type: 'datetime',
     }),
   ],
 });

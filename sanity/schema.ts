@@ -15,6 +15,7 @@ import {
 } from './schemas/game';
 import subscribers from './schemas/subscribers';
 import collaborators from './schemas/collaborators';
+import sandbox from './schemas/game/sandbox';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -34,6 +35,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     gameBackgrounds,
     gameEasel,
     gameConfig,
+    sandbox,
     gameMutualReward,
     gameAnalytics,
     winner,

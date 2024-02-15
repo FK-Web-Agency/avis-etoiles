@@ -99,9 +99,19 @@ const OnboardingSchema = z.object({
   step: StepSchema,
   userIds: UserIds,
   gameConfig: GameConfigSchema,
+  buyer: z
+    .object({
+      email: z.string(),
+      companyName: z.string(),
+    })
+    .optional(),
   setStep: z.function().args(z.string()).returns(z.void()),
   setUserIds: z.function().args(UserIds).returns(z.void()),
   setGameConfig: z.function().args(GameConfigSchema).returns(z.void()),
+  setBuyer: z
+    .function()
+    .args(z.object({ email: z.string(), companyName: z.string() }))
+    .returns(z.void()),
 });
 
 type Onboarding = z.infer<typeof OnboardingSchema>;
@@ -125,10 +135,12 @@ const useOnboardingStore = create<Onboarding>((set) => ({
     qrCode: undefined,
     easel: undefined,
   },
+  buyer: undefined,
   setStep: (stepName: keyof typeof steps) => set({ step: steps[stepName] }),
   setUserIds: ({ clerkId, sanityId }: UserIdsProps) => set({ userIds: { clerkId, sanityId } }),
   setGameConfig: (params: Partial<z.infer<typeof GameConfigSchema>>) =>
     set((state) => ({ gameConfig: { ...state.gameConfig, ...params } })),
+  setBuyer: (buyer: z.infer<typeof OnboardingSchema>['buyer']) => set({ buyer }),
 }));
 
 export default useOnboardingStore;
