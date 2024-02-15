@@ -10,6 +10,7 @@ import { useGameStore } from '@/store';
 import { GameStep } from '@/store/game.store';
 import Image from 'next/image';
 import { ErrorActionDoesNotExist, LaunchWheel, Result, Starter } from '@/components/game';
+import { check24HoursPast } from '@/helper/getDate';
 
 const SandboxSchema = z.object({
   params: z.object({
@@ -22,6 +23,7 @@ type SandboxProps = z.infer<typeof SandboxSchema>;
 export default function page({ params: { name } }: SandboxProps) {
   const [actionExists, setActionExists] = useState(true);
   const { gameStep, currentAction, setWheelData } = useGameStore();
+  const [qrcodeExpired, setQrcodeExpired] = useState(false);
 
   const { data, isLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_GAME!,
@@ -42,6 +44,18 @@ export default function page({ params: { name } }: SandboxProps) {
   const subscriberData = subscriber?.data[0];
 
   useEffect(() => {
+    if (subscriberData?.createdAt) {
+      const checkValidation = check24HoursPast(subscriberData?.createdAt);
+
+      if (checkValidation === '24 heures se sont écoulées depuis la date donnée.') {
+        setQrcodeExpired(true);
+      }
+    }
+  }, [subscriberData]);
+
+  console.log('config', config);
+
+  useEffect(() => {
     setWheelData({
       id: subscriberData?._id,
       rewards: subscriberData?.rewards,
@@ -51,7 +65,7 @@ export default function page({ params: { name } }: SandboxProps) {
 
   if (isLoading || subscriberIsLoading) return <Spinner />;
 
-  console.log(subscriber);
+  if (qrcodeExpired) return <div className="text-center text-2xl">Le QR code a expiré</div>;
 
   return (
     <main
@@ -81,7 +95,9 @@ export default function page({ params: { name } }: SandboxProps) {
           />
         )}
 
-        {gameStep === GameStep.result && actionExists && <Result config={config} id={subscriberData?._id} companyName={subscriberData?.buyer?.companyName} sandbox />}
+        {gameStep === GameStep.result && actionExists && (
+          <Result config={config} id={subscriberData?._id} companyName={subscriberData?.buyer?.companyName} sandbox />
+        )}
       </div>
     </main>
   );
