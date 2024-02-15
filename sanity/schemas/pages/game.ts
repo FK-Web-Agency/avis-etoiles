@@ -15,7 +15,7 @@ const groups = [
 ];
 
 export default defineType({
-  name: 'game',
+  name: process.env.NEXT_PUBLIC_SANITY_GAME!,
   title: 'Pages du Jeu',
   type: 'document',
   icon: Icons.Game,

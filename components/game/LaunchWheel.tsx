@@ -6,16 +6,18 @@ import { useUpdate } from '@refinedev/core';
 import { useGameStore } from '@/store';
 import { GameStep } from '@/store/game.store';
 
-export default function LaunchWheel({
+export default function  LaunchWheel({
   config,
   analytics,
   thisYearAnalytics,
   thisMonthAnalytics,
+  sandbox,
 }: {
   config: any;
-  analytics: any;
-  thisYearAnalytics: any;
-  thisMonthAnalytics: any;
+  analytics?: any;
+  thisYearAnalytics?: any;
+  thisMonthAnalytics?: any;
+  sandbox?: boolean;
 }) {
   const { currentAction, setResult, setGameStep } = useGameStore();
   const { mutate } = useUpdate();
@@ -46,18 +48,21 @@ export default function LaunchWheel({
   });
 
   function handleSpinStop(result: any) {
-    if (thisMonthAnalytics) {
-      thisMonthAnalytics[currentAction?.title!] += 1;
-    }
-    setResult(result?.label);
+    if (!sandbox) {
+      if (thisMonthAnalytics) {
+        thisMonthAnalytics[currentAction?.title!] += 1;
+      }
 
-    mutate({
-      resource: process.env.NEXT_PUBLIC_SANITY_GAME_ANALYTICS!,
-      values: {
-        analytics: analytics.analytics,
-      },
-      id: analytics?._id,
-    });
+      mutate({
+        resource: process.env.NEXT_PUBLIC_SANITY_GAME_ANALYTICS!,
+        values: {
+          analytics: analytics.analytics,
+        },
+        id: analytics?._id,
+      });
+    }
+
+    setResult(result?.label);
 
     setTimeout(() => {
       setGameStep(GameStep.result);
@@ -73,7 +78,7 @@ export default function LaunchWheel({
         className={`glassmorphism`}>
         <h1 className="p-semibold-20 text-center break-words invert">Lancer la roue et Découvrez votre cadeau</h1>
       </div>
-      <WheelOfFortune options={rewards} onWinning={handleSpinStop} color={config?.color} />
+      <WheelOfFortune options={rewards} onWinning={handleSpinStop} color={config?.color} id={config.id} />
     </div>
   );
 }

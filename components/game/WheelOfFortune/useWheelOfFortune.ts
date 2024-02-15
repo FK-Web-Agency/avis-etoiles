@@ -1,9 +1,69 @@
+import { useGameStore } from '@/store';
+import { useCreate, useDelete, useList, useUpdate } from '@refinedev/core';
 import * as d3 from 'd3';
 import { useEffect, useRef, useState } from 'react';
 
 const useWheelOfFortune = ({ options, onWinning, color }: any) => {
+  const { wheelData } = useGameStore();
   const wheelRef: any = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [winningIndices, setWinningIndices] = useState([]);
+
+  const { mutate } = useCreate();
+  const { mutate: updateMutate } = useUpdate();
+  const { mutate: deleteMutate } = useDelete();
+  const { data, isLoading } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
+    filters: [
+      {
+        field: 'id',
+        operator: 'eq',
+        value: wheelData?.id,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const winningIndices = options
+      .map((option: any, index: number) => {
+        if (option.label !== 'Perdu') {
+          return index;
+        }
+      })
+      .filter((index: number | undefined) => index !== undefined);
+
+    // Utilisez le tableau winningIndices comme vous le souhaitez
+    setWinningIndices(winningIndices);
+
+    // Determine the winning time
+    const randomWinningTime = async () => {
+      const attempts = wheelData?.numberWinners?.attempts!;
+      const winners = wheelData?.numberWinners?.winners!;
+
+      const indices = new Set();
+      while (indices.size < attempts && indices.size < winners) {
+        const winningAttempt = Math.floor(Math.random() * attempts) + 1;
+        indices.add(winningAttempt);
+      }
+
+      if (data?.total === 0) {
+        await mutate({
+          resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
+          values: {
+            id: wheelData?.id,
+            winningTime: Array.from(indices),
+            winners: 0,
+            attempts: 0,
+          },
+        });
+      }
+    };
+
+    randomWinningTime();
+  }, [data]);
+
+  const memoryGame = data?.data[0];
+
   const rotationsTrack = useRef({
     oldRotation: 0,
     newRotation: 0,
@@ -101,7 +161,7 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
   };
 
   // Function to spin the wheel
-  const spinWheel = () => {
+  const spinWheel = async () => {
     if (isSpinning) return;
     setIsSpinning(true);
 
@@ -113,6 +173,19 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
     pickedRef.current = Math.round(options.length - (rotationsTrack.current.newRotation % 360) / ps);
     pickedRef.current = pickedRef.current >= options.length ? pickedRef.current % options.length : pickedRef.current;
 
+    if (memoryGame?.winningTime?.includes(memoryGame?.attempts as never)) {
+      const validWinningIndices = winningIndices.filter((index: number) => index < options.length);
+      pickedRef.current = validWinningIndices[Math.floor(Math.random() * validWinningIndices.length)];
+    } else {
+      if (winningIndices.includes(pickedRef.current as never)) {
+        const validIndices = options
+          .map((_: any, index: number) => index)
+          .filter((index: never) => !winningIndices.includes(index));
+        pickedRef.current = validIndices[Math.floor(Math.random() * validIndices.length)];
+      } else {
+        pickedRef.current = options.length - 1;
+      }
+    }
     rotationsTrack.current.newRotation += 90 - Math.round(ps / 2);
 
     // Rotate the wheel
@@ -128,10 +201,31 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
         );
         return (t) => `rotate(${interpolate(t)})`;
       })
-      .on('end', () => {
+      .on('end', async () => {
         onWinning(options[pickedRef.current]);
         rotationsTrack.current.oldRotation = rotationsTrack.current.newRotation;
         setIsSpinning(false);
+
+        // Get data from kv storage
+        if (memoryGame?.attempts === wheelData?.numberWinners?.winners) {
+          return await deleteMutate({
+            resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
+            id: memoryGame?._id,
+          });
+        }
+
+        if (data?.winners === wheelData?.numberWinners?.winners) {
+          return;
+        }
+
+        await updateMutate({
+          resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
+          values: {
+            attempts: memoryGame?.attempts! + 1,
+            winners: options[pickedRef.current].label === 'Perdu' ? memoryGame?.winners : memoryGame?.winners! + 1,
+          },
+          id: memoryGame?._id,
+        });
       });
   };
 

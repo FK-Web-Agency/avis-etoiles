@@ -3,7 +3,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   type: 'document',
-  name: 'sandbox',
+  name: process.env.NEXT_PUBLIC_SANITY_SANDBOX!,
   title: 'Paramétres du Jeu de test',
   icon: Icons.Test,
   fields: [
@@ -98,6 +98,12 @@ export default defineType({
       name: 'createdAt',
       title: 'Créé le',
       type: 'datetime',
+    }),
+    defineField({
+      name: 'winners',
+      title: 'Les gagnants',
+      type: 'array',
+      of: [{ type: 'winner' }],
     }),
   ],
 });

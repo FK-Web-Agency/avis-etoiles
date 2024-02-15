@@ -14,7 +14,7 @@ type TransformedObject = {
   value: string;
 };
 
-const WheelOfFortune = ({ options, onWinning, color }: any) => {
+const WheelOfFortune = ({ options, onWinning, color, id }: any) => {
   function transformArray(array: OriginalObject[]): TransformedObject[] {
     return array?.map((obj) => ({
       label: obj.option,
@@ -28,6 +28,7 @@ const WheelOfFortune = ({ options, onWinning, color }: any) => {
     options: transformedArray,
     onWinning,
     color,
+    id
   });
 
   return (

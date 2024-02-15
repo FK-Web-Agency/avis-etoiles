@@ -23,6 +23,7 @@ import {
   useToast,
 } from '@/components/ui';
 import { Label } from '@radix-ui/react-label';
+import { calculate24HoursEnd, check24HoursPast } from '@/helper/getDate';
 
 const RetrieveSchema = z.object({
   params: z.object({
@@ -65,8 +66,9 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
   const config = dataConfig?.data[0];
 
   useEffect(() => {
-    if (winner?.createdAt)
-      setRemainingTime(formatDistance(new Date(winner?.createdAt), new Date(), { addSuffix: true, locale: fr }));
+    if (winner?.createdAt) {
+      setRemainingTime(check24HoursPast(winner?.createdAt));
+    }
   }, [data]);
 
   // Verify if the winner has already retrieved his reward
@@ -86,15 +88,9 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
     );
   }
 
-  // Verify if the winner had more than 24 hours to retrieve his reward
-  const dateNow = new Date();
-  const dateWinner = new Date(winner?.createdAt);
-  const diffTime = Math.abs(dateWinner.getTime() - dateNow.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
   // Verify if it has been 24 hours
 
-  if (remainingTime?.includes('dans') && diffDays <= 1) {
+  if (remainingTime?.includes('restantes')) {
     return (
       <main className="min-h-screen background-body">
         <div className="wrapper">
@@ -102,7 +98,7 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
             Vous devez attendre 24 heures avant de pouvoir récupérer votre récompense
           </h1>
 
-          <p>La récompense sera disponible {remainingTime} </p>
+          <p>La récompense sera disponible le {calculate24HoursEnd(winner?.createdAt)} </p>
         </div>
       </main>
     );

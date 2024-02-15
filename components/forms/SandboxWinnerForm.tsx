@@ -23,7 +23,9 @@ import { useGameStore } from '@/store';
 import sendEmail from '@/lib/actions/resend.actions';
 import { Icons } from '../shared';
 import { uploadFileToSanity } from '@/sanity/lib/helper';
-import { urlForImage } from '@/sanity/lib';
+import { client, urlForImage } from '@/sanity/lib';
+import { kv } from '@vercel/kv';
+import { setWinner } from '@/lib/actions/kv.actions';
 
 const WinnerFormSchema = z.object({
   winnerFirstName: z.string().describe('Prénom'),
@@ -40,7 +42,17 @@ const WinnerFormSchema = z.object({
     }),
 });
 
-export default function WinnerForm({ color, id, formCompleted }: { color: any; id: string; formCompleted: any }) {
+export default function WinnerForm({
+  color,
+  id,
+  formCompleted,
+  companyName,
+}: {
+  color: any;
+  id: string;
+  formCompleted: any;
+  companyName?: string;
+}) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { result } = useGameStore();
@@ -48,26 +60,13 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
     resource: 'general',
   });
 
-  const { data: userData } = useOne({
-    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+  const { data: subscriber } = useOne({
+    resource: process.env.NEXT_PUBLIC_SANITY_SANDBOX!,
     id,
   });
-
-  const { data: winnersData } = useList({
-    resource: 'gameWinners',
-    filters: [
-      {
-        field: 'user._ref',
-        operator: 'contains',
-        value: id,
-      },
-    ],
-  });
-
   const { mutate } = useUpdate();
 
-  const allDataWinner = winnersData?.data[0];
-  const winners = allDataWinner?.winners;
+  const subscriberData = subscriber?.data;
 
   const handleAction = async function (values: any) {
     setLoading(true);
@@ -77,7 +76,7 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
       email: values.winnerEmail,
       phone: values.winnerPhone,
       zipAddress: values.winnerZipAddress,
-      createAt: new Date(),
+      createdAt: new Date(),
       reward: {
         rewardName: result,
         retrieve: false,
@@ -86,50 +85,48 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
     const baseUrl =
       process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-    const token = await encodedValue({ id: allDataWinner?._id, winner });
-    const qrCode = await QRCode.toDataURL(`${baseUrl}/game/retrieve/${token}`);
+    const token = await encodedValue({ id, winner });
+
+    const qrCode = await QRCode.toDataURL(`${baseUrl}/game/sandbox/retrieve/${token}`);
 
     const response = await fetch(qrCode);
     const blob = await response.blob();
     const file = new File([blob], 'background.jpg', { type: 'image/jpeg' });
 
-    const qrCodeUpload = await uploadFileToSanity(file);
-
+    const document = await client.assets.upload('image', file);
 
     try {
-      const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
+      const valuesWithoutAcceptTerms = { ...values, qrCode: document };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
-      winners.push(valuesWithoutAcceptTerms);
+      console.log(subscriberData);
+
+      const winnerData = {
+        ...valuesWithoutAcceptTerms,
+        createdAt: new Date(),
+        reward: {
+          rewardName: result,
+          retrieved: false,
+        },
+      };
+
+      delete winnerData.qrCode;
 
       mutate({
-        resource: 'gameWinners',
-        id: allDataWinner?._id,
+        resource: process.env.NEXT_PUBLIC_SANITY_SANDBOX!,
+        id,
         values: {
-          winners: winners,
+          winners: subscriberData?.winners ? [...subscriberData?.winners, winnerData] : [winnerData],
         },
-        successNotification: (data, values:any, resource) => {
+      });
 
-          const winnerWithQRCode = values?.values?.winners?.find(
-            (winner:any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
-          );
+      await sendEmail({
+        ...winner,
+        subject: 'Votre lot est prêt',
+        emailTemplate: 'winner',
 
-            sendEmail({
-            ...winner,
-            subject: 'Votre lot est prêt',
-            emailTemplate: 'winner',
-
-            ownerName: userData?.data?.companyName,
-            QRCode: urlForImage(winnerWithQRCode?.qrCode),
-          }).then(() => {
-            console.log('Email sent');
-          });
-          return {
-            message: ``,
-            description: '',
-            type: 'success',
-          };
-        },
+        ownerName: companyName,
+        QRCode: urlForImage(document),
       });
 
       toast({
@@ -138,10 +135,13 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
       setLoading(false);
       formCompleted();
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error);
+      setLoading(false);
+
       toast({
         title: 'Erreur',
-        description: 'Une erreur est survenue, veuillez réessayer plus tard',
+        description: error.message,
         variant: 'destructive',
       });
     }

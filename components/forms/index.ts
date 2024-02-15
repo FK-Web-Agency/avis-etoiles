@@ -7,3 +7,4 @@ export { default as EditProfileForm } from './EditProfileForm';
 export { default as EditSubscriptionForm } from './EditSubscriptionForm';
 export { default as RequestForContactForm } from './RequestForContactForm';
 export { default as WinnerForm } from './WinnerForm';
+export { default as SandboxWinnerForm } from './SandboxWinnerForm';

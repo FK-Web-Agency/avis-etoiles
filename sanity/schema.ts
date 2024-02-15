@@ -17,6 +17,7 @@ import {
 import subscribers from './schemas/subscribers';
 import collaborators from './schemas/collaborators';
 import sandbox from './schemas/game/sandbox';
+import memoryGame from './schemas/game/memoryGame';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -39,6 +40,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     gameEasel,
     gameConfig,
     sandbox,
+    memoryGame,
     gameAnalytics,
     winner,
     gameWinners,

@@ -4,10 +4,10 @@ import Confetti from 'react-confetti';
 import React, { useEffect, useState } from 'react';
 import { useGameStore } from '@/store';
 import { useWindowSize } from '@uidotdev/usehooks';
-import { WinnerForm } from '../forms';
+import { SandboxWinnerForm, WinnerForm } from '../forms';
 import { classNames, colorIsLight, hexToRgb } from '@/helper';
 
-export default function Result({ config, id }: { config: any; id: string }) {
+export default function Result({ config, id, sandbox, companyName }: { config: any; id?: string; sandbox?: boolean; companyName?: string }) {
   const [showConfetti, setShowConfetti] = useState(true);
   const [winnerFormCompleted, setWinnerFormCompleted] = useState(false);
   const size = useWindowSize();
@@ -42,11 +42,17 @@ export default function Result({ config, id }: { config: any; id: string }) {
           ) : (
             <div className="z-10">
               <h1 className="p-semibold-18">Félicitation, vous avez gagné 1 {result} </h1>
-              <p className="p-regular-14 invert my-4">
-                Veuillez remplir le formulaire ci-dessous pour recevoir votre lot par email, n'oubliez pas de vérifier
-                vos spams
-              </p>
-              <WinnerForm color={config?.color} id={id} formCompleted={formCompleted} />
+              <>
+                <p className="p-regular-14 invert my-4">
+                  Veuillez remplir le formulaire ci-dessous pour recevoir votre lot par email, n'oubliez pas de vérifier
+                  vos spams
+                </p>
+                {sandbox ? (
+                  <SandboxWinnerForm color={config?.color} id={id!} formCompleted={formCompleted} companyName={companyName} />
+                ) : (
+                  <WinnerForm color={config?.color} id={id!} formCompleted={formCompleted}  />
+                )}
+              </>
             </div>
           )}
         </>
