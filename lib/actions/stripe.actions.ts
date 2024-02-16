@@ -21,16 +21,16 @@ export const getAllSubscribers = async () => {
 
 export const getSession = async ({ subscriberId }: { subscriberId: string }) => {
   const db: Payment | null = await kv.get(`subscriber:${subscriberId}`);
+  if (!db?.payment?.session_id) {
+    return null;
+    throw new Error('No session found');
+  }
 
   const session = await stripe.checkout.sessions.retrieve(db?.payment?.session_id!);
   console.log('session', session);
 
   return session;
 };
-
-
-
-
 
 export const cancelSubscription = async ({ clerkId }: { clerkId: string }) => {
   const subscriberSanity = await client.fetch(

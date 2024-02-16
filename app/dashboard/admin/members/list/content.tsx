@@ -136,12 +136,16 @@ export default function Content() {
                             <ul>
                               <li className="flex items-center gap-2">
                                 <Icons.Phone className="w-4 h-4" />
-                                <Link href={`tel:${user?.phone}`}>{user.phone}</Link>
+                                <Link className="hover:underline" href={`tel:${user?.phone}`}>
+                                  {user.phone}
+                                </Link>
                               </li>
 
                               <li className="flex items-center gap-2">
                                 <Icons.Envelope className="w-4 h-4" />
-                                <Link href={`mailto:${user?.email}`}>{user.email}</Link>
+                                <Link className="hover:underline" href={`mailto:${user?.email}`}>
+                                  {user.email}
+                                </Link>
                               </li>
                             </ul>
                           </CardContent>
