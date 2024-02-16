@@ -6,6 +6,7 @@ const MonthSchema = z.object({
   google: z.number(),
   facebook: z.number(),
   instagram: z.number(),
+  tiktok: z.number(),
 });
 
 const AnalyticItemSchema = z.object({

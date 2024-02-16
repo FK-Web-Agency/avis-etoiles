@@ -34,11 +34,11 @@ const TotalRevenueOptions: ApexOptions = {
     width: 4,
   },
   xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    categories: ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'aout', 'Sep', 'Oct', 'Nov', 'Dec'],
   },
   yaxis: {
     title: {
-      text: '$ (thousands)',
+      text: 'Visiteurs',
     },
   },
   fill: {
@@ -51,7 +51,7 @@ const TotalRevenueOptions: ApexOptions = {
   tooltip: {
     y: {
       formatter(val: number) {
-        return `$ ${val} thousands`;
+        return ` ${val}`;
       },
     },
   },

@@ -1,7 +1,7 @@
 'use client';
 
 import { useList } from '@refinedev/core';
-import { KPIGame, PieChart } from '@/components/charts';
+import { KPIGame, PieChart, TrafficSocial } from '@/components/charts';
 import { useDashboardStore } from '@/store';
 import { IAnalyticItem } from '@/interfaces/analytic';
 import { getYear } from '@/helper/getDate';
@@ -11,6 +11,7 @@ enum AnalyticMonthValue {
   google = 'google',
   facebook = 'facebook',
   instagram = 'instagram',
+  tiktok = 'tiktok',
 }
 
 export default function Content() {
@@ -38,9 +39,7 @@ export default function Content() {
     ],
   });
 
- 
   const analytics = data?.data[0]?.analytics;
-
 
   const currentYear = new Date().getFullYear();
 
@@ -50,6 +49,8 @@ export default function Content() {
       0
     );
   };
+
+
 
   // Calculate the total number of visits
   const allVisits = retrieveValue(AnalyticMonthValue.visitors);
@@ -61,11 +62,12 @@ export default function Content() {
 
   // Calculate the total number of Instagram reviews
   const allInstagramReviews = retrieveValue(AnalyticMonthValue.instagram);
+  const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // Calculate the total number of reviews without Google reviews
   const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews;
 
   // Get the total number of winners
-  const allWinners = winners?.total;
+  const allWinners = winners?.data[0]?.winners.length;
 
   return (
     <>
@@ -79,6 +81,7 @@ export default function Content() {
         <PieChart title="Gagnants" value={allWinners! || 0} />
       </section>
 
+      <TrafficSocial analytics={analytics} />
       {/* -------------------------- Total Revenue Charts -------------------------- */}
       <KPIGame analytics={analytics} />
     </>
