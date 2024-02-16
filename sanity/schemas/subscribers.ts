@@ -12,14 +12,14 @@ export default defineType({
       name: 'seller',
       title: 'Vendeur',
       type: 'reference',
-      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!}],
+      to: [{ type: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS! }],
     }),
     defineField({
       name: 'disabled',
       title: 'Désactivé',
       type: 'string',
-      description: 'Désactiver l\'abonné',
-      initialValue: "false",
+      description: "Désactiver l'abonné",
+      initialValue: 'false',
     }),
     defineField({
       name: 'companyName',
@@ -93,7 +93,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-/*     defineField({
+    /*     defineField({
       name: 'photo',
       title: 'Photo',
       type: 'url',
@@ -193,4 +193,10 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'companyName',
+      subtitle: 'email',
+    },
+  },
 });

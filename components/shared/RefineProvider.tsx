@@ -19,6 +19,7 @@ const resources = {
       list: '/dashboard/admin/members/list',
       create: '/dashboard/admin/members/create',
       edit: '/dashboard/admin/members/edit/:id',
+      show: '/dashboard/admin/members/show/:id',
       meta: {
         canDelete: true,
       },
