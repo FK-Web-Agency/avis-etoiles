@@ -7,7 +7,7 @@ import { classNames } from '@/helper';
 import { IAnalytics } from '@/interfaces';
 import { useList } from '@refinedev/core';
 
-const IconOverview = ({ Icon, backgroundColor }: { Icon: any; backgroundColor: string }) => (
+export const IconOverview = ({ Icon, backgroundColor }: { Icon: any; backgroundColor: string }) => (
   <div className={classNames('p-3 rounded-full', backgroundColor)}>
     <Icon className="w-5 h-5 text-slate-50" />
   </div>

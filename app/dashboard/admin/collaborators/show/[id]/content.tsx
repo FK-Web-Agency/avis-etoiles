@@ -1,7 +1,7 @@
 'use client';
 
 import { useGo, useList, useMany, useOne } from '@refinedev/core';
-import { Spinner } from '@/components/shared';
+import { Icons, Spinner } from '@/components/shared';
 import {
   Button,
   Table,
@@ -19,6 +19,8 @@ import {
 } from '@/components/ui';
 import { formatDate } from '@/helper';
 import Link from 'next/link';
+import { PieChart } from '@/components/charts';
+import { IconOverview } from '../../../overview/content';
 
 export default function Content({ id }: { id: string }) {
   const go = useGo();
@@ -45,6 +47,10 @@ export default function Content({ id }: { id: string }) {
     id,
   });
 
+  const { data: testGame } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_SANDBOX,
+  });
+
   if (isLoading) return <Spinner />;
 
   const orders = data?.data;
@@ -52,29 +58,49 @@ export default function Content({ id }: { id: string }) {
 
   return (
     <div>
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>
-            {collaborator?.firstName} {collaborator?.lastName}{' '}
-          </CardTitle>
-          <CardDescription>Information de contact</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul>
-            <li>
-              <span className="font-medium">Email:</span>{' '}
-              <Link className='hover:underline' href={`mailto:${collaborator?.email}`}>{collaborator?.email}</Link>
-            </li>
-            <li>
-              <span className="font-medium">Téléphone:</span>{' '}
-              <Link className='hover:underline' href={`tel:${collaborator?.phone}`}>{collaborator?.phone}</Link>
-            </li>
-            <li>
-              <span className="font-medium">Role:</span> {collaborator?.role}
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
+      <div className="flex justify-between items-center gap-4 mb-8">
+        <Card >
+          <CardHeader>
+            <CardTitle>
+              {collaborator?.firstName} {collaborator?.lastName}{' '}
+            </CardTitle>
+            <CardDescription>Information de contact</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul>
+              <li>
+                <span className="font-medium">Email:</span>{' '}
+                <Link className="hover:underline" href={`mailto:${collaborator?.email}`}>
+                  {collaborator?.email}
+                </Link>
+              </li>
+              <li>
+                <span className="font-medium">Téléphone:</span>{' '}
+                <Link className="hover:underline" href={`tel:${collaborator?.phone}`}>
+                  {collaborator?.phone}
+                </Link>
+              </li>
+              <li>
+                <span className="font-medium">Role:</span> {collaborator?.role}
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card className='w-72'>
+          <CardHeader>
+            <CardTitle>Jeu Test</CardTitle>
+            <CardDescription>Nombre de jeu d'essaie crée</CardDescription>
+          </CardHeader>
+          <CardContent className='flex justify-between items-center'>
+            <p className="p-bold-24 text-gray-900">{testGame?.total}</p>
+
+            <div className="bg-gradient-to-b from-gray-900 to-gray-600 p-3 rounded-full">
+              <Icons.Game className="w-5 h-5 text-slate-50" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <Table>
         <TableHeader className="bg-background">
