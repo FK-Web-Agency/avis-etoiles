@@ -5,6 +5,7 @@ import { useList } from '@refinedev/core';
 import { Icons, Spinner } from '@/components/shared';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import Link from 'next/link';
+import { formatDate } from '@/helper';
 
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,7 +66,7 @@ export default function Content() {
                 <TableCell>
                   {seller?.firstName} {seller?.lastName}
                 </TableCell>
-                <TableCell>{order.createdAt}</TableCell>
+                <TableCell>{formatDate(order.createdAt)}</TableCell>
                 <TableCell>
                   <Link href={order?.invoice?.url} target="_blank">
                     <Icons.Eye className="h-6 w-6" />
