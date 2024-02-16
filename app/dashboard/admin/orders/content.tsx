@@ -66,12 +66,9 @@ export default function Content() {
                   {seller?.firstName} {seller?.lastName}
                 </TableCell>
                 <TableCell>{order.createdAt}</TableCell>
-                <TableCell className="flex-center gap-2">
+                <TableCell>
                   <Link href={order?.invoice?.url} target="_blank">
-                    <Icons.Eye className="h-4 w-4" />
-                  </Link>
-                  <Link href={order?.invoice?.pdf} target="_blank">
-                    <Icons.Download className="h-4 w-4" />
+                    <Icons.Eye className="h-6 w-6" />
                   </Link>
                 </TableCell>
               </TableRow>
