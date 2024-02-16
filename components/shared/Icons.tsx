@@ -12,6 +12,7 @@ import {
   IoPersonAddOutline,
   IoChevronBack,
   IoCopy,
+  IoShareSocialOutline
 } from 'react-icons/io5';
 import { MdDashboard } from 'react-icons/md';
 import { RiMenu4Line, RiFolderInfoFill } from 'react-icons/ri';
@@ -109,6 +110,7 @@ const Icons = {
   Images: (props: IconProps) => <FaImages {...props} />,
   Download: (props: IconProps) => <IoMdDownload {...props} />,
   Invoice: (props: IconProps) => <LiaFileInvoiceDollarSolid {...props} />,
+  Share: (props: IconProps) => <IoShareSocialOutline {...props} />,
 
   Google: (props: IconProps) => <FcGoogle {...props} />,
   Instagram: (props: IconProps) => <FaInstagram {...props} />,

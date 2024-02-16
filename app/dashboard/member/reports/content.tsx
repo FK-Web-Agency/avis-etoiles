@@ -113,7 +113,7 @@ export default function Content() {
               ))}
             </TableBody>
           </Table>
-          {data?.total! > 20 && (
+        {/*   {data?.total! > 20 && (
             <Pagination className='mt-8'>
               <PaginationContent>
                 <PaginationItem>
@@ -132,7 +132,7 @@ export default function Content() {
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
-          )}
+          )} */}
         </>
       ) : (
         <div className="flex-center flex-col">
