@@ -19,8 +19,7 @@ import {
 } from '@/components/ui';
 import { formatDate } from '@/helper';
 import Link from 'next/link';
-import { PieChart } from '@/components/charts';
-import { IconOverview } from '../../../overview/content';
+
 
 export default function Content({ id }: { id: string }) {
   const go = useGo();
