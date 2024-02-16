@@ -69,6 +69,7 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
   const allDataWinner = winnersData?.data[0];
   const winners = allDataWinner?.winners;
 
+
   const handleAction = async function (values: any) {
     setLoading(true);
     const winner: any = {
@@ -95,7 +96,6 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
     const qrCodeUpload = await uploadFileToSanity(file);
 
-
     try {
       const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
@@ -108,13 +108,15 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
         values: {
           winners: winners,
         },
-        successNotification: (data, values:any, resource) => {
-
+        successNotification: (data, values: any, resource) => {
           const winnerWithQRCode = values?.values?.winners?.find(
-            (winner:any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
+            (winner: any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
           );
 
-            sendEmail({
+          console.log(winnerWithQRCode, 'winnerWithQRCode');
+
+
+          sendEmail({
             ...winner,
             subject: 'Votre lot est prêt',
             emailTemplate: 'winner',
@@ -139,6 +141,9 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
       setLoading(false);
       formCompleted();
     } catch (error) {
+      console.log(error, 'error');
+      
+      setLoading(false);
       toast({
         title: 'Erreur',
         description: 'Une erreur est survenue, veuillez réessayer plus tard',

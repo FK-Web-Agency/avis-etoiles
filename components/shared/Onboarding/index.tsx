@@ -30,7 +30,7 @@ export default function Onboarding({ user }: { user: any }) {
   const { toast } = useToast();
 
   const { step, gameConfig, userIds, setStep, setGameConfig } = useOnboardingStore();
-console.log(userIds);
+
 
   // Components for each step
   const Content = step?.Content;

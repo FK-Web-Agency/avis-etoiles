@@ -8,6 +8,7 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
   const wheelRef: any = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [winningIndices, setWinningIndices] = useState([]);
+  const [winningIndex, setWinningIndex] = useState(0);
 
   const { mutate } = useCreate();
   const { mutate: updateMutate } = useUpdate();
@@ -22,6 +23,7 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
       },
     ],
   });
+  const memoryGame = data?.data[0];
 
   useEffect(() => {
     const winningIndices = options
@@ -62,7 +64,21 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
     randomWinningTime();
   }, [data]);
 
-  const memoryGame = data?.data[0];
+  useEffect(() => {
+    if (memoryGame?.winningTime?.includes(memoryGame?.attempts as never)) {
+      console.log('Partie gagnante', memoryGame);
+
+      const validWinningIndices = winningIndices.filter((index: number) => index < options.length);
+      setWinningIndex(validWinningIndices[Math.floor(Math.random() * validWinningIndices.length)]);
+    } else {
+      console.log('Partie perdante', memoryGame);
+
+      const validIndices = options
+        .map((_: any, index: number) => index)
+        .filter((index: never) => !winningIndices.includes(index));
+      setWinningIndex(validIndices[Math.floor(Math.random() * validIndices.length)]);
+    }
+  }, [memoryGame]);
 
   const rotationsTrack = useRef({
     oldRotation: 0,
@@ -165,27 +181,18 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
     if (isSpinning) return;
     setIsSpinning(true);
 
-    var ps = 360 / options.length,
-      rng = Math.floor(Math.random() * 1440 + 360);
+    const ps = 360 / options.length;
+    const desiredAngle = 360 - winningIndex * ps;
 
-    rotationsTrack.current.newRotation = Math.round(rng / ps) * ps;
+    // Ajouter des tours supplémentaires pour l'effet de spin
+    const extraRotations = 360 * 5; // 5 tours complets, par exemple
 
-    pickedRef.current = Math.round(options.length - (rotationsTrack.current.newRotation % 360) / ps);
-    pickedRef.current = pickedRef.current >= options.length ? pickedRef.current % options.length : pickedRef.current;
+    rotationsTrack.current.newRotation = rotationsTrack.current.oldRotation + desiredAngle + extraRotations;
+    rotationsTrack.current.newRotation %= 720;
 
-    if (memoryGame?.winningTime?.includes(memoryGame?.attempts as never)) {
-      const validWinningIndices = winningIndices.filter((index: number) => index < options.length);
-      pickedRef.current = validWinningIndices[Math.floor(Math.random() * validWinningIndices.length)];
-    } else {
-      if (winningIndices.includes(pickedRef.current as never)) {
-        const validIndices = options
-          .map((_: any, index: number) => index)
-          .filter((index: never) => !winningIndices.includes(index));
-        pickedRef.current = validIndices[Math.floor(Math.random() * validIndices.length)];
-      } else {
-        pickedRef.current = options.length - 1;
-      }
-    }
+    pickedRef.current = winningIndex;
+    console.log(options[winningIndex]);
+
     rotationsTrack.current.newRotation += 90 - Math.round(ps / 2);
 
     // Rotate the wheel
@@ -202,6 +209,8 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
         return (t) => `rotate(${interpolate(t)})`;
       })
       .on('end', async () => {
+        console.log(pickedRef.current);
+
         onWinning(options[pickedRef.current]);
         rotationsTrack.current.oldRotation = rotationsTrack.current.newRotation;
         setIsSpinning(false);
@@ -218,14 +227,24 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
           return;
         }
 
-        await updateMutate({
-          resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
-          values: {
-            attempts: memoryGame?.attempts! + 1,
-            winners: options[pickedRef.current].label === 'Perdu' ? memoryGame?.winners : memoryGame?.winners! + 1,
+        await updateMutate(
+          {
+            resource: process.env.NEXT_PUBLIC_SANITY_MEMORY_GAME!,
+            values: {
+              attempts: memoryGame?.attempts! + 1,
+              winners: options[pickedRef.current].label === 'Perdu' ? memoryGame?.winners : memoryGame?.winners! + 1,
+            },
+            id: memoryGame?._id,
           },
-          id: memoryGame?._id,
-        });
+          {
+            onSuccess() {
+              console.log('memory game success');
+            },
+            onError(error, variables, context) {
+              console.log('memory game error', error);
+            },
+          }
+        );
       });
   };
 

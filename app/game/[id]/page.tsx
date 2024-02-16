@@ -38,7 +38,7 @@ type GameProps = z.infer<typeof GameSchema>;
 export default function Game({ params: { id } }: GameProps) {
   const [actionExists, setActionExists] = useState(true);
   const [done, setDone] = useState(false);
-  const { gameStep, currentAction } = useGameStore();
+  const { gameStep, currentAction, setWheelData } = useGameStore();
 
   const { mutate } = useUpdate();
   const { data, isLoading } = useList({
@@ -54,15 +54,21 @@ export default function Game({ params: { id } }: GameProps) {
 
   const { data: dataAnalytics } = useList({
     resource: 'gameAnalytics',
-    filters: [
+    /*  filters: [
       {
         field: 'user._ref',
         operator: 'contains',
         value: id,
       },
-    ],
+    ], */
   });
+
+  const { data: defaultConfig, isLoading: defaultIsLoading } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_GAME!,
+  });
+
   const config = data?.data[0];
+  const defaultSettings = defaultConfig?.data[0]?.settings;
   const analytics = dataAnalytics?.data[0];
 
   useEffect(() => {
@@ -112,9 +118,17 @@ export default function Game({ params: { id } }: GameProps) {
     setDone(true);
   }, [thisMonthAnalytics]);
 
+  useEffect(() => {
+    setWheelData({
+      id: id,
+      rewards: config?.rewards,
+      numberWinners: config?.numberWinners,
+    });
+  }, [config]);
+
   return (
     <>
-      {isLoading ? (
+      {isLoading || defaultIsLoading ? (
         <div className="flex-center">
           <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
         </div>
@@ -122,7 +136,7 @@ export default function Game({ params: { id } }: GameProps) {
         <>
           <main
             style={{
-              backgroundImage: `url(${urlForImage(config?.background)})`,
+              backgroundImage: `url(${defaultSettings && urlForImage(defaultSettings?.background)})`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
             }}
@@ -136,16 +150,16 @@ export default function Game({ params: { id } }: GameProps) {
                 <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
               </div>
               {!actionExists && <ErrorActionDoesNotExist />}
-              {gameStep === GameStep.starter && actionExists && <Starter config={config} />}
+              {gameStep === GameStep.starter && actionExists && <Starter config={{ ...config, ...defaultSettings }} />}
               {gameStep === GameStep.launchWheel && actionExists && (
                 <LaunchWheel
-                  config={config}
+                  config={{ ...config, ...defaultSettings }}
                   thisYearAnalytics={thisYearAnalytics}
                   thisMonthAnalytics={thisMonthAnalytics}
                   analytics={analytics}
                 />
               )}
-              {gameStep === GameStep.result && actionExists && <Result config={config} id={id} />}
+              {gameStep === GameStep.result && actionExists && <Result config={defaultSettings} id={id} />}
             </div>
           </main>
 

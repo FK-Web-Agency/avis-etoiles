@@ -6,7 +6,7 @@ import { useUpdate } from '@refinedev/core';
 import { useGameStore } from '@/store';
 import { GameStep } from '@/store/game.store';
 
-export default function  LaunchWheel({
+export default function LaunchWheel({
   config,
   analytics,
   thisYearAnalytics,
@@ -64,9 +64,9 @@ export default function  LaunchWheel({
 
     setResult(result?.label);
 
-    setTimeout(() => {
+    /*     setTimeout(() => {
       setGameStep(GameStep.result);
-    }, 900);
+    }, 900); */
   }
   return (
     <div>

@@ -100,7 +100,7 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
-  console.log('seller', seller);
+ 
 
   // Handle form submission
   const handleAction = async function (values: MemberProps) {
@@ -170,8 +170,6 @@ export default function CreateMemberForm() {
           },
           {
             onSuccess: async (data: any) => {
-              console.log(data);
-
               const order = {
                 id: data?.data?._id,
                 email: values?.information?.email,
@@ -194,8 +192,6 @@ export default function CreateMemberForm() {
                   expirationDate,
                 }),
               };
-
-              console.log(order);
 
               // Checkout the order
               const { status, message } = await checkoutSubscription(order);

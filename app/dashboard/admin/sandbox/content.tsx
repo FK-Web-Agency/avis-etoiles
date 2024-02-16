@@ -32,7 +32,6 @@ export default function Content() {
   const { toast } = useToast();
 
   const { step, gameConfig, userIds, buyer, setStep } = useOnboardingStore();
-  console.log(userIds);
 
   // Components for each step
   const Content = step?.Content;

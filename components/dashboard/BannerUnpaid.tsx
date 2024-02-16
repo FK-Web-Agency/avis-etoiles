@@ -11,7 +11,6 @@ export default function BannerUnpaid({ sanityId }: { sanityId: string }) {
   useEffect(() => {
     const fetchSubscriber = async () => {
       const subscriber = await getSession({ subscriberId: sanityId });
-      console.log('subscriber', subscriber);
 
       if (!subscriber) {
         return setUnpaid(false);

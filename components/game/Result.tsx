@@ -7,7 +7,17 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import { SandboxWinnerForm, WinnerForm } from '../forms';
 import { classNames, colorIsLight, hexToRgb } from '@/helper';
 
-export default function Result({ config, id, sandbox, companyName }: { config: any; id?: string; sandbox?: boolean; companyName?: string }) {
+export default function Result({
+  config,
+  id,
+  sandbox,
+  companyName,
+}: {
+  config: any;
+  id?: string;
+  sandbox?: boolean;
+  companyName?: string;
+}) {
   const [showConfetti, setShowConfetti] = useState(true);
   const [winnerFormCompleted, setWinnerFormCompleted] = useState(false);
   const size = useWindowSize();
@@ -48,9 +58,14 @@ export default function Result({ config, id, sandbox, companyName }: { config: a
                   vos spams
                 </p>
                 {sandbox ? (
-                  <SandboxWinnerForm color={config?.color} id={id!} formCompleted={formCompleted} companyName={companyName} />
+                  <SandboxWinnerForm
+                    color={config?.color}
+                    id={id!}
+                    formCompleted={formCompleted}
+                    companyName={companyName}
+                  />
                 ) : (
-                  <WinnerForm color={config?.color} id={id!} formCompleted={formCompleted}  />
+                  <WinnerForm color={config?.color} id={id!} formCompleted={formCompleted} />
                 )}
               </>
             </div>

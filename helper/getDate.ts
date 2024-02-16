@@ -25,12 +25,10 @@ export function check24HoursPast(date: Date) {
 
   if (differenceInTime >= 86400000) {
     // 86400000 millisecondes = 24 heures
-    console.log('24 heures se sont écoulées depuis la date donnée.');
     return '24 heures se sont écoulées depuis la date donnée.';
   } else {
     const hoursRemaining = 23 - differenceInHours; // 23 parce qu'on calcule le reste jusqu'à la prochaine heure complète
     const minutesRemaining = 59 - differenceInMinutes; // 59 pour obtenir le nombre de minutes restantes jusqu'à l'heure suivante
-    console.log(`${hoursRemaining} heures et ${minutesRemaining} minutes restantes avant 24 heures.`);
 
     return `${hoursRemaining} heures et ${minutesRemaining} minutes restantes avant 24 heures.`;
   }

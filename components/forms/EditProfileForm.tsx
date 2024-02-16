@@ -5,7 +5,7 @@ import { updateMemberInformation } from '@/lib/actions/clerk.actions';
 export default function EditInformation({ user }: { user: any }) {
   const { toast } = useToast();
 
-  console.log('user', user);
+
   
   // Schema for the form
   const EditInformationSchema = z.object({

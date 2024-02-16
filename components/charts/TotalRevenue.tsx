@@ -75,7 +75,6 @@ export default function TotalRevenue() {
   const averageChange = totalLastMonthSum ? (totalRunningMonthSum - totalLastMonthSum) / totalLastMonthSum : 0;
   const changePercentage = averageChange * 100;
 
-  console.log(TotalRevenueSeries);
 
   return (
     <section className="bg-slate-100 flex-1 flex flex-col rounded p-4 mt-8" id="chart">

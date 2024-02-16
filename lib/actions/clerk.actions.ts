@@ -75,7 +75,7 @@ export async function createTeam(value: any) {
     },
   });
 
-  console.log(teamMember);
+  
   return { clerkId: teamMember.id, password };
 }
 // Update email address

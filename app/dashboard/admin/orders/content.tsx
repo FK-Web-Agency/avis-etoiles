@@ -31,7 +31,6 @@ export default function Content() {
   const orders = data?.data;
   const collaboratorsList = collaborators?.data;
   const subscribersList = subscribers?.data;
-  console.log(orders);
 
   return (
     <>

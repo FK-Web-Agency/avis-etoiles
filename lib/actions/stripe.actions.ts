@@ -27,7 +27,7 @@ export const getSession = async ({ subscriberId }: { subscriberId: string }) => 
   }
 
   const session = await stripe.checkout.sessions.retrieve(db?.payment?.session_id!);
-  console.log('session', session);
+
 
   return session;
 };

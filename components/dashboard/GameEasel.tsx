@@ -41,7 +41,6 @@ const PREVIEW_WIDTH = 1414;
 const PREVIEW_HEIGHT = 2000;
 
 const Settings = ({ onChange, config }: any) => {
-  console.log(config);
   
   return (
     <div className="flex flex-col gap-8 mt-4">

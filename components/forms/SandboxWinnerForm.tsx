@@ -99,8 +99,6 @@ export default function WinnerForm({
       const valuesWithoutAcceptTerms = { ...values, qrCode: document };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
-      console.log(subscriberData);
-
       const winnerData = {
         ...valuesWithoutAcceptTerms,
         createdAt: new Date(),
@@ -136,7 +134,6 @@ export default function WinnerForm({
       setLoading(false);
       formCompleted();
     } catch (error: any) {
-      console.log(error);
       setLoading(false);
 
       toast({
