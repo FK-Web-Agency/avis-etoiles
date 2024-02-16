@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { classNames } from '@/helper';
 import Icons from '../Icons';
 import { usePathname } from 'next/navigation';
-import { Button, SheetClose } from '@/components/ui';
+import {  SheetClose } from '@/components/ui';
 
 const navigation = {
   admin: [
