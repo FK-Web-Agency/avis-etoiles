@@ -67,19 +67,16 @@ export default function Content() {
   // Get the total number of winners
   const allWinners = winners?.total;
 
-
-
-
   return (
     <>
       <h1 className="h4-medium text-white">Overview</h1>
       {/* TODO change Piachart by icon */}
       {/* -------------------------- List Pie Charts here -------------------------- */}
       <section className="pie-container">
-        <PieChart title="Nombre de visites" value={allVisits} />
-        <PieChart title="Nombre d'avis" value={allGoogleReviews} />
-        <PieChart title="Nombre d'abonnés" value={totalReviewsWithoutGoogle} />
-        <PieChart title="Gagnants" value={allWinners!} />
+        <PieChart title="Nombre de visites" value={allVisits || 0} />
+        <PieChart title="Nombre d'interactions" value={allGoogleReviews || 0} />
+        <PieChart title="Nombre d'abonnés" value={totalReviewsWithoutGoogle || 0} />
+        <PieChart title="Gagnants" value={allWinners! || 0} />
       </section>
 
       {/* -------------------------- Total Revenue Charts -------------------------- */}

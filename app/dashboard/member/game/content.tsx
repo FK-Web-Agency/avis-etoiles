@@ -91,15 +91,15 @@ export default function Content() {
 
   return (
     <main>
-      <Tabs defaultValue="logo" className="w-[400px]">
+      <Tabs defaultValue="logo" className="w-[500px]">
         <TabsList className="flex-wrap h-min">
           <TabsTrigger value="logo">Logo</TabsTrigger>
-          <TabsTrigger value="background">Arriére plan</TabsTrigger>
-          <TabsTrigger value="color">Couleur</TabsTrigger>
+{/*           <TabsTrigger value="background">Arriére plan</TabsTrigger>
+          <TabsTrigger value="color">Couleur</TabsTrigger> */}
           <TabsTrigger value="rewards">Récompenses</TabsTrigger>
           <TabsTrigger value="actions">Actions</TabsTrigger>
           <TabsTrigger value="secretCode">Code secret</TabsTrigger>
-          <TabsTrigger value="easelAndQrcode">Chevalet et QR Code</TabsTrigger>
+          <TabsTrigger value="easelAndQrcode">QR Code</TabsTrigger>
         </TabsList>
 
         <TabsContent className="bg-muted p-4 rounded-xl" value="logo">
