@@ -158,7 +158,8 @@ export default function Content() {
                               </li>
                               <li>
                                 {' '}
-                                <span className="font-bold">Vendu par</span> : {seller?.firstName} {seller?.lastName}
+                                <span className="font-bold">Vendu par</span> :{' '}
+                                {seller ? `${seller?.firstName} ${seller?.lastName}` : 'Avis Étoiles'}
                               </li>
                             </ul>
                             <p></p>

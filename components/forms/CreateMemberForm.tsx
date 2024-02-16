@@ -17,7 +17,6 @@ import { useDashboardStore } from '@/store';
 enum Recurring {
   monthly = 'Mois',
   yearly = 'Année',
-  punctual = 'Ponctuel',
 }
 
 // Define the schema for the member form
@@ -101,7 +100,7 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
-  console.log("seller", seller);
+  console.log('seller', seller);
 
   // Handle form submission
   const handleAction = async function (values: MemberProps) {
@@ -161,7 +160,7 @@ export default function CreateMemberForm() {
             _type: 'reference',
             _ref: seller?._id,
           },
-          disabled: "false",
+          disabled: 'false',
         };
 
         mutate(
@@ -173,53 +172,48 @@ export default function CreateMemberForm() {
             onSuccess: async (data: any) => {
               console.log(data);
 
-              if (!values.subscription.free) {
-                const order = {
-                  id: data?.data?._id,
-                  email: values?.information?.email,
-                  title: values?.subscription?.plan,
-                  frequency: recurring,
-                  price: values?.subscription?.price,
-                  buyer: JSON.stringify({
-                    _type: 'reference',
-                    _ref: data?.data?._id,
-                  }),
-                  seller: JSON.stringify({
-                    _type: 'reference',
-                    _ref: seller?._id,
-                  }),
-                  subscription: JSON.stringify({
-                    ...values.subscription,
-                    status: false,
-                    recurring,
-                    startDate,
-                    expirationDate,
-                  }),
-                };
+              const order = {
+                id: data?.data?._id,
+                email: values?.information?.email,
+                title: values?.subscription?.plan,
+                frequency: recurring,
+                price: values?.subscription?.free ? 0 : values?.subscription?.price,
+                buyer: JSON.stringify({
+                  _type: 'reference',
+                  _ref: data?.data?._id,
+                }),
+                seller: JSON.stringify({
+                  _type: 'reference',
+                  _ref: seller?._id,
+                }),
+                subscription: JSON.stringify({
+                  ...values.subscription,
+                  status: false,
+                  recurring,
+                  startDate,
+                  expirationDate,
+                }),
+              };
 
-                console.log(order);
+              console.log(order);
 
-                // Checkout the order
-                const { status, message } =
-                  values.subscription.recurring === 'Ponctuel'
-                    ? await checkoutOrder(order)
-                    : await checkoutSubscription(order);
+              // Checkout the order
+              const { status, message } = await checkoutSubscription(order);
 
-                if (status === 'error') {
-                  toast({
-                    variant: 'destructive',
-                    title: 'Uh oh! Something went wrong.',
-                    description: message,
-                  });
-                } else {
-                  toast({
-                    description: message,
-                  });
+              if (status === 'error') {
+                toast({
+                  variant: 'destructive',
+                  title: 'Uh oh! Something went wrong.',
+                  description: message,
+                });
+              } else {
+                toast({
+                  description: message,
+                });
 
-                  setTimeout(() => {
-                    list('members');
-                  }, 1000);
-                }
+                setTimeout(() => {
+                  list('members');
+                }, 1000);
               }
             },
           }

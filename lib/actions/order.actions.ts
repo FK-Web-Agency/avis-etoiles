@@ -140,7 +140,7 @@ export const checkoutSubscription = async (order: any) => {
       subscription_data: {
         metadata: {
           plan: order.title,
-          buyer: order.buyer,
+          buyer: order?.buyer || undefined,
           seller: order.seller,
         },
 

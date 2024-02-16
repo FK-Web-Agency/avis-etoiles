@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
 import { Button } from '@/components/ui';
-import { checkoutOrder } from '@/lib/actions';
+import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -35,7 +35,7 @@ export default function CheckoutButton({ plan }: any) {
       seller: 'avisetoiles.com'
     };
 
-    await checkoutOrder(order);
+    await checkoutSubscription(order);
   };
 
   return (
