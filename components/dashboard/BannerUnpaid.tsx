@@ -11,6 +11,11 @@ export default function BannerUnpaid({ sanityId }: { sanityId: string }) {
   useEffect(() => {
     const fetchSubscriber = async () => {
       const subscriber = await getSession({ subscriberId: sanityId });
+      console.log('subscriber', subscriber);
+
+      if (!subscriber) {
+        return setUnpaid(false);
+      }
 
       if (subscriber?.payment_status === 'unpaid' && subscriber?.status === 'open') {
         return setSubscriber(subscriber);
@@ -22,14 +27,13 @@ export default function BannerUnpaid({ sanityId }: { sanityId: string }) {
     };
 
     fetchSubscriber();
-  }, []);
+  }, [sanityId]);
 
   const url = subscriber?.url || 'https://billing.stripe.com/p/login/test_fZe17G2VSdtL7bG3cc';
-console.log('url', url);
 
   return (
     <>
-      {unpaid && (
+      {subscriber && unpaid && (
         <div className="flex flex-col justify-center items-center gap-x-6 bg-red-600 px-6 py-2.5 sm:px-3.5">
           <strong className="font-semibold block text-center text-white">Abonnement impayé</strong>
           <p className="text-sm text-center leading-6 text-white">

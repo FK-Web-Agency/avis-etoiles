@@ -20,7 +20,7 @@ export const getAllSubscribers = async () => {
 };
 
 export const getSession = async ({ subscriberId }: { subscriberId: string }) => {
-  const db: Payment | null = await kv.get(`subscriber:texierremy@gilles.com`);
+  const db: Payment | null = await kv.get(`subscriber:${subscriberId}`);
 
   const session = await stripe.checkout.sessions.retrieve(db?.payment?.session_id!);
   console.log('session', session);
