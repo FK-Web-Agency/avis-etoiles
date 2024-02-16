@@ -23,23 +23,25 @@ export default function Content() {
   });
 
   const { data: dataOrders } = useList({
-    resource: 'orders',
+    resource: process.env.NEXT_PUBLIC_SANITY_ORDERS,
   });
 
   const { data: dataUsers } = useList({
-    resource: 'users',
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS,
   });
+
   if (isLoading) return <Spinner />;
 
   const allAnalytics = data?.data;
   const allWinners = dataWinner?.data;
   const orders = dataOrders?.data;
+
   // Calculate the total revenue for a specific platform
   const calculateTotal = (platform: string) => {
     return allAnalytics?.reduce((total, analytic) => {
       return (
         total +
-        (analytic.analytics?.reduce((analyticsTotal: number, analyticItem: IAnalytics) => {
+        (analytic?.analytics?.reduce((analyticsTotal: number, analyticItem: IAnalytics) => {
           return (
             // @ts-ignore
             analyticsTotal + (analyticItem.months?.reduce((monthTotal, month) => monthTotal + month[platform], 0) || 0)
@@ -57,7 +59,7 @@ export default function Content() {
     return total + winner.winners.length;
   }, 0);
 
-  const totalYearSum = orders?.reduce((sum, order) => sum + order.totalAmount, 0);
+  const totalYearSum = orders?.reduce((sum, order) => sum + order.price, 0);
 
   const totalYearSumToString = Number((totalYearSum! / 100).toFixed(2));
 
@@ -70,12 +72,19 @@ export default function Content() {
         <PieChart
           title="Revenue Total"
           value={totalYearSumToString}
-          Icon={<IconOverview Icon={Icons.Euro} backgroundColor={'bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900'} />}
+          Icon={
+            <IconOverview
+              Icon={Icons.Euro}
+              backgroundColor={'bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900'}
+            />
+          }
         />
         <PieChart
           title="Abonnés"
           value={dataUsers?.total!}
-          Icon={<IconOverview Icon={Icons.Subscribe} backgroundColor={'bg-gradient-to-r from-violet-300 to-violet-400'} />}
+          Icon={
+            <IconOverview Icon={Icons.Subscribe} backgroundColor={'bg-gradient-to-r from-violet-300 to-violet-400'} />
+          }
         />
         <PieChart
           title="Avis recueillis"

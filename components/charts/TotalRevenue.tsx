@@ -7,7 +7,7 @@ import { useList } from '@refinedev/core';
 
 export default function TotalRevenue() {
   const { data } = useList({
-    resource: 'orders',
+    resource: process.env.NEXT_PUBLIC_SANITY_ORDERS!,
   });
 
   const orders = data?.data;
@@ -20,7 +20,7 @@ export default function TotalRevenue() {
 
     const dailyTotals = filteredOrders?.reduce((acc, order) => {
       const day = new Date(order.createdAt).getDate();
-      acc[day] = ((acc[day] || 0) + order.totalAmount) / 100;
+      acc[day] = ((acc[day] || 0) + order.price) / 100;
       return acc;
     }, {});
 
@@ -43,14 +43,23 @@ export default function TotalRevenue() {
   const lastMonthIndex = lastMonth < 0 ? 11 : lastMonth; // Décembre = 11 si le mois dernier est janvier
   const lastMonthData = calculateMonthlyTotals(lastMonthYear, lastMonthIndex);
 
+  if (currentMonth > 0) {
+    const numberOfMonths = (currentMonth + 12 - 0) % 12;
+
+    for (let i = 0; i < numberOfMonths; i++) {
+      runningMonthData.unshift(0);
+      lastMonthData.unshift(0);
+    }
+  }
+
   // Créer le tableau d'objet avec les données pour le mois en cours et le mois dernier
   const TotalRevenueSeries = [
     {
-      name: 'Last Month',
+      name: 'Mois dernier',
       data: lastMonthData,
     },
     {
-      name: 'Running Month',
+      name: 'Mois en cours',
       data: runningMonthData,
     },
   ];
@@ -60,11 +69,13 @@ export default function TotalRevenue() {
     return sum + seriesSum;
   }, 0);
 
-  const totalRunningMonthSum = runningMonthData?.reduce((sum, order) => sum + order.totalAmount, 0);
-  const totalLastMonthSum = lastMonthData?.reduce((sum, order) => sum + order.totalAmount, 0);
+  const totalRunningMonthSum = runningMonthData?.reduce((sum, order) => sum + order.price, 0);
+  const totalLastMonthSum = lastMonthData?.reduce((sum, order) => sum + order.price, 0);
 
   const averageChange = totalLastMonthSum ? (totalRunningMonthSum - totalLastMonthSum) / totalLastMonthSum : 0;
   const changePercentage = averageChange * 100;
+
+  console.log(TotalRevenueSeries);
 
   return (
     <section className="bg-slate-100 flex-1 flex flex-col rounded p-4 mt-8" id="chart">
