@@ -30,6 +30,10 @@ export default function Content() {
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS,
   });
 
+  const { data: testGame } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_SANDBOX,
+  });
+
   if (isLoading) return <Spinner />;
 
   const allAnalytics = data?.data;
@@ -63,6 +67,8 @@ export default function Content() {
 
   const totalYearSumToString = Number((totalYearSum! / 100).toFixed(2));
 
+  const totalInteractions = totalFacebookSubscribers! + totalInstagramSubscribers! + totalReviews!;
+
   return (
     <>
       <h1 className="h4-medium text-white">Overview</h1>
@@ -80,6 +86,11 @@ export default function Content() {
           }
         />
         <PieChart
+          title="Jeu Test"
+          value={testGame?.total!}
+          Icon={<IconOverview Icon={Icons.Game} backgroundColor={'bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r'} />}
+        />
+        <PieChart
           title="Abonnés"
           value={dataUsers?.total!}
           Icon={
@@ -87,14 +98,9 @@ export default function Content() {
           }
         />
         <PieChart
-          title="Avis recueillis"
-          value={totalReviews as number}
+          title="Interactions totales"
+          value={totalInteractions as number}
           Icon={<IconOverview Icon={Icons.Comment} backgroundColor={'bg-gradient-to-r from-rose-300 to-rose-500'} />}
-        />
-        <PieChart
-          title="Cadeaux gagnés"
-          value={totalWinners!}
-          Icon={<IconOverview Icon={Icons.Gift} backgroundColor={'bg-gradient-to-r from-yellow-200 to-yellow-500'} />}
         />
       </section>
 
