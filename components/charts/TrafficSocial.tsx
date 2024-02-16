@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import Chart from 'react-apexcharts';
 import { getYear } from 'date-fns';
 import { ApexOptions } from 'apexcharts';
@@ -81,10 +81,9 @@ export default function TrafficSocial({ analytics }: any) {
     data: monthlyVisits[platform],
   }));
 
-  console.log(series);
-
   return (
-    <section className='bg-slate-50 mt-8 rounded'>
+    <section className="bg-slate-50 mt-8 rounded">
+      <h2 className="p-regular-18 p-4">Traffic des réseaux sociaux</h2>
       <Chart options={TotalRevenueOptions} series={series} type="bar" height={350} />
     </section>
   );

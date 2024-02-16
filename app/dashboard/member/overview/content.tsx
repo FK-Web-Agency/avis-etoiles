@@ -68,7 +68,7 @@ export default function Content() {
 
   // Calculate the total number of Instagram reviews
   const allInstagramReviews = retrieveValue(AnalyticMonthValue.instagram);
-  const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
+  // const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // Calculate the total number of reviews without Google reviews
   const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews;
 
