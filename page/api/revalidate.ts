@@ -26,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(401).json({ message: 'Invalid signature' });
     return;
   }
+  console.log('Received request');
+  console.log(body);
 
   try {
     const { _type: type, slug } = JSON.parse(body);
