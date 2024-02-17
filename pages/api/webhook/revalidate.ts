@@ -33,8 +33,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     await res.revalidate(`/*`); // The landing page featured projects
     return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
-
-   
   } catch (err) {
     return res.status(500).send({ message: 'Error revalidating' });
   }
