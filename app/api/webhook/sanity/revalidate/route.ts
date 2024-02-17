@@ -1,5 +1,4 @@
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { _type: type, slug } = JSON.parse(body);
+    const { _type: type, slug } = await req.json();
 
     console.log('Revalidating', type, slug);
 
@@ -30,7 +29,7 @@ export async function POST(req: NextRequest) {
         return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
     }
  */
-    revalidatePath('/*');
+    revalidatePath('/');
     return NextResponse.json({ revalidated: true, now: Date.now() });
 
     //  return res.json({ message: 'No managed type' });
