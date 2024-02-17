@@ -16,28 +16,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Invalid signature' });
   }
 
-  console.log("Webhook body", body);
-  
-  try {
-    const { _type: type, slug } = JSON.parse(body);
-
-    console.log('Revalidating', type, slug);
-
-    /* switch (type) {
-      case 'post':
-        await res.revalidate(`/projects/${slug.current}`); // The particular project
-        await res.revalidate(`/projects`); // The Projects page
-        await res.revalidate(`/`); // The landing page featured projects
-        return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
-    }
- */
-    revalidatePath('/');
-    return NextResponse.json({ revalidated: true, now: Date.now() });
-
-    //  return res.json({ message: 'No managed type' });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message });
-  }
+  revalidatePath('/');
+  return NextResponse.json({ message: 'Revalidation started' });
 }
 
 async function readBody(readable: any) {
