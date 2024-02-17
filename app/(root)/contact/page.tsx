@@ -1,12 +1,13 @@
 import { ContactForm } from '@/components/forms';
 import { Icons } from '@/components/shared';
 import { client, queries } from '@/sanity/lib';
+import { sanityFetch } from '@/sanity/lib/client';
 import Link from 'next/link';
 
 export default async function Contact() {
-  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await client.fetch(
-    queries.GET_GENERAL
-  );
+  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await sanityFetch<any>({
+    query: queries.GET_GENERAL,
+  });
 
   return (
     <section className="relative isolate">

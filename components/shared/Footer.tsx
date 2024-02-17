@@ -4,10 +4,11 @@ import Link from 'next/link';
 import Icons from './Icons';
 import { client, queries } from '@/sanity/lib';
 import InformationFooter from './InformationFooter';
+import { sanityFetch } from '@/sanity/lib/client';
 
 export default async function Footer() {
   const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } =
-    await client.fetch(queries.GET_GENERAL);
+    await sanityFetch<any>({query: queries.GET_GENERAL});
 
   const informations = [legalNotice, termsAndConditions, termsOfUse, privacyPolicy];
 
