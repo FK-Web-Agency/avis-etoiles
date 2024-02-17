@@ -57,7 +57,7 @@ const Icons = {
 
     // If logo, return image
     return (
-      <Link href={props.hrefNull ? '#' : '/'} className="w-36">
+      <Link href={props.hrefNull ? '#' : '/'} className="w-40">
         <Image src={'/logo.webp'} alt="logo" width={200} height={58} />
       </Link>
     );

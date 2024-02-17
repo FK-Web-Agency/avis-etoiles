@@ -15,7 +15,7 @@ export default function Banner({ banner }: BannerType) {
     <section className="bg-contain w-full h-full wrapper">
       <div className=" grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0 w-full h-full">
         <div className="flex flex-col justify-center gap-8   animate-fade-left animate-duration-[1000ms] animate-delay-[100ms]">
-          <h1 className="h1-bold">{banner?.title}</h1>
+          <h1 className="h2-bold">{banner?.title}</h1>
           <p className="p-regular-16 md:p-regular-20">{banner?.subtitle}</p>
           <Button size="lg" asChild variant={"gradient"} className="button w-full sm:w-fit text-slate-50 uppercase font-bold">
             <Link href="/features">Découvrir maintenant</Link>
