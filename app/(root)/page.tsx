@@ -3,6 +3,7 @@ import { SanityDocument } from 'next-sanity';
 import { client, queries } from '@/sanity/lib';
 import { generateMetadataWithSanity } from '@/helper';
 import { Advantages, Banner, CallToAction, Features, Story } from '@/components/pages/home';
+import { sanityFetch } from '@/sanity/lib/client';
 
 // Generate title and description from Sanity
 export async function generateMetadata(): Promise<Metadata> {
@@ -11,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const { banner, features_section, advantages_section, call_to_action_section, story_section } =
-    await client.fetch<SanityDocument>(queries.GET_HOME_PAGE);
+    await sanityFetch<SanityDocument>({ query: queries.GET_HOME_PAGE, tags: ['page'] });
 
   return (
     <main>
