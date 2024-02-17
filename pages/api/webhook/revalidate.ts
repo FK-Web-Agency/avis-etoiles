@@ -27,20 +27,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
   console.log('Received request');
-  console.log(body);
 
   try {
     const { _type: type, slug } = JSON.parse(body);
 
-    switch (type) {
-      case 'post':
-        await res.revalidate(`/projects/${slug.current}`); // The particular project
-        await res.revalidate(`/projects`); // The Projects page
-        await res.revalidate(`/`); // The landing page featured projects
-        return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
-    }
+    await res.revalidate(`/*`); // The landing page featured projects
+    return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
 
-    return res.json({ message: 'No managed type' });
+   
   } catch (err) {
     return res.status(500).send({ message: 'Error revalidating' });
   }
