@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { QueryParams, createClient } from 'next-sanity'
 
