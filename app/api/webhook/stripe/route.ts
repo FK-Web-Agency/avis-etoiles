@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       console.log('invoice.payment_succeeded');
 
       const { invoice_pdf, hosted_invoice_url, id } = event.data.object;
+      console.log(event.data.object);
 
       // Traitement pour le paiement d'une facture réussi
       const invoice = {
