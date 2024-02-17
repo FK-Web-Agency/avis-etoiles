@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { AutoForm, AutoFormSubmit, useToast } from '../ui';
-import { createTeam } from '@/lib/actions/clerk.actions';
+import { createMembership, createTeam } from '@/lib/actions/clerk.actions';
 import { useCreate, useNavigation } from '@refinedev/core';
 import sendEmail from '@/lib/actions/resend.actions';
 
@@ -34,6 +34,8 @@ export default function CreateTeamForm() {
       ...values,
       role: values?.role === Role.Commercial ? 'commercial' : 'admin',
     };
+
+    await createMembership(clerkId, teammate?.role);
 
     mutate(
       {

@@ -75,7 +75,6 @@ export async function createTeam(value: any) {
     },
   });
 
-  
   return { clerkId: teamMember.id, password };
 }
 // Update email address
@@ -151,6 +150,21 @@ export async function updateMemberRole(id: string, role: string) {
     } else {
       await clerkClient.organizations.deleteOrganizationMembership({
         userId: id,
+        organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
+      });
+    }
+    return { status: 'success', message: 'Le role a été modifié avec succès.' };
+  } catch (error: any) {
+    return { status: 'error', message: JSON.stringify(error) };
+  }
+}
+
+export async function createMembership(id: string, role: string) {
+  try {
+    if (role === 'admin') {
+      await clerkClient.organizations.createOrganizationMembership({
+        userId: id,
+        role,
         organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
       });
     }
