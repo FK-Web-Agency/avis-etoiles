@@ -161,13 +161,27 @@ export async function updateMemberRole(id: string, role: string) {
 
 export async function createMembership(id: string, role: string) {
   try {
-    if (role === 'admin') {
-      await clerkClient.organizations.createOrganizationMembership({
-        userId: id,
-        role,
-        organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
-      });
-    }
+    await clerkClient.organizations.createOrganizationMembership({
+      userId: id,
+      role,
+      organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
+    });
+
+    return { status: 'success', message: 'Le role a été modifié avec succès.' };
+  } catch (error: any) {
+    return { status: 'error', message: JSON.stringify(error) };
+  }
+}
+
+// Update member subscription
+export async function toggleRoleMembership(id: string, role: string) {
+  try {
+    await clerkClient.organizations.updateOrganizationMembership({
+      userId: id,
+      role,
+      organizationId: process.env.NEXT_PUBLIC_CLERK_ORGANIZATION_ID!,
+    });
+
     return { status: 'success', message: 'Le role a été modifié avec succès.' };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };

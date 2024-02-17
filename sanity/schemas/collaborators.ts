@@ -12,7 +12,7 @@ export default defineType({
       name: 'disabled',
       title: 'Désactivé',
       type: 'string',
-      description: 'Désactiver l\'abonné',
+      description: 'Désactiver le collaborateur pour le supprimer de l\'équipe',
       initialValue: "false",
     }),
     defineField({

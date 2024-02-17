@@ -5,6 +5,8 @@ import { AutoForm, AutoFormSubmit, useToast } from '../ui';
 import { createMembership, createTeam } from '@/lib/actions/clerk.actions';
 import { useCreate, useNavigation } from '@refinedev/core';
 import sendEmail from '@/lib/actions/resend.actions';
+import { useState } from 'react';
+import { Icons } from '@/components/shared';
 
 enum Role {
   Admin = 'admin',
@@ -21,21 +23,26 @@ const TeamSchema = z.object({
 
 type Team = z.infer<typeof TeamSchema>;
 export default function CreateTeamForm() {
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { mutate } = useCreate();
   const { list } = useNavigation();
 
   const handleAction = async (values: Team) => {
+    setLoading(true);
     const { clerkId, password } = await createTeam(values);
 
     const teammate = {
       clerkId,
       createdAt: new Date().toISOString(),
       ...values,
-      role: values?.role === Role.Commercial ? 'commercial' : 'admin',
+      role: values?.role === Role.Commercial ? 'Commercial' : 'Admin',
+      disabled: 'false',
     };
 
-    await createMembership(clerkId, teammate?.role);
+    const role = values?.role === Role.Commercial ? 'org:commercial' : 'org:admin';
+
+   await createMembership(clerkId, role);
 
     mutate(
       {
@@ -52,7 +59,6 @@ export default function CreateTeamForm() {
             emailTemplate: 'welcome',
             password,
           });
-
           status === 'success'
             ? toast({
                 title: 'Colaborateur créé avec succès',
@@ -63,8 +69,9 @@ export default function CreateTeamForm() {
                 description: `Un email n'a pas pu être envoyé à ${values?.email} avec les informations de connexion`,
                 variant: 'destructive',
               });
+          setLoading(false);
 
-          return list('collaborators');
+          //  return list('collaborators');
         },
       }
     );
@@ -72,7 +79,7 @@ export default function CreateTeamForm() {
 
   return (
     <AutoForm onAction={handleAction} formSchema={TeamSchema} className="text-slate-50">
-      <AutoFormSubmit>Créer Colaborateur</AutoFormSubmit>
+      <AutoFormSubmit loading={loading}>Créer Colaborateur</AutoFormSubmit>
     </AutoForm>
   );
 }

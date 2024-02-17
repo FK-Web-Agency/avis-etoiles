@@ -28,6 +28,7 @@ export * from './skeleton';
 export * from './tabs';
 export * from './carousel';
 export * from './pagination';
+export * from './avatar'
 export { default as AutoForm } from './auto-form';
 
 export { default as CustomCard } from './custom-card';

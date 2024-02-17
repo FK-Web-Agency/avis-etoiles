@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { classNames } from '@/helper';
 import Icons from '../Icons';
 import { usePathname } from 'next/navigation';
-import {  SheetClose } from '@/components/ui';
+import { SheetClose } from '@/components/ui';
 
 const navigation = {
   admin: [
@@ -40,6 +40,10 @@ export default function NavItems({ isMobile = false }: { isMobile?: boolean }) {
   }, []);
 
   if (!role) return null;
+
+  if (role === 'commercial') {
+    navigation.admin = navigation.admin.filter((item) => item.name !== 'Collaborateurs');
+  }
 
   return (
     <ul className="-mx-2 space-y-1">

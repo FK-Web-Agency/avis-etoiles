@@ -1,8 +1,8 @@
 'use client';
 
-import { Skeleton } from '@/components/ui';
+import { Avatar, AvatarImage, Button, Skeleton } from '@/components/ui';
 import { classNames } from '@/helper';
-import { useList } from '@refinedev/core';
+import { useGo, useList } from '@refinedev/core';
 /* 
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
@@ -11,19 +11,19 @@ const teams = [
 ]; */
 
 export default function TeamsNav() {
+  const go = useGo();
   const { data, isLoading } = useList({
-    resource: 'users',
+    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS,
     filters: [
       {
-        field: 'role',
+        field: 'disabled',
         operator: 'eq',
-        value: 'admin',
+        value: 'false',
       },
     ],
   });
 
   const teams = data?.data || [];
-
 
   return (
     <ul role="list" className="-mx-2 mt-2 space-y-1">
@@ -41,18 +41,17 @@ export default function TeamsNav() {
         </div>
       ) : (
         teams.map((team) => (
-          <li key={team.name}>
-            <a
-              href={team.href}
-              className={classNames(
-                'text-gray-400 hover:text-white hover:bg-gray-800',
-                'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-              )}>
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                {team.initial}
+          <li key={team.email}>
+            <Button
+            onClick={() => go({ to: { resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!, action: 'show', id: team._id } })}
+            variant={'ghost'} className={classNames('hover:bg-transparent')}>
+              <Avatar >
+                <AvatarImage src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${team.firstName}`} />
+              </Avatar>
+              <span className="truncate ml-2 text-gray-400">
+                {team.firstName} {team.lastName}
               </span>
-              <span className="truncate">{team.name}</span>
-            </a>
+            </Button>
           </li>
         ))
       )}

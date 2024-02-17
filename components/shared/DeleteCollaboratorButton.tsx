@@ -63,7 +63,7 @@ export default function DeleteCollaboratorButton({ user, id, children }: PropsWi
         }
       );
 
-      list('members');
+      list('collaborators');
     } catch (error: any) {
       toast({
         title: 'Erreur',

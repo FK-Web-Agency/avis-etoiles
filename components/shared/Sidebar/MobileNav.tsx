@@ -2,12 +2,17 @@ import { Sheet, SheetContent, Separator, SheetTrigger, Button } from '@/componen
 import Icons from '../Icons';
 import NavItems from './NavItems';
 import TeamsNav from './TeamsNav';
+import { useDashboardStore } from '@/store';
 
 export default function MobileNav() {
+  const { role } = useDashboardStore();
+
+ 
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Icons.Menu className='w-6 h-6 text-white lg:hidden' />
+        <Icons.Menu className="w-6 h-6 text-white lg:hidden" />
       </SheetTrigger>
       <SheetContent className="background-body flex flex-col justify-between" side="left">
         <div className="flex grow flex-col gap-y-5">
@@ -18,7 +23,7 @@ export default function MobileNav() {
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <NavItems isMobile />
 
-           {/*  <TeamsNav /> */}
+            {role === 'admin' && <TeamsNav />}
 
             <li className="mt-auto">
               <a
