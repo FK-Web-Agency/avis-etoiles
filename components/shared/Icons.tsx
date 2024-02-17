@@ -57,8 +57,8 @@ const Icons = {
 
     // If logo, return image
     return (
-      <Link href={props.hrefNull ? '#' : '/'} className="w-40">
-        <Image src={'/logo.webp'} alt="logo" width={200} height={58} />
+      <Link href={props.hrefNull ? '#' : '/'} >
+        <Image src={'/logo.png'} alt="logo" className='object-cover' width={300} height={108} />
       </Link>
     );
   },
