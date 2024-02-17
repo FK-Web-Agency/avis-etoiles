@@ -22,7 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(401).json({ message: 'Must be a POST request' });
   }
 
-  console.log('Received request', body, signature, secret);
   if (!isValidSignature(body, signature, secret)) {
     return res.status(401).json({ message: 'Invalid signature' });
   }
