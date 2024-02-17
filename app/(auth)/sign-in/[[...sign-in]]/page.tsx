@@ -3,7 +3,7 @@ import { SignIn } from '@clerk/nextjs';
 
 export default function Page() {
   return (
-    <div className="flex-center min-h-screen w-full background-body gap-4">
+    <div className="flex-center min-h-screen w-full background-body gap-4 flex-col">
       <Icons.Logo />
 
       <SignIn
