@@ -40,12 +40,6 @@ export async function POST(request: Request) {
 
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
-      /*       const subscription = JSON.parse(metadata?.subscription as string);
-
-      await updateUser({
-        id: buyer._ref,
-        user: { subscription: { ...subscription, status: true } },
-      }); */
 
       const invoice = await kv.get('invoice');
 
@@ -69,6 +63,8 @@ export async function POST(request: Request) {
 
       // Réponse de succès avec la nouvelle commande
       return NextResponse.json({ message: 'OK', order: newOrder });
+    } else if (event.type === 'payment_intent.succeeded') {
+      console.log('payment_intent.succeeded');
     }
   } catch (err: any) {
     // Gestion des erreurs liées aux webhooks

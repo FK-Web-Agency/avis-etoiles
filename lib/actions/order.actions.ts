@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib';
 import Stripe from 'stripe';
 import sendEmail from './resend.actions';
 import { kv } from '@vercel/kv';
+import { redirect } from 'next/navigation';
 
 export const checkoutOrder = async (order: any) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -31,10 +32,27 @@ export const checkoutOrder = async (order: any) => {
       metadata: {
         plan: order.title,
         buyer: order.buyer,
-        seller: order.seller,
+        seller: 'avis étoiles',
         subscription: order.subscription,
         frequency: order.frequency,
       },
+      custom_fields: [
+        {
+          key: 'company',
+          label: { type: 'custom', custom: 'Société' },
+          type: 'text',
+        },
+        {
+          key: 'first_name',
+          label: { type: 'custom', custom: 'Prénom' },
+          type: 'text',
+        },
+        {
+          key: 'last_name',
+          label: { type: 'custom', custom: 'Nom' },
+          type: 'text',
+        },
+      ],
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,
       cancel_url: `${baseUrl}/prices/`,
@@ -53,36 +71,10 @@ export const checkoutOrder = async (order: any) => {
           buyer: order.buyer,
           seller: order.seller,
         },
-
-        billing_cycle_anchor: new Date(JSON.parse(order.subscription).startDate).getTime() / 1000,
-      },
-      discounts: [
-        {
-          coupon: '7bsyeRqB',
-        },
-      ],
-    });
-
-    // Save the session in KV
-    await kv.set(`subscriber:${order.id}`, {
-      payment: {
-        status: 'pending',
-        session_id: session.id,
-        session_url: session.url,
       },
     });
 
-    // Send email
-    const { status } = await sendEmail({
-      email: order.email,
-      subject: 'Paiement de votre abonnement',
-      emailTemplate: 'payment',
-      url: session.url,
-    });
-
-    return status === 'success'
-      ? { status: 'success', message: 'Abonné crée avec success, un email a été envoyé', data: session }
-      : { status: 'error', message: "Une erreur s'est produite, merci de réessayer ultérieurement" };
+    return redirect(session.url!);
   } catch (error) {
     throw error;
   }

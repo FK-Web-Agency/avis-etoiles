@@ -35,7 +35,7 @@ export default function CheckoutButton({ plan }: any) {
       seller: 'avisetoiles.com'
     };
 
-    await checkoutSubscription(order);
+    await checkoutOrder(order);
   };
 
   return (
