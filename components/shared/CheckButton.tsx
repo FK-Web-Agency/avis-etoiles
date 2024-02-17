@@ -16,6 +16,9 @@ import {
 } from '@/components/ui';
 import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 import { z } from 'zod';
+import { createMember } from '@/lib/actions/clerk.actions';
+import { client } from '@/sanity/lib';
+import { kv } from '@vercel/kv';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -110,6 +113,17 @@ export default function CheckoutButton({ plan }: any) {
     };
 
     await checkoutOrder(order);
+
+    const { clerkId } = await createMember(buyer);
+
+    const doc = await client.create({
+      _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+      ...buyer,
+      clerkId,
+    });
+
+    const invoice = await kv.get('invoice');
+    console.log(invoice);
   };
 
   return (
