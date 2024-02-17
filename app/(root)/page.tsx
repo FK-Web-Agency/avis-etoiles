@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { SanityDocument } from 'next-sanity';
-import { client, queries } from '@/sanity/lib';
+import {  queries } from '@/sanity/lib';
 import { generateMetadataWithSanity } from '@/helper';
 import { Advantages, Banner, CallToAction, Features, Story } from '@/components/pages/home';
 import { sanityFetch } from '@/sanity/lib/client';
