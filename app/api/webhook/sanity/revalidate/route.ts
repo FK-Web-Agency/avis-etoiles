@@ -9,7 +9,11 @@ type Data = {
 const secret = process.env.SANITY_REVALIDATE_SECRET!;
 
 export async function POST(req: NextRequest) {
+  console.log('Received request');
+
   const signature = req.headers.get(SIGNATURE_HEADER_NAME) as string;
+  console.log(signature);
+
   const body = await readBody(req); // Read the body into a string
 
   if (!isValidSignature(body, signature, secret)) {
