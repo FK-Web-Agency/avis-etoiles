@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Prices() {
   const { introduction_section, prices_list_section, faqs__section } = await sanityFetch<any>({
     query: queries.GET_PRICES_PAGE,
-    tags: [queries.TAG_PRICES],
+    tags: ['page'],
   });
 
   return (

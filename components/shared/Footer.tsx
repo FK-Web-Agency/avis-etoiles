@@ -9,7 +9,7 @@ import { sanityFetch } from '@/sanity/lib/client';
 export default async function Footer() {
   const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await sanityFetch<any>({
     query: queries.GET_GENERAL,
-    tags: [queries.TAG_GENERAL],
+    tags: ['page'],
   });
 
   const informations = [legalNotice, termsAndConditions, termsOfUse, privacyPolicy];

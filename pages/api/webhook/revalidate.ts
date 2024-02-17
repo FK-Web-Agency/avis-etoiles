@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const { _type: type, slug } = JSON.parse(body);
     console.log('Revalidating', type);
 
-    revalidateTag(type)
+    revalidateTag('page')
     return res.json({ message: `Revalidated "${type}"` });
   } catch (err) {
     console.log('Error revalidating', err);

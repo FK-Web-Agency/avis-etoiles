@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Features() {
   const { introduction_section, how_it_works_section, cta } = await sanityFetch<any>({
     query: queries.GET_FEATURES_PAGE,
-    tags: [queries.TAG_FEATURES],
+    tags: ['page'],
   });
 
   return (
