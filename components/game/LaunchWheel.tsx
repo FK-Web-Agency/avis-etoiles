@@ -64,9 +64,9 @@ export default function LaunchWheel({
 
     setResult(result?.label);
 
-    /*     setTimeout(() => {
+        setTimeout(() => {
       setGameStep(GameStep.result);
-    }, 900); */
+    }, 900);
   }
   return (
     <div>
