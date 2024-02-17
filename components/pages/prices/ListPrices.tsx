@@ -90,6 +90,7 @@ export default function ListPrices({ prices_list_section }: ListPricesType) {
                       'text-4xl font-bold tracking-tight mb-8 block'
                     )}>
                     {price.price ? priceSubscribe : 'Personnaliser'}
+                    <span className='text-sm'>HT</span>
                   </span>
                   {/* Price suffix */}
                   {price.price ? (
