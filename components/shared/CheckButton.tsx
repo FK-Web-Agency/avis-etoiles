@@ -97,6 +97,7 @@ export default function CheckoutButton({ plan }: any) {
 
     const order = {
       id: plan._id,
+      email: values.information?.email,
       title: plan.title,
       price: plan.price,
       frequency: plan.frequency,
