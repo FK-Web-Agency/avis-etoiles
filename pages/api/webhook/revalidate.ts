@@ -1,5 +1,6 @@
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { revalidateTag } from 'next/cache';
 
 type Data = {
   message: string;
@@ -30,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const { _type: type, slug } = JSON.parse(body);
     console.log('Revalidating', type);
 
-    await res.revalidate(`/`);
+    revalidateTag(type)
     return res.json({ message: `Revalidated "${type}"` });
   } catch (err) {
     console.log('Error revalidating', err);
