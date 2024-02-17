@@ -5,12 +5,6 @@ type Data = {
   message: string;
 };
 
-// Next.js will by default parse the body, which can lead to invalid signatures
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 const secret = process.env.SANITY_REVALIDATE_SECRET!;
 
