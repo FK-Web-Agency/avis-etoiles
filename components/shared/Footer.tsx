@@ -7,8 +7,10 @@ import InformationFooter from './InformationFooter';
 import { sanityFetch } from '@/sanity/lib/client';
 
 export default async function Footer() {
-  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } =
-    await sanityFetch<any>({query: queries.GET_GENERAL});
+  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await sanityFetch<any>({
+    query: queries.GET_GENERAL,
+    tags: [queries.TAG_GENERAL],
+  });
 
   const informations = [legalNotice, termsAndConditions, termsOfUse, privacyPolicy];
 
@@ -19,7 +21,6 @@ export default async function Footer() {
           <div className="mb-6 md:mb-0">
             <Icons.Logo />
           </div>
-
 
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 ">
             {/* ------------------------------- Ressources ------------------------------- */}
@@ -52,12 +53,12 @@ export default async function Footer() {
                 <ul className="text-gray-400 flex flex-col gap-4">
                   <li className="flex gap-4">
                     <Icons.BuildingOffice className="h-7 w-6 text-gray-400" aria-hidden="true" />
-                      <p className="hover:underline ">
-                        {address?.street}
-                        <br />
-                        {address?.zipCode}, {address?.city} {address?.country}
-                        <br />
-                      </p>
+                    <p className="hover:underline ">
+                      {address?.street}
+                      <br />
+                      {address?.zipCode}, {address?.city} {address?.country}
+                      <br />
+                    </p>
                   </li>
                   <li className="flex items-center gap-4">
                     <Icons.Envelope className="h-7 w-6 text-gray-400" aria-hidden="true" />

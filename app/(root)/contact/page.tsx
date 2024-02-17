@@ -7,6 +7,7 @@ import Link from 'next/link';
 export default async function Contact() {
   const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await sanityFetch<any>({
     query: queries.GET_GENERAL,
+    tags: [queries.TAG_GENERAL],
   });
 
   return (
