@@ -28,11 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   try {
     const { _type: type, slug } = JSON.parse(body);
-    await res.revalidate(`/`)   
+    console.log('Revalidating', type);
+
+    await res.revalidate(`/`);
     return res.json({ message: `Revalidated "${type}"` });
   } catch (err) {
     console.log('Error revalidating', err);
-    
+
     return res.status(500).send({ message: 'Error revalidating' });
   }
 }
