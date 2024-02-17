@@ -18,6 +18,8 @@ export async function POST(request: Request) {
 
     // Traitement basé sur le type d'événement Stripe
     if (event.type === 'invoice.payment_succeeded') {
+      console.log('invoice.payment_succeeded');
+
       const { invoice_pdf, hosted_invoice_url, id } = event.data.object;
 
       // Traitement pour le paiement d'une facture réussi
@@ -35,6 +37,8 @@ export async function POST(request: Request) {
       // Envoi de la réponse de succès
       return NextResponse.json({ message: 'OK', sendInvoiceToCustomer });
     } else if (event.type === 'checkout.session.completed') {
+      console.log('checkout.session.completed');
+
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
 
