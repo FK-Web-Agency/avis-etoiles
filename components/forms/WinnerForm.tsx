@@ -69,7 +69,6 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
   const allDataWinner = winnersData?.data[0];
   const winners = allDataWinner?.winners;
 
-
   const handleAction = async function (values: any) {
     setLoading(true);
     const winner: any = {
@@ -115,12 +114,11 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
 
           console.log(winnerWithQRCode, 'winnerWithQRCode');
 
-
           sendEmail({
             ...winner,
             subject: 'Votre lot est prêt',
             emailTemplate: 'winner',
-
+            address: userData?.data?.address,
             ownerName: userData?.data?.companyName,
             QRCode: urlForImage(winnerWithQRCode?.qrCode),
           }).then(() => {
@@ -142,7 +140,7 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
       formCompleted();
     } catch (error) {
       console.log(error, 'error');
-      
+
       setLoading(false);
       toast({
         title: 'Erreur',
