@@ -16,8 +16,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Invalid signature' });
   }
 
+  console.log("Webhook body", body);
+  
   try {
-    const { _type: type, slug } = await req.json();
+    const { _type: type, slug } = JSON.parse(body);
 
     console.log('Revalidating', type, slug);
 
