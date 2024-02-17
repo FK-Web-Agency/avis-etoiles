@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { QueryParams, createClient } from 'next-sanity'
 
 import { apiVersion, dataset, projectId, useCdn, token } from '../env'
