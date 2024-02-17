@@ -13,6 +13,7 @@ export const checkoutOrder = async (order: any) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
+      customer_email: order.email,
       line_items: [
         {
           price_data: {
@@ -32,27 +33,10 @@ export const checkoutOrder = async (order: any) => {
       metadata: {
         plan: order.title,
         buyer: order.buyer,
-        seller: 'avis étoiles',
+        seller: order.seller,
         subscription: order.subscription,
         frequency: order.frequency,
       },
-      custom_fields: [
-        {
-          key: 'company',
-          label: { type: 'custom', custom: 'Société' },
-          type: 'text',
-        },
-        {
-          key: 'first_name',
-          label: { type: 'custom', custom: 'Prénom' },
-          type: 'text',
-        },
-        {
-          key: 'last_name',
-          label: { type: 'custom', custom: 'Nom' },
-          type: 'text',
-        },
-      ],
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,
       cancel_url: `${baseUrl}/prices/`,
