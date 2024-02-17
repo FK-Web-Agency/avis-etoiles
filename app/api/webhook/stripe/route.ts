@@ -2,6 +2,8 @@ import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder, sendInvoice } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
 import { kv } from '@vercel/kv';
+import { createMember } from '@/lib/actions/clerk.actions';
+import { client } from '@/sanity/lib';
 
 // Fonction asynchrone pour gérer les requêtes POST
 export async function POST(request: Request) {
@@ -43,6 +45,20 @@ export async function POST(request: Request) {
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
 
+      let newId;
+
+      if (metadata?.buyer === 'avisetoiles.com') {
+        const { clerkId } = await createMember(JSON.parse(metadata?.buyer));
+
+        const doc = await client.create({
+          _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+          ...JSON.parse(metadata?.buyer),
+          clerkId,
+        });
+
+        newId = doc._id;
+      }
+
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
 
@@ -50,7 +66,7 @@ export async function POST(request: Request) {
 
       // Création de l'objet de commande
       const order = {
-        stripeId: id,
+        stripeId: newId || id,
         plan: metadata?.plan || '',
         frequency: metadata?.frequency || '',
         buyer,
