@@ -45,20 +45,6 @@ export async function POST(request: Request) {
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
 
-      let newId;
-
-      if (metadata?.buyer === 'avisetoiles.com') {
-        const { clerkId } = await createMember(JSON.parse(metadata?.buyer));
-
-        const doc = await client.create({
-          _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-          ...JSON.parse(metadata?.buyer),
-          clerkId,
-        });
-
-        newId = doc._id;
-      }
-
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
 
@@ -66,7 +52,7 @@ export async function POST(request: Request) {
 
       // Création de l'objet de commande
       const order = {
-        stripeId: newId || id,
+        stripeId: id,
         plan: metadata?.plan || '',
         frequency: metadata?.frequency || '',
         buyer,

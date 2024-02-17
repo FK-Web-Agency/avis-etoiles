@@ -16,9 +16,10 @@ import {
 } from '@/components/ui';
 import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 import { z } from 'zod';
-import { createMember } from '@/lib/actions/clerk.actions';
+import { createMember, updateUserMetadata } from '@/lib/actions/clerk.actions';
 import { client } from '@/sanity/lib';
 import { kv } from '@vercel/kv';
+import { clerkClient } from '@clerk/nextjs';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -30,7 +31,7 @@ const InfoSchema = z.object({
     firstName: z.string().describe('Prénom'),
     lastName: z.string().describe('Nom'),
     email: z.string().email(),
-    phone: z
+    phoneNumber: z
       .string()
       .describe('Numéro de téléphone')
       .max(22, {
@@ -76,6 +77,13 @@ export default function CheckoutButton({ plan }: any) {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
+    const id = query.get('id');
+
+    if (id) {
+      client.delete(id!).then((res) => {
+        console.log(res);
+      });
+    }
 
     // TODO - handle success and cancelation
     if (query.get('success')) {
@@ -89,41 +97,59 @@ export default function CheckoutButton({ plan }: any) {
 
   const onCheckout = async function (values: InfoSchemaType) {
     const buyer = {
-      email: values.information?.email,
-      phoneNumber: values.information?.phone,
-      companyName: values.information?.companyName,
-      siret: values.information?.siret,
+      information: values.information,
       role: 'member',
       address: values?.address,
       disabled: 'false',
-    };
-
-    const order = {
-      id: plan._id,
-      email: values.information?.email,
-      title: plan.title,
-      price: plan.price,
-      frequency: plan.frequency,
-      buyer: JSON.stringify(buyer),
-      seller: 'avisetoiles.com',
-      subscription: JSON.stringify({
+      subscription: {
         startDate: new Date(),
         plan: plan.title,
-      }),
+        price: plan.price,
+      },
+      seller: 'avisetoiles.com',
     };
-
-    await checkoutOrder(order);
 
     const { clerkId } = await createMember(buyer);
 
-    const doc = await client.create({
-      _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-      ...buyer,
-      clerkId,
-    });
+    console.log(clerkId);
 
-    const invoice = await kv.get('invoice');
-    console.log(invoice);
+    if (clerkId) {
+      const doc = await client.create({
+        _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+        clerkId,
+        role: 'member',
+        address: values.address,
+        ...values.information,
+        subscription: {
+          plan: plan.title,
+          price: plan.price,
+        },
+        seller: 'avisetoiles.com',
+        disabled: 'false',
+      });
+
+      await updateUserMetadata(clerkId!, doc._id);
+
+      const order = {
+        sanityId: doc._id,
+        id: plan._id,
+        email: values.information?.email,
+        title: plan.title,
+        price: plan.price,
+        frequency: plan.frequency,
+        buyer: JSON.stringify(buyer),
+        seller: 'avisetoiles.com',
+        subscription: JSON.stringify({
+          startDate: new Date(),
+          plan: plan.title,
+        }),
+      };
+
+      await checkoutOrder(order);
+    }
+
+    /*    const invoice = await kv.get('invoice');
+    console.log(invoice); */
   };
 
   return (

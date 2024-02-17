@@ -6,12 +6,15 @@ import { client, queries } from '@/sanity/lib';
 import { ListPrices } from '@/components/pages/prices';
 import { generateMetadataWithSanity } from '@/helper';
 import { sanityFetch } from '@/sanity/lib/client';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataWithSanity('GET_PRICES_PAGE');
 }
 
 export default async function Prices() {
+
+
   const { introduction_section, prices_list_section, faqs__section } = await sanityFetch<any>({
     query: queries.GET_PRICES_PAGE,
     tags: ['page'],

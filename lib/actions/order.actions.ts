@@ -39,7 +39,7 @@ export const checkoutOrder = async (order: any) => {
       },
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,
-      cancel_url: `${baseUrl}/prices/`,
+      cancel_url: `${baseUrl}/prices?id=${order.sanityId}`,
       locale: 'fr',
       // Expiration date of the session (1 days)
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,

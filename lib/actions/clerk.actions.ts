@@ -34,12 +34,16 @@ export async function createMember(value: any) {
           free: value.subscription?.free,
           status: value.subscription?.free ? true : false,
           plan: value.subscription?.plan,
-          startDate: formatDate(value.subscription?.startDate),
-          expirationDate: formatDate(value.subscription?.expirationDate),
+          startDate: value.subscription?.startDate ? formatDate(value.subscription?.startDate) : null,
+          expirationDate: value.subscription?.expirationDate
+            ? value.subscription?.startDateformatDate(value.subscription?.expirationDate)
+            : null,
         },
         seller: value.seller,
       },
     });
+
+    console.log(response);
 
     // Send email
     await sendEmail({
@@ -57,8 +61,18 @@ export async function createMember(value: any) {
       password,
     };
   } catch (error: any) {
+    console.log(error);
+
     return { status: 'error', message: JSON.stringify(error) };
   }
+}
+
+export async function updateUserMetadata(id: string, sanityId: string) {
+  await clerkClient.users.updateUserMetadata(id, {
+    publicMetadata: {
+      userId: sanityId,
+    },
+  });
 }
 
 // Create teams
