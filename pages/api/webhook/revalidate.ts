@@ -1,47 +1,36 @@
-import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
-import type { NextApiRequest, NextApiResponse } from 'next';
+// ./src/app/api/revalidate/route.ts
+import {revalidateTag} from 'next/cache'
+import {type NextRequest, NextResponse} from 'next/server'
+import {parseBody} from 'next-sanity/webhook'
 
-type Data = {
-  message: string;
-};
-
-// Next.js will by default parse the body, which can lead to invalid signatures
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-const secret = process.env.SANITY_REVALIDATE_SECRET!;
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const signature = req.headers[SIGNATURE_HEADER_NAME] as string;
-  const body = await readBody(req); // Read the body into a string
-
-  if (req.method !== 'POST') {
-    return res.status(401).json({ message: 'Must be a POST request' });
-  }
-
-  if (!isValidSignature(body, signature, secret)) {
-    res.status(401).json({ message: 'Invalid signature' });
-    return;
-  }
-  console.log('Received request');
-
-  try {
-    const { _type: type, slug } = JSON.parse(body);
-
-    await res.revalidate(`/`); // The landing page featured projects
-    return res.json({ message: `Revalidated "${type}" with slug "${slug.current}"` });
-  } catch (err) {
-    return res.status(500).send({ message: 'Error revalidating' });
-  }
+type WebhookPayload = {
+  _type: string
 }
 
-async function readBody(readable: any) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+export async function POST(req: NextRequest) {
+  try {
+    const {isValidSignature, body} = await parseBody<WebhookPayload>(
+      req,
+      process.env.SANITY_REVALIDATE_SECRET,
+    )
+
+    if (!isValidSignature) {
+      const message = 'Invalid signature'
+      return new Response(JSON.stringify({message, isValidSignature, body}), {status: 401})
+    }
+
+    if (!body?._type) {
+      const message = 'Bad Request'
+      return new Response(JSON.stringify({message, body}), {status: 400})
+    }
+
+    // If the `_type` is `page`, then all `client.fetch` calls with
+    // `{next: {tags: ['page']}}` will be revalidated
+    revalidateTag(body._type)
+
+    return NextResponse.json({body})
+  } catch (err:any) {
+    console.error(err)
+    return new Response(err.message, {status: 500})
   }
-  return Buffer.concat(chunks).toString('utf8');
 }
