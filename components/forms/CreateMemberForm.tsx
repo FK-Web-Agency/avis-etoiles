@@ -13,7 +13,8 @@ import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { useDashboardStore } from '@/store';
 // @ts-ignore
 import { IClerkMember, SubscribeStatus } from '../../interfaces/user.d.ts';
-import { createSubscriber } from '@/lib/actions';
+import { checkoutSubscription, createSubscriber } from '@/lib/actions';
+import { client } from '@/sanity/lib';
 
 // Define recurring options
 enum Recurring {
@@ -131,9 +132,41 @@ export default function CreateMemberForm() {
 
     const newClerkMember = await createMember(member);
 
+    const subscriberFromSanity = await client.fetch(
+      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email]{stripeId, _id}[0]`,
+      {
+        email: values.information.email,
+      }
+    );
 
     console.log(newClerkMember);
-    
+
+    // Create Session payment
+    const sessionStripe = {
+      stripeCustomerId: subscriberFromSanity?.stripeId,
+      buyerId: subscriberFromSanity?._id,
+      title: values.subscription.plan,
+      price: values.subscription.price,
+      frequency: values.subscription.recurring,
+    };
+
+    const { status, message } = await checkoutSubscription(sessionStripe);
+
+    if (status === 'error') {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: message,
+      });
+    } else {
+      toast({
+        description: message,
+      });
+
+      setTimeout(() => {
+        list('members');
+      }, 1000);
+    }
     // Set loading state to false
     setLoading(false);
   }

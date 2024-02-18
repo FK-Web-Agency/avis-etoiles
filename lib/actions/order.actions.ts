@@ -71,10 +71,6 @@ export const checkoutOrder = async (order: any) => {
 };
 
 export const checkoutSubscription = async (order: any) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const baseUrl =
-    process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-
   const startDate = new Date(JSON.parse(order.subscription).startDate);
   const now = new Date();
 
@@ -83,7 +79,7 @@ export const checkoutSubscription = async (order: any) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
-      customer_email: order.email,
+      customer: order.stripeCustomerId,
       line_items: [
         {
           price_data: {
@@ -101,11 +97,11 @@ export const checkoutSubscription = async (order: any) => {
         },
       ],
       metadata: {
-        plan: order.title,
+        /*         plan: order.title,
         buyer: order.buyer,
         seller: order.seller,
         subscription: order.subscription,
-        frequency: order.frequency,
+        frequency: order.frequency, */
       },
       mode: 'subscription',
       success_url: `${baseUrl}/prices/success`,
@@ -120,11 +116,11 @@ export const checkoutSubscription = async (order: any) => {
         enabled: true,
       },
       subscription_data: {
-        metadata: {
+      /*   metadata: {
           plan: order.title,
           buyer: order?.buyer || undefined,
           seller: order.seller,
-        },
+        }, */
 
         billing_cycle_anchor: billingCycleAnchor,
       },
@@ -144,7 +140,7 @@ export const checkoutSubscription = async (order: any) => {
       },
     });
 
-    await client.patch(JSON.parse(order.buyer)._ref).set({ stripeSessionId: session.id }).commit();
+    await client.patch(order.buyerId).set({ stripeSessionId: session.id }).commit();
     // Send email
     const { status } = await sendEmail({
       email: order.email,
@@ -187,8 +183,8 @@ export const createSubscriber = async (subscriber: ICustomer) => {
       }
     );
 
-    console.log("subscriberFromSanity", subscriberFromSanity);
-    
+    console.log('subscriberFromSanity', subscriberFromSanity);
+
     // Update the user from the database Sanity with the stripe customer id
     await client.patch(subscriberFromSanity._id).set({ stripeId: customer.id }).commit();
 
@@ -196,7 +192,7 @@ export const createSubscriber = async (subscriber: ICustomer) => {
     return { status: 'success', message: 'Abonné crée avec success', stripeId: customer.id };
   } catch (error) {
     console.log(error);
-    
+
     return {
       status: 'error',
       message: "Une erreur s'est produite, merci de réessayer ultérieurement",
@@ -209,7 +205,7 @@ export const createOrder = async (order: any) => {
   // create a new order in sanity
   const newOrder = {
     ...order,
-    _type: 'avis-invoices',
+    _type: process.env.NEXT_PUBLIC_SANITY_ORDERS,
   };
   const result = await client.create(newOrder);
   return result;
