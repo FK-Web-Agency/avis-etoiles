@@ -22,6 +22,9 @@ export async function createMember(member: IClerkMember) {
       // username: value.information?.firstName + value.information?.lastName,
       publicMetadata: {
         seller: member.seller,
+        address: member.address,
+        companyName: member.companyName,
+        status: member.status,
       },
     });
 

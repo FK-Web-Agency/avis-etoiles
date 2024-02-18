@@ -181,7 +181,7 @@ export const createSubscriber = async (subscriber: ICustomer) => {
     });
 
     const subscriberFromSanity = await client.fetch(
-      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email]{_id}`,
+      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email]{_id}[0]`,
       {
         email: subscriber.email,
       }
