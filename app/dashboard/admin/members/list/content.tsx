@@ -107,6 +107,10 @@ export default function Content() {
     }
   }, [members, collaborators]);
 
+
+  console.log('members', members);
+  
+
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));
 
