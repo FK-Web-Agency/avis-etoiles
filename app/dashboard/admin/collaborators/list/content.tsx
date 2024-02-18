@@ -20,6 +20,7 @@ export default function Content() {
     ],
   });
 
+// Get data
   const { data: ordersData } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_ORDERS,
   });
