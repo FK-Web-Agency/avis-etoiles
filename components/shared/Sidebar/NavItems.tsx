@@ -39,7 +39,7 @@ export default function NavItems({ isMobile = false }: { isMobile?: boolean }) {
       });
   }, []);
 
-  if (!role) return null;
+  if (!role) return <Icons.Spinner className="w-8 h-8 animate-spin" />;
 
   if (role === 'commercial') {
     navigation.admin = navigation.admin.filter((item) => item.name !== 'Collaborateurs');
