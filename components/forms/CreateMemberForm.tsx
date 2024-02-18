@@ -113,7 +113,7 @@ export default function CreateMemberForm() {
       firstName: values.information.firstName,
       lastName: values.information.lastName,
       companyName: values.information.companyName,
-      status: SubscribeStatus.incomplete,
+      status: 'incomplete',
       seller: {
         id: seller?._id,
         firstName: seller?.firstName,
