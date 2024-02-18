@@ -131,6 +131,9 @@ export default function CreateMemberForm() {
 
     const newClerkMember = await createMember(member);
 
+
+    console.log(newClerkMember);
+    
     // Set loading state to false
     setLoading(false);
   }

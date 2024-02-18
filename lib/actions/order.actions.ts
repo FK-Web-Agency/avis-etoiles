@@ -187,12 +187,16 @@ export const createSubscriber = async (subscriber: ICustomer) => {
       }
     );
 
+    console.log("subscriberFromSanity", subscriberFromSanity);
+    
     // Update the user from the database Sanity with the stripe customer id
     await client.patch(subscriberFromSanity._id).set({ stripeId: customer.id }).commit();
 
     // Retourner l'abonnement créé
     return { status: 'success', message: 'Abonné crée avec success', stripeId: customer.id };
   } catch (error) {
+    console.log(error);
+    
     return {
       status: 'error',
       message: "Une erreur s'est produite, merci de réessayer ultérieurement",
