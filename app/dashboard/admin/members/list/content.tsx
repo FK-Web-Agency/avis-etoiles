@@ -29,12 +29,11 @@ import { classNames } from '@/helper';
 import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import { PaginationTable } from '@/components/dashboard';
-import { getAllSubscribers, getSession } from '@/lib/actions/stripe.actions';
 
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [unpaidNumber, setUnpaidNumber] = useState<any>(0);
+  const [unpaidNumber, setUnpaidNumber] = useState<any>([]);
   const go = useGo();
 
   const { data, isLoading } = useList({
