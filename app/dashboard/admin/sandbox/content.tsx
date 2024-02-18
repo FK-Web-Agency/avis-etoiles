@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import bcrypt from 'bcryptjs-react';
 
 import {
@@ -32,6 +32,12 @@ export default function Content() {
   const { toast } = useToast();
 
   const { step, gameConfig, userIds, buyer, setStep } = useOnboardingStore();
+
+useEffect(() => {
+  setStep('uploadLogo')
+}, [])
+
+
 
   // Components for each step
   const Content = step?.Content;
