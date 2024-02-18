@@ -34,7 +34,7 @@ import { getAllSubscribers, getSession } from '@/lib/actions/stripe.actions';
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [unpaidNumber, setUnpaidNumber] = useState(0);
+  const [unpaidNumber, setUnpaidNumber] = useState<any>(0);
   const go = useGo();
 
   const { data, isLoading } = useList({
@@ -61,7 +61,7 @@ export default function Content() {
 
   const maxPage = Math.ceil(data?.total! / 10);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const fetchSubscribers = async () => {
       const subscribers = await getAllSubscribers();
 
@@ -69,16 +69,12 @@ export default function Content() {
         subscribers?.find(async (subscriber) => {
           console.log('subscriber', subscriber);
 
-          // @ts-ignore
-          const session = await getSession({
-            subscriberId: member.email === 'texierremy@gilles.com' ? 'texierremy@gilles.com' : member._id,
-          });
-          const sellerSession = session?.metadata?.seller ? JSON.parse(session.metadata.seller) : null;
-
           const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
 
-
-
+          console.log('buyer', buyer);
+          console.log('member', member);
+          
+          
           if (buyer?._ref === member._id) {
             const sellerStripe = subscriber?.metadata?.seller ? JSON.parse(subscriber.metadata.seller) : null;
 
@@ -92,6 +88,12 @@ export default function Content() {
             if (subscriber.status !== 'active') setUnpaidNumber(unpaidNumber + 1);
             // console.log('Found member', member);
           } else {
+            // @ts-ignore
+            const session = await getSession({
+              subscriberId: member.email === 'texierremy@gilles.com' ? 'texierremy@gilles.com' : member._id,
+            });
+            const sellerSession = session?.metadata?.seller ? JSON.parse(session.metadata.seller) : null;
+
             //console.log('Not found member', member);
             const seller = collaborators.find((collaborator) => collaborator._id === sellerSession?._ref);
 
@@ -107,11 +109,15 @@ export default function Content() {
     if (!isLoading && !collaboratorsLoading) {
       fetchSubscribers().then(() => setLoading(false));
     }
-  }, [members, collaborators]);
+  }, [members, collaborators]); */
 
+  useEffect(() => {
+    console.log('members', members);
 
-  console.log('members', members);
-  
+    const subscriberUnpaid = members.filter((member) => !member.subscription.status);
+
+    setUnpaidNumber(subscriberUnpaid);
+  }, [members]);
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));
@@ -129,17 +135,16 @@ export default function Content() {
           <span className="ml-2">Ajouter Abonné</span>
         </Button>
       </div>
-      {isLoading || collaboratorsLoading || loading ? (
+      {isLoading || collaboratorsLoading ? (
         <TableSkeleton />
       ) : members?.length > 0 ? (
         <div>
-          <div className={classNames(unpaidNumber ? '' : 'hidden')}>
+          <div className={classNames(unpaidNumber?.length > 0 ? '' : 'hidden')}>
             <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s)</h3>
             <Carousel className="w-3/4 sm:w-96 ml-10 mb-8">
               <CarouselContent>
-                {members.map((user) => {
-                  if (!user.subscription.unpaid) return;
-
+                {unpaidNumber.map((user: any) => {
+                  const seller = collaborators.find((collaborator) => collaborator._id === user?.seller?._ref);
                   if (unpaidNumber)
                     return (
                       <CarouselItem key={user?.email}>
@@ -178,8 +183,7 @@ export default function Content() {
                               </li>
                               <li>
                                 {' '}
-                                <span className="font-bold">Vendu par</span> : {user.seller?.firstName}{' '}
-                                {user.seller?.lastName}
+                                <span className="font-bold">Vendu par</span> : {seller?.firstName} {seller?.lastName}
                               </li>
                             </ul>
                             <p></p>
@@ -207,7 +211,7 @@ export default function Content() {
             <TableBody>
               {members.map((user) => {
                 console.log(user.subscription.status);
-
+                const seller = collaborators.find((collaborator) => collaborator._id === user?.seller?._ref);
                 return (
                   <TableRow className="border-gray-600" key={user?.email}>
                     <TableCell className="font-medium">
@@ -235,18 +239,16 @@ export default function Content() {
                         <div className={classNames('flex-none rounded-full p-1 bg-current')}>
                           <div
                             className={classNames(
-                              user.subscription.status === 'active' ? 'bg-green-600' : 'bg-red-600',
+                              user.subscription.status ? 'bg-green-600' : 'bg-red-600',
                               'h-1.5 w-1.5 rounded-full '
                             )}
                           />
                         </div>
                         <div className="hidden text-white sm:block">
-                          {user.subscription.status == 'active' ? (
+                          {user.subscription.status ? (
                             <span>Actif</span>
                           ) : (
-                            <span className="text-gray-500">
-                              {user.subscription.unpaid ? 'Paiement en attente' : 'Inactif'}{' '}
-                            </span>
+                            <span className="text-gray-500">Inactif</span>
                           )}
                         </div>
                       </div>
@@ -265,7 +267,7 @@ export default function Content() {
                           })
                         }
                         className="text-white text-left hover:underline hover:bg-transparent">
-                        {user?.seller?.firstName} {user?.seller?.lastName}
+                        {seller?.firstName} {seller?.lastName}
                       </Button>
                     </TableCell>
                     <TableCell className="text-right ">

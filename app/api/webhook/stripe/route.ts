@@ -64,6 +64,14 @@ export async function POST(request: Request) {
 
       // Création de la commande dans la base de données
       const newOrder = await createOrder(order);
+      await client
+        .patch(buyer._ref)
+        .set({
+          subscription: {
+            status: true,
+          },
+        })
+        .commit();
 
       await kv.del('invoice');
       await kv.del(`subscriber:${buyer.email}`);

@@ -170,6 +170,8 @@ export default function CreateMemberForm() {
           },
           {
             onSuccess: async (data: any) => {
+              console.log("data", data);
+              
               const order = {
                 id: data?.data?._id,
                 email: values?.information?.email,
