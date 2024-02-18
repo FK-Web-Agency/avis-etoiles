@@ -111,9 +111,9 @@ export const checkoutSubscription = async (order: any) => {
       /*  automatic_tax: {
         enabled: true,
       }, */
-      tax_id_collection: {
+     /*  tax_id_collection: {
         enabled: true,
-      },
+      }, */
       subscription_data: {
       /*   metadata: {
           plan: order.title,

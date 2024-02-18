@@ -87,20 +87,7 @@ export async function POST(req: Request) {
         },
       });
 
-      const stripMember = {
-        email: email_addresses[0].email_address,
-        firstName: first_name,
-        lastName: last_name,
-        phone: public_metadata.phone as string,
-        address: public_metadata?.address as any,
-        companyName: public_metadata.companyName as string,
-        seller: JSON.stringify(public_metadata.seller),
-        clerkId: id,
-      };
 
-      // Create a new subscriber in Stripe
-      const newStripeSubscriber = await createSubscriber(stripMember);
-      console.log(newStripeSubscriber);
     }
 
     return NextResponse.json({ status: 200, message: 'User created' });

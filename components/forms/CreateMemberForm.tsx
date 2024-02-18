@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { useCreate, useNavigation, useOne } from '@refinedev/core';
+import { useCreate, useList, useNavigation, useOne } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
@@ -12,9 +12,9 @@ import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 
 import { useDashboardStore } from '@/store';
 // @ts-ignore
-import { IClerkMember, SubscribeStatus } from '../../interfaces/user.d.ts';
+import { IClerkMember, ISanityMember, SubscribeStatus } from '../../interfaces/user.d.ts';
 import { checkoutSubscription, createSubscriber } from '@/lib/actions';
-import { client } from '@/sanity/lib';
+import { client, createUser } from '@/sanity/lib';
 
 // Define recurring options
 enum Recurring {
@@ -88,6 +88,7 @@ const MemberSchema = z.object({
 export type MemberProps = z.infer<typeof MemberSchema>;
 
 export default function CreateMemberForm() {
+  const [buyerEmail, setBuyerEmail] = useState<null | string>(null);
   // Define state variables
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -101,92 +102,26 @@ export default function CreateMemberForm() {
     id: userIds?.sanityId,
   });
 
-  const seller = data?.data;
+  const { data: subscribersData } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS,
+    filters: [
+      {
+        field: 'email',
+        operator: 'eq',
+        value: buyerEmail,
+      },
+    ],
+  });
 
+  const seller = data?.data;
+  const subscriber = subscribersData?.data[0];
   // Handle form submission
   async function handleAction(values: MemberProps) {
-    // Set loading state to true
-    setLoading(true);
-    try {
-      // Create a new member in clerk
-      const member: IClerkMember = {
-        email: values.information.email,
-        firstName: values.information.firstName,
-        lastName: values.information.lastName,
-        companyName: values.information.companyName,
-        status: 'incomplete',
-        seller: {
-          id: seller?._id,
-          firstName: seller?.firstName,
-          lastName: seller?.lastName,
-          email: seller?.email,
-          phone: seller?.phone,
-        },
-        address: {
-          line1: values.address.street,
-          city: values.address.city,
-          zipCode: values.address.zipCode,
-          country: 'FR',
-        },
-      };
-
-      const newClerkMember = await createMember(member);
-      setTimeout(async () => {
-        const subscriberFromSanity = await client.fetch(
-          `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email][0]`,
-          {
-            email: values.information.email,
-          }
-        );
-
-        console.log(subscriberFromSanity);
-
-        // Create Session payment
-        const sessionStripe = {
-          stripeCustomerId: subscriberFromSanity?.stripeId,
-          buyerId: subscriberFromSanity?._id,
-          title: values.subscription.plan,
-          price: values.subscription.price,
-          frequency: values.subscription.recurring === 'Mois' ? 'month' : 'year',
-          startDate: values.subscription.startDate,
-        };
-
-/*         const { status, message } = await checkoutSubscription(sessionStripe);
-
-        if (status === 'error') {
-          toast({
-            variant: 'destructive',
-            title: 'Uh oh! Something went wrong.',
-            description: message,
-          });
-        } else {
-          toast({
-            description: message,
-          });
-
-          setTimeout(() => {
-            list('members');
-          }, 1000);
-        } */
-        // Set loading state to false
-        setLoading(false);
-      }, 3000);
-    } catch (error) {
-      console.log(error);
-
-      // Set loading state to false
-      setLoading(false);
-      // Display an error message
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'An error occurred, please try again later',
-      });
-    }
+    
   }
-
   return (
     <AutoForm
+      onValuesChange={(values) => setBuyerEmail(values?.information?.email!)}
       onAction={handleAction}
       formSchema={MemberSchema}
       fieldConfig={{
