@@ -6,13 +6,11 @@ import sendEmail from './resend.actions';
 import { kv } from '@vercel/kv';
 import { redirect } from 'next/navigation';
 import { sub } from 'date-fns';
-
+import { ICustomer } from '@/interfaces/order';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const baseUrl =
   process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-
-
 
 export const checkoutOrder = async (order: any) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -163,26 +161,44 @@ export const checkoutSubscription = async (order: any) => {
   }
 };
 
-export const createSubscriber = async (subscriber: any) => {
-  // Créer un nouvel abonné
-  const customer = await stripe.customers.create({
-    email: subscriber.email,
-    name: `${subscriber.firstName} ${subscriber.lastName}`,
-    phone: subscriber.phone,
-    address: {
-      line1: subscriber.address,
-      city: subscriber.city,
-      postal_code: subscriber.zipCode,
-      country: 'FR',
-    },
-    metadata: {
-      seller: subscriber.seller,
-      clerkId: subscriber.clerkId,
-    },
-  });
+export const createSubscriber = async (subscriber: ICustomer) => {
+  try {
+    // Créer un nouvel abonné
+    const customer = await stripe.customers.create({
+      email: subscriber.email,
+      name: `${subscriber.firstName} ${subscriber.lastName}`,
+      phone: subscriber.phone,
+      address: {
+        line1: subscriber.address.line1,
+        city: subscriber.address.city,
+        postal_code: subscriber.address.zipCode,
+        country: 'FR',
+      },
+      metadata: {
+        seller: subscriber.seller,
+        companyName: subscriber.companyName,
+      },
+    });
 
-  // Retourner l'abonnement créé
-  return { status: 'success', message: 'Abonné crée avec success', customerId: customer.id };
+    const subscriberFromSanity = await client.fetch(
+      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email]{_id}`,
+      {
+        email: subscriber.email,
+      }
+    );
+
+    // Update the user from the database Sanity with the stripe customer id
+    await client.patch(subscriberFromSanity._id).set({ stripeId: customer.id }).commit();
+
+    // Retourner l'abonnement créé
+    return { status: 'success', message: 'Abonné crée avec success', stripeId: customer.id };
+  } catch (error) {
+    return {
+      status: 'error',
+      message: "Une erreur s'est produite, merci de réessayer ultérieurement",
+      stripeId: undefined,
+    };
+  }
 };
 
 export const createOrder = async (order: any) => {

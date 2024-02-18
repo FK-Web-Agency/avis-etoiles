@@ -21,6 +21,12 @@ const ClerkMember = z.object({
   companyName: z.string(),
   status: SubscribeStatus,
   seller: Seller,
+  address: z.object({
+    line1: z.string(),
+    city: z.string(),
+    zipCode: z.string(),
+    country: z.string(),
+  }),
 });
 
 const SellerSanity = z.object({

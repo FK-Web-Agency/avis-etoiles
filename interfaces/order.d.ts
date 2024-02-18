@@ -15,16 +15,15 @@ const CustomerSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   phone: z.string(),
+  companyName: z.string(),
   address: z.object({
     line1: z.string(),
     city: z.string(),
-    postal_code: z.string(),
+    zipCode: z.string(),
     country: z.string(),
   }),
-  metadata: z.object({
-    seller: z.string(),
-    clerkId: z.string(),
-  }),
+  seller: z.string(),
+  clerkId: z.string().optional(),
 });
 
 type ICustomer = z.infer<typeof CustomerSchema>;

@@ -70,21 +70,6 @@ export async function POST(request: Request) {
 
       // Réponse de succès avec la nouvelle commande
       return NextResponse.json({ message: 'OK', order: newOrder });
-    } else if (event.type === 'payment_intent.succeeded') {
-      console.log('payment_intent.succeeded');
-    } else if (event.type === 'customer.subscription.created') {
-      console.log('customer.subscription.created');
-      const { id, metadata } = event.data.object;
-      const buyer = JSON.parse(metadata?.buyer as string);
-      const seller = JSON.parse(metadata?.seller as string);
-      const member = {
-        stripeId: id,
-        buyer,
-        seller,
-        createdAt: new Date().toISOString(),
-      };
-      ///const newMember = await createMember(member);
-      return NextResponse.json({ message: 'OK', data: event.data.object });
     }
   } catch (err: any) {
     // Gestion des erreurs liées aux webhooks

@@ -11,6 +11,7 @@ import { clerkClient } from '@clerk/nextjs';
 import { IClerkMember, ISanityMember, ISeller, ISellerSanity } from '@/interfaces/user';
 import { metadata } from '@/app/(auth)/layout';
 import { NextResponse } from 'next/server';
+import { createSubscriber } from '@/lib/actions';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -79,11 +80,28 @@ export async function POST(req: Request) {
     const newMember: any = await createUser(member);
 
     if (newMember) {
+      // Update the user metadata with the new member's ID
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newMember._id,
         },
       });
+
+      const stripMember = {
+        email: email_addresses[0].email_address,
+        firstName: first_name,
+        lastName: last_name,
+        phone: public_metadata.phone as string,
+        address: public_metadata?.address as any,
+        companyName: public_metadata.companyName as string,
+        seller: JSON.stringify(public_metadata.seller),
+        clerkId: id,
+      };
+
+      // Create a new subscriber in Stripe
+      const newStripeSubscriber = await createSubscriber(stripMember);
+
+      console.log(newStripeSubscriber);
     }
 
     return NextResponse.json({ status: 200, message: 'User created' });

@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { z } from 'zod';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { useCreate, useList, useNavigation, useOne } from '@refinedev/core';
+import { useCreate, useNavigation, useOne } from '@refinedev/core';
 
 import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
-import { formatToISOString } from '@/helper';
-import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
+
 import { useDashboardStore } from '@/store';
-import { IClerkMember, SubscribeStatus } from '@/interfaces/user';
+// @ts-ignore
+import { IClerkMember, SubscribeStatus } from '../../interfaces/user.d.ts';
+import { createSubscriber } from '@/lib/actions';
 
 // Define recurring options
 enum Recurring {
@@ -107,7 +108,7 @@ export default function CreateMemberForm() {
     setLoading(true);
 
     // Create a new member in clerk
-    const clerkMember: IClerkMember = {
+    const member: IClerkMember = {
       email: values.information.email,
       firstName: values.information.firstName,
       lastName: values.information.lastName,
@@ -120,10 +121,15 @@ export default function CreateMemberForm() {
         email: seller?.email,
         phone: seller?.phone,
       },
+      address: {
+        line1: values.address.street,
+        city: values.address.city,
+        zipCode: values.address.zipCode,
+        country: 'FR',
+      },
     };
 
-    const newMember = await createMember(clerkMember);
-    console.log(newMember);
+    const newClerkMember = await createMember(member);
 
     // Set loading state to false
     setLoading(false);

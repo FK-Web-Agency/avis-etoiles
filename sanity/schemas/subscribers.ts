@@ -40,6 +40,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'stripeId',
+      title: 'id stripe',
+      type: 'string',
+      readOnly: true,
+    }),
+    defineField({
       name: 'role',
       title: 'Rôle',
       type: 'string',
