@@ -138,7 +138,16 @@ export default defineType({
           name: 'status',
           title: 'Status',
           description: "Status de l'abonnement",
-          type: 'boolean',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Actif', value: 'active' },
+              { title: 'Inactif', value: 'inactive' },
+              { title: 'En attente', value: 'incomplete' },
+              { title: 'Annulé', value: 'canceled' },
+              { title: 'Expiré', value: 'expired' },
+            ],
+          },
         }),
         defineField({
           name: 'free',

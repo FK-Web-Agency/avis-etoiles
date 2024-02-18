@@ -239,16 +239,18 @@ export default function Content() {
                         <div className={classNames('flex-none rounded-full p-1 bg-current')}>
                           <div
                             className={classNames(
-                              user.subscription.status ? 'bg-green-600' : 'bg-red-600',
+                              user.subscription.status === 'active' ? 'bg-green-600' : 'bg-red-600',
                               'h-1.5 w-1.5 rounded-full '
                             )}
                           />
                         </div>
                         <div className="hidden text-white sm:block">
-                          {user.subscription.status ? (
+                          {user.subscription.status == 'active' ? (
                             <span>Actif</span>
                           ) : (
-                            <span className="text-gray-500">Inactif</span>
+                            <span className="text-gray-500">
+                              {user.subscription.status === 'incomplete' ? 'Paiement en attente' : 'Inactif'}{' '}
+                            </span>
                           )}
                         </div>
                       </div>

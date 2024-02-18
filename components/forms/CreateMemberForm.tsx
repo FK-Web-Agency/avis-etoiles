@@ -155,6 +155,7 @@ export default function CreateMemberForm() {
             recurring,
             startDate,
             expirationDate,
+            status: 'incomplete'
           },
           seller: {
             _type: 'reference',

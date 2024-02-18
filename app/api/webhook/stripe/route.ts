@@ -68,7 +68,7 @@ export async function POST(request: Request) {
         .patch(buyer._ref)
         .set({
           subscription: {
-            status: true,
+            status: 'active',
           },
         })
         .commit();
