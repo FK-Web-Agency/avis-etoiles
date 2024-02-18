@@ -66,6 +66,8 @@ export async function POST(req: Request) {
       email: email_addresses[0].email_address,
       firstName: first_name,
       lastName: last_name,
+      companyName: public_metadata.companyName as string,
+      status: public_metadata.status,
       seller: {
         _type: 'reference',
         // @ts-ignore

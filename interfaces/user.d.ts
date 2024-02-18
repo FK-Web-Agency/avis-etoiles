@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+enum SubscribeStatus {
+  active = 'active',
+  inactive = 'inactive',
+  incomplete = 'incomplete',
+}
+
 const Seller = z.object({
   id: z.string(),
   firstName: z.string(),
@@ -12,6 +18,8 @@ const ClerkMember = z.object({
   email: z.string().email(),
   firstName: z.string(),
   lastName: z.string(),
+  companyName: z.string(),
+  status: SubscribeStatus,
   seller: Seller,
 });
 
@@ -27,8 +35,6 @@ const SanityMember = ClerkMember.merge(
     seller: SellerSanity,
   })
 );
-
-
 
 type ISanityMember = z.infer<typeof SanityMember>;
 type ISeller = z.infer<typeof Seller>;

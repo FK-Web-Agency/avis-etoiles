@@ -12,7 +12,7 @@ import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { formatToISOString } from '@/helper';
 import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 import { useDashboardStore } from '@/store';
-import { IClerkMember } from '@/interfaces/user';
+import { IClerkMember, SubscribeStatus } from '@/interfaces/user';
 
 // Define recurring options
 enum Recurring {
@@ -111,6 +111,8 @@ export default function CreateMemberForm() {
       email: values.information.email,
       firstName: values.information.firstName,
       lastName: values.information.lastName,
+      companyName: values.information.companyName,
+      status: SubscribeStatus.incomplete,
       seller: {
         id: seller?._id,
         firstName: seller?.firstName,
