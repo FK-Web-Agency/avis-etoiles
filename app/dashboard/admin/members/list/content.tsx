@@ -30,13 +30,10 @@ import { DeleteMemberButton, Icons } from '@/components/shared';
 import { TableSkeleton } from '@/components/skeleton';
 import { PaginationTable } from '@/components/dashboard';
 import { getAllSubscribers, getSession } from '@/lib/actions/stripe.actions';
-import { client } from '@/sanity/lib';
 
 export default function Content() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [allSubscribers, setAllSubscribers] = useState<Stripe.Subscription[] | null>(null);
-  const [session, setSession] = useState<any>(null);
-  const [seller, setSeller] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [unpaidNumber, setUnpaidNumber] = useState(0);
   const go = useGo();
 
@@ -55,7 +52,7 @@ export default function Content() {
     },
   });
 
-  const { data: collaboratorsData } = useList({
+  const { data: collaboratorsData, isLoading: collaboratorsLoading } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
   });
 
@@ -91,7 +88,7 @@ export default function Content() {
             member.subscription.unpaid = subscriber.status !== 'active';
 
             if (subscriber.status !== 'active') setUnpaidNumber(unpaidNumber + 1);
-           // console.log('Found member', member);
+            // console.log('Found member', member);
           } else {
             //console.log('Not found member', member);
             const seller = collaborators.find((collaborator) => collaborator._id === sellerSession?._ref);
@@ -104,11 +101,10 @@ export default function Content() {
           }
         });
       }
-
-      setAllSubscribers(subscribers);
     };
-
-    fetchSubscribers();
+    if (!isLoading && !collaboratorsLoading) {
+      fetchSubscribers().then(() => setLoading(false));
+    }
   }, [members, collaborators]);
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
@@ -127,7 +123,7 @@ export default function Content() {
           <span className="ml-2">Ajouter Abonné</span>
         </Button>
       </div>
-      {isLoading || !allSubscribers ? (
+      {isLoading || collaboratorsLoading || loading ? (
         <TableSkeleton />
       ) : members?.length > 0 ? (
         <div>
@@ -140,7 +136,7 @@ export default function Content() {
 
                   if (unpaidNumber)
                     return (
-                      <CarouselItem  key={user?.email}>
+                      <CarouselItem key={user?.email}>
                         <Card>
                           <CardHeader>
                             <CardTitle>
@@ -240,7 +236,9 @@ export default function Content() {
                           {user.subscription.status == 'active' ? (
                             <span>Actif</span>
                           ) : (
-                            <span className="text-gray-500">{user.subscription.unpaid ? 'Paiement en attente' : 'Inactif'} </span>
+                            <span className="text-gray-500">
+                              {user.subscription.unpaid ? 'Paiement en attente' : 'Inactif'}{' '}
+                            </span>
                           )}
                         </div>
                       </div>
@@ -253,13 +251,13 @@ export default function Content() {
                             to: {
                               resource: 'collaborators',
                               action: 'show',
-                              id: seller?._id,
+                              id: user?.seller?._id,
                             },
                             type: 'push',
                           })
                         }
                         className="text-white text-left hover:underline hover:bg-transparent">
-                        {seller?.firstName} {seller?.lastName}
+                        {user?.seller?.firstName} {user?.seller?.lastName}
                       </Button>
                     </TableCell>
                     <TableCell className="text-right ">
