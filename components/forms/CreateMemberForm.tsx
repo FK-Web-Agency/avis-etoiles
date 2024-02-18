@@ -107,68 +107,82 @@ export default function CreateMemberForm() {
   async function handleAction(values: MemberProps) {
     // Set loading state to true
     setLoading(true);
-
-    // Create a new member in clerk
-    const member: IClerkMember = {
-      email: values.information.email,
-      firstName: values.information.firstName,
-      lastName: values.information.lastName,
-      companyName: values.information.companyName,
-      status: 'incomplete',
-      seller: {
-        id: seller?._id,
-        firstName: seller?.firstName,
-        lastName: seller?.lastName,
-        email: seller?.email,
-        phone: seller?.phone,
-      },
-      address: {
-        line1: values.address.street,
-        city: values.address.city,
-        zipCode: values.address.zipCode,
-        country: 'FR',
-      },
-    };
-
-    const newClerkMember = await createMember(member);
-
-    const subscriberFromSanity = await client.fetch(
-      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email]{stripeId, _id}[0]`,
-      {
+    try {
+      // Create a new member in clerk
+      const member: IClerkMember = {
         email: values.information.email,
-      }
-    );
+        firstName: values.information.firstName,
+        lastName: values.information.lastName,
+        companyName: values.information.companyName,
+        status: 'incomplete',
+        seller: {
+          id: seller?._id,
+          firstName: seller?.firstName,
+          lastName: seller?.lastName,
+          email: seller?.email,
+          phone: seller?.phone,
+        },
+        address: {
+          line1: values.address.street,
+          city: values.address.city,
+          zipCode: values.address.zipCode,
+          country: 'FR',
+        },
+      };
 
-    console.log(newClerkMember);
+      const newClerkMember = await createMember(member);
+      setTimeout(async () => {
+        const subscriberFromSanity = await client.fetch(
+          `*[_type == "${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}" && email == $email][0]`,
+          {
+            email: values.information.email,
+          }
+        );
 
-    // Create Session payment
-    const sessionStripe = {
-      stripeCustomerId: subscriberFromSanity?.stripeId,
-      buyerId: subscriberFromSanity?._id,
-      title: values.subscription.plan,
-      price: values.subscription.price,
-      frequency: values.subscription.recurring,
-    };
+        console.log(subscriberFromSanity);
 
-    const { status, message } = await checkoutSubscription(sessionStripe);
+        // Create Session payment
+        const sessionStripe = {
+          stripeCustomerId: subscriberFromSanity?.stripeId,
+          buyerId: subscriberFromSanity?._id,
+          title: values.subscription.plan,
+          price: values.subscription.price,
+          frequency: values.subscription.recurring === 'Mois' ? 'month' : 'year',
+          startDate: values.subscription.startDate,
+        };
 
-    if (status === 'error') {
+/*         const { status, message } = await checkoutSubscription(sessionStripe);
+
+        if (status === 'error') {
+          toast({
+            variant: 'destructive',
+            title: 'Uh oh! Something went wrong.',
+            description: message,
+          });
+        } else {
+          toast({
+            description: message,
+          });
+
+          setTimeout(() => {
+            list('members');
+          }, 1000);
+        } */
+        // Set loading state to false
+        setLoading(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+
+      // Set loading state to false
+      setLoading(false);
+      // Display an error message
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: message,
+        description: 'An error occurred, please try again later',
       });
-    } else {
-      toast({
-        description: message,
-      });
-
-      setTimeout(() => {
-        list('members');
-      }, 1000);
     }
-    // Set loading state to false
-    setLoading(false);
   }
 
   return (

@@ -5,7 +5,6 @@ import Stripe from 'stripe';
 import sendEmail from './resend.actions';
 import { kv } from '@vercel/kv';
 import { redirect } from 'next/navigation';
-import { sub } from 'date-fns';
 import { ICustomer } from '@/interfaces/order';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -71,7 +70,7 @@ export const checkoutOrder = async (order: any) => {
 };
 
 export const checkoutSubscription = async (order: any) => {
-  const startDate = new Date(JSON.parse(order.subscription).startDate);
+  const startDate = new Date(order?.startDate);
   const now = new Date();
 
   const compareNowAndStartDate = startDate.getTime() <= now.getTime();

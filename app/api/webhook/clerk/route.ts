@@ -100,6 +100,7 @@ export async function POST(req: Request) {
 
       // Create a new subscriber in Stripe
       const newStripeSubscriber = await createSubscriber(stripMember);
+      console.log(newStripeSubscriber);
     }
 
     return NextResponse.json({ status: 200, message: 'User created' });
