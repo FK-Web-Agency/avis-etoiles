@@ -200,6 +200,8 @@ export default function Content() {
             </TableHeader>
             <TableBody>
               {members.map((user) => {
+                console.log(user.subscription.status);
+
                 return (
                   <TableRow className="border-gray-600" key={user?.email}>
                     <TableCell className="font-medium">
@@ -227,7 +229,7 @@ export default function Content() {
                         <div className={classNames('flex-none rounded-full p-1 bg-current')}>
                           <div
                             className={classNames(
-                              user.subscription.status == 'active' ? 'bg-green-600' : 'bg-red-600',
+                              user.subscription.status === 'active' ? 'bg-green-600' : 'bg-red-600',
                               'h-1.5 w-1.5 rounded-full '
                             )}
                           />
