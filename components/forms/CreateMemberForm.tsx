@@ -12,6 +12,7 @@ import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { formatToISOString } from '@/helper';
 import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
 import { useDashboardStore } from '@/store';
+import { IClerkMember } from '@/interfaces/user';
 
 // Define recurring options
 enum Recurring {
@@ -100,125 +101,31 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
- 
-
   // Handle form submission
-  const handleAction = async function (values: MemberProps) {
+  async function handleAction(values: MemberProps) {
+    // Set loading state to true
     setLoading(true);
 
-    // Ask for confirmation if the subscription price is 0
-    const askConfirmation =
-      values?.subscription?.price == '0' || !values?.subscription?.price
-        ? confirm('The subscription price is 0€, are you sure you want to continue?')
-        : true;
+    // Create a new member in clerk
+    const clerkMember: IClerkMember = {
+      email: values.information.email,
+      firstName: values.information.firstName,
+      lastName: values.information.lastName,
+      seller: {
+        id: seller?._id,
+        firstName: seller?.firstName,
+        lastName: seller?.lastName,
+        email: seller?.email,
+        phone: seller?.phone,
+      },
+    };
 
-    if (askConfirmation) {
-      // Format start and expiration dates
-      const startDate = formatToISOString(values?.subscription?.startDate);
-      const expirationDate = formatToISOString(values?.subscription?.expirationDate);
+    const newMember = await createMember(clerkMember);
+    console.log(newMember);
 
-      // Create a new member in Clerk
-      const response = await createMember({
-        ...values,
-        seller: {
-          _type: 'reference',
-          _ref: seller?._id,
-        },
-        subscription: {
-          ...values.subscription,
-          startDate,
-          expirationDate,
-        },
-      });
-
-      // If there is an error, display the error message
-      if (response.status === 'error') {
-        toast({
-          title: 'Error',
-          description: response.message,
-          variant: 'destructive',
-        });
-
-        setLoading(false);
-      } else {
-        const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
-
-        // Create a new subscriber in Sanity
-        const user = {
-          clerkId: response.clerkId,
-          role: 'member',
-          address: values.address,
-          ...values.information,
-          subscription: {
-            ...values.subscription,
-            price: Number(values.subscription.price),
-            recurring,
-            startDate,
-            expirationDate,
-          },
-          seller: {
-            _type: 'reference',
-            _ref: seller?._id,
-          },
-          disabled: 'false',
-        };
-
-        mutate(
-          {
-            resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-            values: user,
-          },
-          {
-            onSuccess: async (data: any) => {
-              const order = {
-                id: data?.data?._id,
-                email: values?.information?.email,
-                title: values?.subscription?.plan,
-                frequency: recurring,
-                price: values?.subscription?.free ? 0 : values?.subscription?.price,
-                buyer: JSON.stringify({
-                  _type: 'reference',
-                  _ref: data?.data?._id,
-                }),
-                seller: JSON.stringify({
-                  _type: 'reference',
-                  _ref: seller?._id,
-                }),
-                subscription: JSON.stringify({
-                  ...values.subscription,
-                  status: false,
-                  recurring,
-                  startDate,
-                  expirationDate,
-                }),
-              };
-
-              // Checkout the order
-              const { status, message } = await checkoutSubscription(order);
-
-              if (status === 'error') {
-                toast({
-                  variant: 'destructive',
-                  title: 'Uh oh! Something went wrong.',
-                  description: message,
-                });
-              } else {
-                toast({
-                  description: message,
-                });
-
-                setTimeout(() => {
-                  list('members');
-                }, 1000);
-              }
-            },
-          }
-        );
-
-        setLoading(false);
-      }
-    }
-  };
+    // Set loading state to false
+    setLoading(false);
+  }
 
   return (
     <AutoForm

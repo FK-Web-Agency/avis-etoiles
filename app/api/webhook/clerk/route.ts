@@ -6,8 +6,11 @@ import updateUser from '@/sanity/lib/members/updateUser';
 import deleteUser from '@/sanity/lib/members/deleteUser';
 import handleUserRole from '@/sanity/lib/members/handleUserRole';
 import { cancelSubscription } from '@/lib/actions/stripe.actions';
-import { client } from '@/sanity/lib';
+import { client, createUser } from '@/sanity/lib';
 import { clerkClient } from '@clerk/nextjs';
+import { IClerkMember, ISanityMember, ISeller, ISellerSanity } from '@/interfaces/user';
+import { metadata } from '@/app/(auth)/layout';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -59,57 +62,29 @@ export async function POST(req: Request) {
   if (eventType === 'user.created') {
     const { id, email_addresses, image_url, first_name, last_name, public_metadata } = evt.data;
 
-    let user;
+    const member: ISanityMember = {
+      email: email_addresses[0].email_address,
+      firstName: first_name,
+      lastName: last_name,
+      seller: {
+        _type: 'reference',
+        // @ts-ignore
+        _ref: public_metadata?.seller?.id,
+      } as ISellerSanity,
+      clerkId: id,
+    };
 
-    if (public_metadata.role === 'member') {
-      user = {
-        clerkId: id,
-        email: email_addresses[0].email_address,
-        phone: public_metadata.phoneNumber,
-        seller: public_metadata.seller,
-        //  photo: image_url,
-        firstName: first_name,
-        lastName: last_name,
-        disabled: false,
+    const newMember: any = await createUser(member);
 
-        role: public_metadata.role,
-        companyName: public_metadata.companyName,
-        siret: public_metadata.siret,
-        address: public_metadata.address,
-        subscription: public_metadata.subscription,
-      };
-    } else {
-      user = {
-        clerkId: id,
-        role: public_metadata.role,
-        email: email_addresses[0].email_address,
-        phone: public_metadata.phoneNumber,
-        //   photo: image_url,
-        firstName: first_name,
-        lastName: last_name,
-      };
-    }
-
-    const newUser = await client.fetch(
-      `*[_type == '${process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS}' && clerkId == $clerkId][0]`,
-      { clerkId: id }
-    );
-    if (newUser) {
+    if (newMember) {
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
-          userId: newUser._id,
+          userId: newMember._id,
         },
       });
     }
-    /*     const newUser: any = await createUser(user);
 
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser._id,
-        },
-      });
-    } */
+    return NextResponse.json({ status: 200, message: 'User created' });
   }
 
   if (eventType === 'user.updated') {

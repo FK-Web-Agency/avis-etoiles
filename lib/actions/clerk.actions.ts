@@ -4,40 +4,24 @@ import { clerkClient } from '@clerk/nextjs';
 import { generate } from 'generate-password';
 import { formatDate } from '@/helper';
 import sendEmail from './resend.actions';
+import { IClerkMember } from '@/interfaces/user';
 
 const password = generate({
   length: 10,
   numbers: true,
 });
 // Create member
-export async function createMember(value: any) {
+export async function createMember(member: IClerkMember) {
   try {
     // Create user
     const response = await clerkClient.users.createUser({
-      emailAddress: [value.information?.email],
+      emailAddress: [member?.email],
       password,
-      firstName: value.information?.firstName,
-      lastName: value.information?.lastName,
+      firstName: member?.firstName,
+      lastName: member?.lastName,
       // username: value.information?.firstName + value.information?.lastName,
       publicMetadata: {
-        phoneNumber: value.information?.phoneNumber,
-        companyName: value.information?.companyName,
-        siret: value.information?.siret,
-        role: value.information?.role,
-        address: {
-          street: value.address?.street,
-          city: value.address?.city,
-          zipCode: value.address?.zipCode,
-          country: value.address?.country,
-        },
-        subscription: {
-          free: value.subscription?.free,
-          status: value.subscription?.free ? true : false,
-          plan: value.subscription?.plan,
-          startDate: value.subscription?.startDate ? formatDate(value.subscription?.startDate) : null,
-          expirationDate: value.subscription?.expirationDate ? formatDate(value.subscription?.expirationDate) : null,
-        },
-        seller: value.seller,
+        seller: member.seller,
       },
     });
 
@@ -45,7 +29,7 @@ export async function createMember(value: any) {
 
     // Send email
     await sendEmail({
-      email: value.information?.email,
+      email: member?.email,
       subject: "Confirmation d'adhesion",
       emailTemplate: 'welcome',
       password,

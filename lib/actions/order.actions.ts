@@ -5,6 +5,14 @@ import Stripe from 'stripe';
 import sendEmail from './resend.actions';
 import { kv } from '@vercel/kv';
 import { redirect } from 'next/navigation';
+import { sub } from 'date-fns';
+
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const baseUrl =
+  process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
+
+
 
 export const checkoutOrder = async (order: any) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -153,6 +161,28 @@ export const checkoutSubscription = async (order: any) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const createSubscriber = async (subscriber: any) => {
+  // Créer un nouvel abonné
+  const customer = await stripe.customers.create({
+    email: subscriber.email,
+    name: `${subscriber.firstName} ${subscriber.lastName}`,
+    phone: subscriber.phone,
+    address: {
+      line1: subscriber.address,
+      city: subscriber.city,
+      postal_code: subscriber.zipCode,
+      country: 'FR',
+    },
+    metadata: {
+      seller: subscriber.seller,
+      clerkId: subscriber.clerkId,
+    },
+  });
+
+  // Retourner l'abonnement créé
+  return { status: 'success', message: 'Abonné crée avec success', customerId: customer.id };
 };
 
 export const createOrder = async (order: any) => {
