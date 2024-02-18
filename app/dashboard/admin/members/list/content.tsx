@@ -140,7 +140,7 @@ export default function Content() {
       ) : members?.length > 0 ? (
         <div>
           <div className={classNames(unpaidNumber?.length > 0 ? '' : 'hidden')}>
-            <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s)</h3>
+            <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s) {unpaidNumber?.length} </h3>
             <Carousel className="w-3/4 sm:w-96 ml-10 mb-8">
               <CarouselContent>
                 {unpaidNumber?.map((user: any) => {
