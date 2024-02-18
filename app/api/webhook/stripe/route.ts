@@ -2,7 +2,6 @@ import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { createOrder, sendInvoice } from '@/lib/actions/order.actions'; // Assurez-vous que ce chemin est correct
 import { kv } from '@vercel/kv';
-import { createMember } from '@/lib/actions/clerk.actions';
 import { client } from '@/sanity/lib';
 
 // Fonction asynchrone pour gérer les requêtes POST
@@ -12,8 +11,9 @@ export async function POST(request: Request) {
 
   // Récupération de la signature Stripe depuis les en-têtes de la requête
   const sig = request.headers.get('stripe-signature') as string;
-  const endpointSecret =
+  const endpout =
     process.env.NODE_ENV === 'development' ? 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F' : 'we_1OlDmXJ4ZeV5iA6Rl0GVbYPQ'; // Secret de l'endpoint, à garder sécurisé
+  const endpointSecret = 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F';
 
   try {
     // Construction de l'événement Stripe à partir du corps de la requête, de la signature, et du secret de l'endpoint
