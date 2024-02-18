@@ -114,7 +114,7 @@ export default function Content() {
   useEffect(() => {
     console.log('members', members);
 
-    const subscriberUnpaid = members.filter((member) => !member.subscription.status);
+    const subscriberUnpaid = members.filter((member) => member.subscription.status !== 'active');
 
     setUnpaidNumber(subscriberUnpaid);
   }, [members]);
