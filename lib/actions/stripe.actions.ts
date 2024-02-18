@@ -3,7 +3,9 @@
 import { client } from '@/sanity/lib';
 import { kv } from '@vercel/kv';
 import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const STRIPE_SECRET_KEY =
+  process.env.NODE_ENV === 'development' ? process.env.STRIPE_SECRET_KEY_TEST : process.env.STRIPE_SECRET;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST!);
 
 interface Payment {
   payment: {

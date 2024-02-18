@@ -12,7 +12,8 @@ export async function POST(request: Request) {
 
   // Récupération de la signature Stripe depuis les en-têtes de la requête
   const sig = request.headers.get('stripe-signature') as string;
-  const endpointSecret = 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F'; // Secret de l'endpoint, à garder sécurisé
+  const endpointSecret =
+    process.env.NODE_ENV === 'development' ? 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F' : 'we_1OlDmXJ4ZeV5iA6Rl0GVbYPQ'; // Secret de l'endpoint, à garder sécurisé
 
   try {
     // Construction de l'événement Stripe à partir du corps de la requête, de la signature, et du secret de l'endpoint

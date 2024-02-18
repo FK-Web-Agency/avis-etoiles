@@ -6,11 +6,12 @@ import sendEmail from './resend.actions';
 import { kv } from '@vercel/kv';
 import { redirect } from 'next/navigation';
 
+const STRIPE_SECRET_KEY =
+  process.env.NODE_ENV === 'development' ? process.env.STRIPE_SECRET_KEY_TEST : process.env.STRIPE_SECRET;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST!);
+const baseUrl =
+  process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
 export const checkoutOrder = async (order: any) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const baseUrl =
-    process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-
   try {
     const session = await stripe.checkout.sessions.create({
       customer_email: order.email,
@@ -65,10 +66,6 @@ export const checkoutOrder = async (order: any) => {
 };
 
 export const checkoutSubscription = async (order: any) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const baseUrl =
-    process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-
   const startDate = new Date(JSON.parse(order.subscription).startDate);
   const now = new Date();
 
