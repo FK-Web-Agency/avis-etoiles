@@ -94,9 +94,9 @@ export default function Content() {
               <CarouselContent>
                 {members.map((user) => {
                   const userSubscription = allSubscribers?.find((subscriber) => {
-                    const buyer = JSON.parse(subscriber?.metadata?.buyer);
+                    const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
 
-                    return buyer._ref === user._id;
+                    return buyer?._ref === user._id;
                   });
 
                   const sellerSubscription = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
@@ -189,9 +189,9 @@ export default function Content() {
             <TableBody>
               {members.map((user) => {
                 const userSubscription = allSubscribers?.find((subscriber) => {
-                  const buyer = JSON.parse(subscriber.metadata.buyer);
+                  const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
 
-                  return buyer._ref === user._id;
+                  return buyer?._ref === user._id;
                 });
 
                 getSession({ subscriberId: user?._id }).then((res) => {
