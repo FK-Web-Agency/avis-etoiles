@@ -48,6 +48,13 @@ export default function Content({ id }: { id: string }) {
 
   const { data: testGame } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_SANDBOX,
+    filters: [
+      {
+        field: 'seller._ref',
+        operator: 'eq',
+        value: id,
+      },
+    ],
   });
 
   if (isLoading) return <Spinner />;

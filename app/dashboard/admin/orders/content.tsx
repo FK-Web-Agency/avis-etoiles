@@ -56,7 +56,7 @@ export default function Content() {
               <TableRow className="text-white" key={order?._id}>
                 <TableCell>{order?.stripeId.substring(0, 12)}</TableCell>
                 <TableCell>
-                  {order?.price / 100}€/{order?.frequency === 'Month' ? 'mois' : 'an'}
+                  {order?.price / 100}€/{order?.frequency === 'month' ? 'mois' : 'an'}
                 </TableCell>
                 <TableCell>
                   {buyer?.firstName} {buyer?.lastName}
