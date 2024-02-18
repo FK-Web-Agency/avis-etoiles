@@ -192,6 +192,12 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'stripeSessionId',
+      title: 'Stripe Session Id',
+      type: 'string',
+      readOnly: true,
+    }),
   ],
   preview: {
     select: {

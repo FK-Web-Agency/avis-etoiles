@@ -138,6 +138,7 @@ export const checkoutSubscription = async (order: any) => {
       },
     });
 
+    await client.patch(JSON.parse(order.buyer)._ref).set({ stripeSessionId: session.id }).commit();
     // Send email
     const { status } = await sendEmail({
       email: order.email,

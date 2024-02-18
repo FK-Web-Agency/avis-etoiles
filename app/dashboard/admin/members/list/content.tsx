@@ -55,18 +55,61 @@ export default function Content() {
     },
   });
 
+  const { data: collaboratorsData } = useList({
+    resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!,
+  });
+
   const members = data?.data || [];
+  const collaborators = collaboratorsData?.data || [];
 
   const maxPage = Math.ceil(data?.total! / 10);
 
   useEffect(() => {
     const fetchSubscribers = async () => {
       const subscribers = await getAllSubscribers();
+
+      for (const member of members) {
+        subscribers?.find(async (subscriber) => {
+          console.log('subscriber', subscriber);
+
+          // @ts-ignore
+          const session = await getSession({
+            subscriberId: member.email === 'texierremy@gilles.com' ? 'texierremy@gilles.com' : member._id,
+          });
+          const sellerSession = session?.metadata?.seller ? JSON.parse(session.metadata.seller) : null;
+
+          const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
+
+          if (buyer?._ref === member._id) {
+            const sellerStripe = subscriber?.metadata?.seller ? JSON.parse(subscriber.metadata.seller) : null;
+
+            const seller = collaborators.find((collaborator) => collaborator._id === sellerStripe?._ref);
+
+            member.seller = seller;
+            member.subscription.status = subscriber.status;
+            member.subscription.id = subscriber.id;
+            member.subscription.unpaid = subscriber.status !== 'active';
+
+            if (subscriber.status !== 'active') setUnpaidNumber(unpaidNumber + 1);
+           // console.log('Found member', member);
+          } else {
+            //console.log('Not found member', member);
+            const seller = collaborators.find((collaborator) => collaborator._id === sellerSession?._ref);
+
+            member.seller = seller || { firstName: 'Avis', lastName: 'Étoiles' };
+            member.subscription.status = 'inactive';
+            member.subscription.unpaid = true;
+
+            setUnpaidNumber(unpaidNumber + 1);
+          }
+        });
+      }
+
       setAllSubscribers(subscribers);
     };
 
     fetchSubscribers();
-  }, [members]);
+  }, [members, collaborators]);
 
   const handleNextPage = () => setCurrentPage(Math.min(currentPage + 1, maxPage));
   const handlePrevPage = () => setCurrentPage(Math.max(currentPage - 1, 1));
@@ -90,39 +133,14 @@ export default function Content() {
         <div>
           <div className={classNames(unpaidNumber ? '' : 'hidden')}>
             <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s)</h3>
-            <Carousel className="w-96 ml-10 mb-8">
+            <Carousel className="w-3/4 sm:w-96 ml-10 mb-8">
               <CarouselContent>
                 {members.map((user) => {
-                  const userSubscription = allSubscribers?.find((subscriber) => {
-                    const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
-
-                    return buyer?._ref === user._id;
-                  });
-
-                  const sellerSubscription = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
-
-                  const subscriptionIsActive = userSubscription?.status === 'active';
-
-                  const unPaid = session?.payment_status === 'unpaid';
-
-                  const sessionSeller = session?.metadata?.seller && JSON.parse(session?.metadata?.seller);
-
-                  client
-                    .fetch(
-                      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
-                        sellerSubscription?._ref || sessionSeller?._ref
-                      }"]`
-                    )
-                    .then((res) => {
-                      if (seller) return;
-                      setSeller(res[0]);
-                    });
-
-                  if (!subscriptionIsActive) return;
+                  if (!user.subscription.unpaid) return;
 
                   if (unpaidNumber)
                     return (
-                      <CarouselItem key={user?.email}>
+                      <CarouselItem  key={user?.email}>
                         <Card>
                           <CardHeader>
                             <CardTitle>
@@ -154,12 +172,12 @@ export default function Content() {
                               <li>
                                 {' '}
                                 <span className="font-bold">Status</span> :{' '}
-                                {subscriptionIsActive ? 'Actif' : unPaid ? 'Paiement en attente' : 'Inactif'}
+                                {user.subscription.unpaid ? 'Paiement en attente' : 'Inactif'}
                               </li>
                               <li>
                                 {' '}
-                                <span className="font-bold">Vendu par</span> :{' '}
-                                {seller ? `${seller?.firstName} ${seller?.lastName}` : 'Avis Étoiles'}
+                                <span className="font-bold">Vendu par</span> : {user.seller?.firstName}{' '}
+                                {user.seller?.lastName}
                               </li>
                             </ul>
                             <p></p>
@@ -168,8 +186,6 @@ export default function Content() {
                         </Card>
                       </CarouselItem>
                     );
-
-                  setUnpaidNumber(unpaidNumber + 1);
                 })}
               </CarouselContent>
               <CarouselPrevious />
@@ -188,36 +204,6 @@ export default function Content() {
             </TableHeader>
             <TableBody>
               {members.map((user) => {
-                const userSubscription = allSubscribers?.find((subscriber) => {
-                  const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
-
-                  return buyer?._ref === user._id;
-                });
-
-                getSession({ subscriberId: user?._id }).then((res) => {
-                  setSession(res);
-                });
-
-                const sellerSubscription = userSubscription && JSON.parse(userSubscription?.metadata?.seller!);
-
-                const subscriptionIsActive = userSubscription?.status === 'active';
-
-                const unPaid = session?.payment_status === 'unpaid';
-
-                const sessionSeller = session && JSON.parse(session?.metadata?.seller);
-
-                if (!seller) {
-                  client
-                    .fetch(
-                      `*[_type == "${process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS}" && _id == "${
-                        sellerSubscription?._ref || sessionSeller?._ref
-                      }"]`
-                    )
-                    .then((res) => {
-                      setSeller(res[0]);
-                    });
-                }
-
                 return (
                   <TableRow className="border-gray-600" key={user?.email}>
                     <TableCell className="font-medium">
@@ -245,16 +231,16 @@ export default function Content() {
                         <div className={classNames('flex-none rounded-full p-1 bg-current')}>
                           <div
                             className={classNames(
-                              subscriptionIsActive ? 'bg-green-600' : 'bg-red-600',
+                              user.subscription.status == 'active' ? 'bg-green-600' : 'bg-red-600',
                               'h-1.5 w-1.5 rounded-full '
                             )}
                           />
                         </div>
                         <div className="hidden text-white sm:block">
-                          {subscriptionIsActive ? (
+                          {user.subscription.status == 'active' ? (
                             <span>Actif</span>
                           ) : (
-                            <span className="text-gray-500">{unPaid ? 'Paiement en attente' : 'Inactif'} </span>
+                            <span className="text-gray-500">{user.subscription.unpaid ? 'Paiement en attente' : 'Inactif'} </span>
                           )}
                         </div>
                       </div>
