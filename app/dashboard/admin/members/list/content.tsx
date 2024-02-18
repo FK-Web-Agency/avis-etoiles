@@ -105,7 +105,7 @@ export default function Content() {
 
                   const unPaid = session?.payment_status === 'unpaid';
 
-                  const sessionSeller = session && JSON.parse(session?.metadata?.seller);
+                  const sessionSeller = session?.metadata?.seller && JSON.parse(session?.metadata?.seller);
 
                   client
                     .fetch(
