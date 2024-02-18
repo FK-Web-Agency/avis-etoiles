@@ -106,7 +106,10 @@ export default function CheckoutButton({ plan }: any) {
         plan: plan.title,
         price: plan.price,
       },
-      seller: 'avisetoiles.com',
+      seller: {
+        _type: 'reference',
+        _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
+      },
     };
 
     const { clerkId } = await createMember(buyer);
@@ -120,11 +123,15 @@ export default function CheckoutButton({ plan }: any) {
         role: 'member',
         address: values.address,
         ...values.information,
+        phone: values.information.phoneNumber,
         subscription: {
           plan: plan.title,
           price: plan.price,
         },
-        seller: 'avisetoiles.com',
+        seller: {
+          _type: 'reference',
+          _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
+        },
         disabled: 'false',
       });
 
@@ -138,7 +145,10 @@ export default function CheckoutButton({ plan }: any) {
         price: plan.price,
         frequency: plan.frequency,
         buyer: JSON.stringify(buyer),
-        seller: 'avisetoiles.com',
+        seller: JSON.stringify({
+          _type: 'reference',
+          _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
+        }),
         subscription: JSON.stringify({
           startDate: new Date(),
           plan: plan.title,

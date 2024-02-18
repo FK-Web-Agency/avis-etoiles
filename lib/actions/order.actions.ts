@@ -43,7 +43,7 @@ export const checkoutOrder = async (order: any) => {
       locale: 'fr',
       // Expiration date of the session (1 days)
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-     /*  automatic_tax: {
+      /*  automatic_tax: {
         enabled: true,
       }, */
       tax_id_collection: {
@@ -107,7 +107,7 @@ export const checkoutSubscription = async (order: any) => {
       locale: 'fr',
       // Expiration date of the session (1 days)
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-     /*  automatic_tax: {
+      /*  automatic_tax: {
         enabled: true,
       }, */
       tax_id_collection: {

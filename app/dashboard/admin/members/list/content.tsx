@@ -94,7 +94,7 @@ export default function Content() {
               <CarouselContent>
                 {members.map((user) => {
                   const userSubscription = allSubscribers?.find((subscriber) => {
-                    const buyer = JSON.parse(subscriber.metadata.buyer);
+                    const buyer = JSON.parse(subscriber?.metadata?.buyer);
 
                     return buyer._ref === user._id;
                   });
