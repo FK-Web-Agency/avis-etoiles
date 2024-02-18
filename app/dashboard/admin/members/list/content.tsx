@@ -77,6 +77,10 @@ export default function Content() {
 
           const buyer = subscriber?.metadata?.buyer ? JSON.parse(subscriber.metadata.buyer) : null;
 
+console.log('buyer', buyer, member);
+
+
+
           if (buyer?._ref === member._id) {
             const sellerStripe = subscriber?.metadata?.seller ? JSON.parse(subscriber.metadata.seller) : null;
 
