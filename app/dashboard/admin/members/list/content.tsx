@@ -143,7 +143,7 @@ export default function Content() {
             <h3 className="p-medium-20 text-red-600 mb-4">Abonnement(s) Impayé(s)</h3>
             <Carousel className="w-3/4 sm:w-96 ml-10 mb-8">
               <CarouselContent>
-                {unpaidNumber.map((user: any) => {
+                {unpaidNumber?.map((user: any) => {
                   const seller = collaborators.find((collaborator) => collaborator._id === user?.seller?._ref);
                   if (unpaidNumber)
                     return (
@@ -209,7 +209,7 @@ export default function Content() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {members.map((user) => {
+              {members?.map((user) => {
                 console.log(user.subscription.status);
                 const seller = collaborators.find((collaborator) => collaborator._id === user?.seller?._ref);
                 return (

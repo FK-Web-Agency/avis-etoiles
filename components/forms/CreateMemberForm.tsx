@@ -100,6 +100,8 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
+ 
+
   // Handle form submission
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
@@ -153,7 +155,7 @@ export default function CreateMemberForm() {
             recurring,
             startDate,
             expirationDate,
-            status: 'incomplete',
+            status: 'incomplete'
           },
           seller: {
             _type: 'reference',
@@ -169,8 +171,8 @@ export default function CreateMemberForm() {
           },
           {
             onSuccess: async (data: any) => {
-              console.log('data', data);
-
+              console.log("data", data);
+              
               const order = {
                 id: data?.data?._id,
                 email: values?.information?.email,
@@ -209,7 +211,7 @@ export default function CreateMemberForm() {
                 });
 
                 setTimeout(() => {
-                  list('collaborators');
+                  list('members');
                 }, 1000);
               }
             },
