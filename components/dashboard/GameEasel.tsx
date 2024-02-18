@@ -41,7 +41,6 @@ const PREVIEW_WIDTH = 1414;
 const PREVIEW_HEIGHT = 2000;
 
 const Settings = ({ onChange, config }: any) => {
-  
   return (
     <div className="flex flex-col gap-8 mt-4">
       <div>
@@ -68,6 +67,7 @@ const Settings = ({ onChange, config }: any) => {
 };
 
 export default function GameEasel() {
+  const [loading, setLoading] = useState(false);
   const [easel, setEasel] = useState<null | File>();
   const [qrCodeConfig, setQrCodeConfig] = useState({
     x: PREVIEW_WIDTH / 2,
@@ -137,8 +137,7 @@ export default function GameEasel() {
         });
       }
     })();
-  }, [qrCodeConfig, easel]);
-
+  }, [qrCodeConfig, logoConfig, easel]);
 
   if (isLoading) return <Spinner />;
 
@@ -158,6 +157,7 @@ export default function GameEasel() {
   };
   const handleAction = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const easelUpload = await uploadFileToSanity(easel!);
 
@@ -203,6 +203,9 @@ export default function GameEasel() {
         variant: 'destructive',
       });
     }
+
+    setLoading(false);
+    alertRef.current?.click();
   };
 
   const onChangeLogo = {
@@ -224,15 +227,15 @@ export default function GameEasel() {
       <Carousel className="w-full max-w-xs">
         <CarouselContent>
           {easels?.map(
-            ({ easel, _id }, index) =>
-              easel && (
+            ({ easelPreview, _id }, index) =>
+              easelPreview && (
                 <CarouselItem key={index}>
                   <div className="p-1">
                     <Card>
                       <CardContent className="flex items-center justify-center p-6">
                         <Image
                           className="w-full h-full rounded"
-                          src={urlForImage(easel)}
+                          src={urlForImage(easelPreview)}
                           alt="arriere plan"
                           width={400}
                           height={400}
