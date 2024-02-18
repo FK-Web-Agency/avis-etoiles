@@ -30,7 +30,7 @@ export const RewardTemplate = (values: any) => (
         <Container className="mx-auto my-0 px-5 rounded">
           <Heading className="text-3xl ">Félicitation 🎉 🎉 🎉</Heading>
           <Container className="mb-4 bg-yellow-400 p-4">
-            <Text className="text-2xl text-center">Vous avez gagnez 1 Pizza</Text>
+            <Text className="text-2xl text-center">Vous avez gagnez 1 {values.reward.rewardName} </Text>
           </Container>
           <Text className="mb-4 text-xl">Veillez présenter ce QR Code à la caisse pour réclamer votre cadeau.</Text>
           <Text className="mb-4">Conditions d'utilisation :</Text>

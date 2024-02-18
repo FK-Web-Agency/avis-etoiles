@@ -6,3 +6,4 @@ export {default as ResetPassword} from './reset-password';
 export {default as RequestForContact} from './request-for-contact';
 export {default as Winner} from './winner';
 export {default as SandboxQRCode} from './sandbox-qrcode';
+export {default as MutualGiftWinner} from './mutual-gift-winner';

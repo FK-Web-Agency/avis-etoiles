@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { urlForImage } from '@/sanity/lib';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
+import sendEmail from '@/lib/actions/resend.actions';
 
 const MutualGiftSchema = z.object({
   title: z.string(),
@@ -35,12 +36,15 @@ export default function MutualGift() {
     resource: process.env.NEXT_PUBLIC_SANITY_MUTUAL_REWARD!,
     sorters: [
       {
-        field: 'createdAt',
-        order: 'asc',
+        field: '_createdAt',
+        order: 'desc',
       },
     ],
   });
   const mutualGifts = data?.data[0];
+
+
+
 
   const { data: dataWinners } = useList({
     resource: process.env.NEXT_PUBLIC_SANITY_GAME_WINNERS!,
@@ -56,15 +60,23 @@ export default function MutualGift() {
         const createdAt = new Date(participant.createdAt);
         return createdAt >= startDate && createdAt <= endDate;
       });
+
+      return participantsValid;
     }
   });
 
-  const handleLotteryDraw = () => {
+  const handleLotteryDraw = async () => {
     if (participants && participants?.length > 0) {
-      const winner = participants[Math.floor(Math.random() * participants.length)];
+      const winner:any = participants[Math.floor(Math.random() * participants.length)];
       setWinner(winner);
 
       // TODO - send email to winner
+      await sendEmail({
+        email: winner.email,
+        subject: 'Vous avez gagné le cadeau mutualisé',
+        emailTemplate: 'mutual-gift-winner',
+       reward: mutualGifts?.title,
+      })
     }
   };
 
@@ -97,6 +109,8 @@ export default function MutualGift() {
       toast({
         description: 'Cadeau mutualisé créé avec succès',
       });
+
+      setShowForm(false);
     } catch (error: any) {
       toast({
         title: 'Erreur',

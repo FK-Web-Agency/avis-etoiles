@@ -2,7 +2,17 @@
 
 import { Resend } from 'resend';
 
-import { Contact, Welcome, Payment, ResetPassword, RequestForContact, Winner, WelcomeToTeam, SandboxQRCode } from '@/emails';
+import {
+  Contact,
+  Welcome,
+  Payment,
+  ResetPassword,
+  RequestForContact,
+  Winner,
+  WelcomeToTeam,
+  SandboxQRCode,
+  MutualGiftWinner,
+} from '@/emails';
 
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY!);
 
@@ -22,8 +32,10 @@ function getEmailTemplate(templateName: string, data: any) {
       return Winner(data);
     case 'welcome-to-team':
       return WelcomeToTeam(data);
-      case 'sandbox-qrcode':
+    case 'sandbox-qrcode':
       return SandboxQRCode(data);
+    case 'mutual-gift-winner':
+      return MutualGiftWinner(data);
     default:
       throw new Error(`Email template ${templateName} not found.`);
   }

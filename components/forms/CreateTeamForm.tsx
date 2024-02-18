@@ -42,7 +42,7 @@ export default function CreateTeamForm() {
 
     const role = values?.role === Role.Commercial ? 'org:commercial' : 'org:admin';
 
-   await createMembership(clerkId, role);
+    await createMembership(clerkId, role);
 
     mutate(
       {
@@ -71,7 +71,7 @@ export default function CreateTeamForm() {
               });
           setLoading(false);
 
-          //  return list('collaborators');
+          return list('collaborators');
         },
       }
     );
