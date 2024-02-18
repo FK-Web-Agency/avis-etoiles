@@ -67,7 +67,7 @@ export default function Content() {
                 </TableCell>
                 <TableCell>{formatDate(order.createdAt)}</TableCell>
                 <TableCell>
-                  <Link href={order?.invoice?.url} target="_blank">
+                  <Link href={order?.invoice?.url || "#"} target="_blank">
                     <Icons.Eye className="h-6 w-6" />
                   </Link>
                 </TableCell>
