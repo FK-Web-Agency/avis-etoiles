@@ -27,7 +27,7 @@ export default function OurValues({ values_section }: ValuesSectionType) {
         <div className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
           <h2 className="h2-bold text-white mb-5">{values_section?.title} </h2>
           <div>
-            <PortableText value={values_section?.subtitle || ''} />
+           {values_section?.subtitle && <PortableText value={values_section?.subtitle} />}
           </div>
         </div>
       </div>

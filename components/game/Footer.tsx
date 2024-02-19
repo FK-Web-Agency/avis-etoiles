@@ -28,7 +28,7 @@ function LegalItem({ children, content }: PropsWithChildren<{ content: any }>) {
     <Dialog>
       <DialogTrigger className="flex justify-start items-center gap-2">{children}</DialogTrigger>
       <DialogContent className="overflow-y-auto h-3/4 m-auto pt-5">
-        <PortableText value={content || ''} />
+       {content && <PortableText value={content} />}
       </DialogContent>
     </Dialog>
   );

@@ -13,8 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Prices() {
-
-
   const { introduction_section, prices_list_section, faqs__section } = await sanityFetch<any>({
     query: queries.GET_PRICES_PAGE,
     tags: ['page'],
@@ -40,7 +38,7 @@ export default async function Prices() {
           <div>
             <h2 className="h1-bold mb-5">{faqs__section?.title} </h2>
 
-            <PortableText value={faqs__section?.description || ''} />
+            {faqs__section?.description && <PortableText value={faqs__section?.description} />}
           </div>
 
           {/* ------------------------------ Questions list ----------------------------- */}

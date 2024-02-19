@@ -15,9 +15,7 @@ export default function OurStory({ story_section }: OurStoryProps) {
         <h2 className="h2-bold">{story_section.title}</h2>
         <div className="mt-6 flex flex-col  gap-x-8 gap-y-20 lg:flex-row w-full lg:justify-between">
           <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
-            <div className="text">
-              <PortableText value={story_section?.subtitle || ''} />
-            </div>
+            <div className="text">{story_section?.subtitle && <PortableText value={story_section?.subtitle} />}</div>
           </div>
           {/* <div className="lg:flex lg:flex-auto lg:justify-center">
             <dl className="w-64 space-y-8 xl:w-80">

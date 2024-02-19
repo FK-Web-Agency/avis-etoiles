@@ -21,7 +21,7 @@ export default function InformationFooter({ informations }: any) {
         <DialogHeader>
           <DialogTitle>{contentSelected?.title} </DialogTitle>
           <DialogDescription className="flex flex-col gap-2">
-            <PortableText value={contentSelected?.content || ''} />
+            {contentSelected?.content && <PortableText value={contentSelected?.content} />}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

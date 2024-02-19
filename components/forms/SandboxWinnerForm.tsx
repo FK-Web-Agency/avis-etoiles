@@ -167,7 +167,9 @@ export default function WinnerForm({
                   <DialogHeader>
                     <DialogTitle>Politique de confidentialité</DialogTitle>
                     <DialogDescription>
-                      <PortableText value={data?.data[0]?.privacyPolicy.content || ''} />
+                      {data?.data[0]?.privacyPolicy.content && (
+                        <PortableText value={data?.data[0]?.privacyPolicy.content} />
+                      )}
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>

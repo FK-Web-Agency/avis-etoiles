@@ -11,9 +11,7 @@ export default function OurMission({ mission_section }: OurMissionProps) {
       <div className="wrapper section">
         <div className="mx-auto max-w-3xl lg:mx-0">
           <h2 className="h2-bold mb-5">{mission_section?.title} </h2>
-          <div className="text">
-            <PortableText value={mission_section?.subtitle || ''} />
-          </div>
+          <div className="text">{mission_section?.subtitle && <PortableText value={mission_section?.subtitle} />}</div>
         </div>
         <div>
           <dl className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
