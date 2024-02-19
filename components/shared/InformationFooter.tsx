@@ -1,14 +1,7 @@
 'use client';
 
 import { InformationFooterProps } from '@/interfaces/sanity';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui';
 import { useState } from 'react';
 import { PortableText } from '@portabletext/react';
 
@@ -28,9 +21,7 @@ export default function InformationFooter({ informations }: any) {
         <DialogHeader>
           <DialogTitle>{contentSelected?.title} </DialogTitle>
           <DialogDescription className="flex flex-col gap-2">
-            {contentSelected?.content?.map((item: any, index: number) => (
-              <PortableText key={index} value={item} />
-            ))}
+            <PortableText value={contentSelected?.content || ''} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

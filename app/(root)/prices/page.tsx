@@ -40,7 +40,7 @@ export default async function Prices() {
           <div>
             <h2 className="h1-bold mb-5">{faqs__section?.title} </h2>
 
-            <PortableText value={faqs__section?.description} />
+            <PortableText value={faqs__section?.description || ''} />
           </div>
 
           {/* ------------------------------ Questions list ----------------------------- */}

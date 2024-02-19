@@ -12,9 +12,7 @@ export default function OurMission({ mission_section }: OurMissionProps) {
         <div className="mx-auto max-w-3xl lg:mx-0">
           <h2 className="h2-bold mb-5">{mission_section?.title} </h2>
           <div className="text">
-            {mission_section?.subtitle.map((item: any, index: number) => (
-              <PortableText key={index} value={item} />
-            ))}
+            <PortableText value={mission_section?.subtitle || ''} />
           </div>
         </div>
         <div>

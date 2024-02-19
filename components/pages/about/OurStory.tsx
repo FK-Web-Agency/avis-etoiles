@@ -10,15 +10,13 @@ type OurStoryProps = {
 
 export default function OurStory({ story_section }: OurStoryProps) {
   return (
-    <section className='wrapper'>
+    <section className="wrapper">
       <div>
         <h2 className="h2-bold">{story_section.title}</h2>
         <div className="mt-6 flex flex-col  gap-x-8 gap-y-20 lg:flex-row w-full lg:justify-between">
           <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
             <div className="text">
-              {story_section?.subtitle.map((item: any, index: number) => (
-                <PortableText value={item} key={index} />
-              ))}
+              <PortableText value={story_section?.subtitle || ''} />
             </div>
           </div>
           {/* <div className="lg:flex lg:flex-auto lg:justify-center">
@@ -32,7 +30,6 @@ export default function OurStory({ story_section }: OurStoryProps) {
             </dl>
           </div> */}
         </div>
-
 
         <div className="wrapper mb-8">
           <Image

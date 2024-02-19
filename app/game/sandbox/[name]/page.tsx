@@ -3,7 +3,7 @@ import { useList } from '@refinedev/core';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
-import { Spinner } from '@/components/shared';
+import { Icons, Spinner } from '@/components/shared';
 import { classNames } from '@/helper';
 import { urlForImage } from '@/sanity/lib';
 import { useGameStore } from '@/store';
@@ -63,7 +63,13 @@ export default function page({ params: { name } }: SandboxProps) {
 
   if (isLoading || subscriberIsLoading) return <Spinner />;
 
-  if (qrcodeExpired) return <div className="text-center text-2xl">Le QR code a expiré</div>;
+  if (qrcodeExpired)
+    return (
+      <div className="h-screen flex-center flex-col bg-gradient-to-r from-red-500 to-red-800 text-white">
+        <Icons.Error className="w-20 h-20" />
+        <p className='h3-bold'>Le QR code a expiré</p>
+      </div>
+    );
 
   return (
     <main
@@ -73,10 +79,10 @@ export default function page({ params: { name } }: SandboxProps) {
         backgroundRepeat: 'no-repeat',
       }}
       className="min-h-[calc(100vh-2rem)] pb-10">
-      <div className="container overflow-x-hidden">
+      <div className="wrapper overflow-x-hidden">
         {/* Logo */}
         <div
-          className={classNames('flex justify-center items-center ', gameStep === GameStep.starter ? 'mb-10' : 'mb-1')}>
+          className={classNames('flex justify-center items-center ', gameStep === GameStep.starter ? 'mb-10' : 'mb-8')}>
           <Image src={urlForImage(subscriberData?.logo)} alt="Picture of the author" width={150} height={150} />
         </div>
 
