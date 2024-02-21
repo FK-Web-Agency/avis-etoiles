@@ -72,6 +72,7 @@ export default function TrafficSocial({ analytics }: any) {
     monthlyVisits.facebook[monthIndex] = month.facebook;
     monthlyVisits.google[monthIndex] = month.google;
     monthlyVisits.instagram[monthIndex] = month.instagram;
+    monthlyVisits.tiktok[monthIndex] = month.tiktok;
   }) : null;
 
   // Construire les séries pour ApexCharts
