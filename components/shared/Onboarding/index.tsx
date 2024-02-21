@@ -31,12 +31,10 @@ export default function Onboarding({ user }: { user: any }) {
 
   const { step, gameConfig, userIds, setStep, setGameConfig } = useOnboardingStore();
 
-
   // Components for each step
   const Content = step?.Content;
 
   const handleNextStep = function () {
-
     if (previousNavigation.step === step.title) {
       setPreviousNavigation({ status: false, step: '' });
 
@@ -51,7 +49,7 @@ export default function Onboarding({ user }: { user: any }) {
         setPreviousNavigation({ status: true, step: 'Choisir vos cadeaux' });
         break;
 
-/*       case 'Choisir votre arrière plan':
+      /*       case 'Choisir votre arrière plan':
         setStep('chooseColor');
         setPreviousNavigation({ status: true, step: 'Choisir vos couleurs' });
         break;
@@ -103,7 +101,7 @@ export default function Onboarding({ user }: { user: any }) {
         setStep('chooseRewards');
         break;
 
-/*       case 'Choisir vos cadeaux':
+      /*       case 'Choisir vos cadeaux':
         setStep('chooseColor');
         break;
 
@@ -153,14 +151,16 @@ export default function Onboarding({ user }: { user: any }) {
       // const { status, message, gameConfig: config } = await createGameConfig({ ...copyGameConfig, _type: 'gameConfig' });
       mutate({ resource: 'gameConfig', values: { ...copyGameConfig } });
       // Create analytics
-      mutate({ resource: 'gameAnalytics', values: { user, analytics: createAnalytics() } });
+      console.log(createAnalytics());
+
+      const analytics = await createAnalytics();
+      mutate({ resource: 'gameAnalytics', values: { user, analytics } });
       toast({
         title: 'Succès',
         description: 'Votre jeu de la roulette a été configuré avec succès',
       });
 
-
-      setGameConfig({})
+      setGameConfig({});
     } catch (error: any) {
       toast({
         title: 'Erreur',

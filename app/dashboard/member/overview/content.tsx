@@ -68,12 +68,14 @@ export default function Content() {
 
   // Calculate the total number of Instagram reviews
   const allInstagramReviews = retrieveValue(AnalyticMonthValue.instagram);
+
+  const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // Calculate the total number of reviews without Google reviews
-  const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews;
+  const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews + allTiktokReviews;
 
   // Get the total number of winners
-  const allWinners = winners?.data[0]?.winners.length;
+  const allWinners = 0;
 
   return (
     <>

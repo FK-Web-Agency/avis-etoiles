@@ -67,12 +67,12 @@ export default function TrafficSocial({ analytics }: any) {
   };
 
   // Remplir monthlyVisits avec les données de currentAnalytics
-  currentAnalytics?.months.forEach((month: any) => {
+  currentAnalytics ?currentAnalytics?.months.forEach((month: any) => {
     const monthIndex = new Date(month.month).getMonth(); // Obtenir l'index du mois (0-11)
     monthlyVisits.facebook[monthIndex] = month.facebook;
     monthlyVisits.google[monthIndex] = month.google;
     monthlyVisits.instagram[monthIndex] = month.instagram;
-  });
+  }) : null;
 
   // Construire les séries pour ApexCharts
   const series = Object.keys(monthlyVisits).map((platform: any) => ({

@@ -6,7 +6,7 @@ export default async function createAnalytics() {
   for (let i = 0; i <= 12 - Number(month); i++) {
     const currentMonth = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + i);
-    const monthName = currentMonth.toLocaleString('fr-FR', { month: 'long' });
+    const monthName = currentMonth.toLocaleString('fr-FR');
 
     months.push({
       month: monthName,
@@ -18,11 +18,13 @@ export default async function createAnalytics() {
   }
 
   // Create the analytics object
-  const analytics = {
-    _type: 'analytics',
-    year: new Date().toISOString().slice(0, 4),
-    months,
-  };
+  const analytics = [
+    {
+      _type: 'analytic',
+      year: new Date().toISOString().slice(0, 4),
+      months,
+    },
+  ];
 
   // Return the createAnalytics result
   return analytics;
