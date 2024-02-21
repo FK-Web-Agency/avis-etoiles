@@ -9,7 +9,7 @@ export default defineType({
       name: 'year',
       title: 'Année',
       description: "Année de l'analytique",
-      type: 'datetime',
+      type: 'date',
 /*       options: {
         dateFormat: 'YYYY',
       }, */
