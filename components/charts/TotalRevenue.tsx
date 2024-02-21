@@ -11,6 +11,9 @@ export default function TotalRevenue() {
   });
 
   const orders = data?.data;
+
+  console.log(orders);
+
   // Fonction pour calculer les totaux par jour pour un mois donné
   function calculateMonthlyTotals(year: number, month: number) {
     const filteredOrders = orders?.filter((order) => {
@@ -18,15 +21,23 @@ export default function TotalRevenue() {
       return orderDate.getFullYear() === year && orderDate.getMonth() === month;
     });
 
-    const dailyTotals = filteredOrders?.reduce((acc, order) => {
-      const day = new Date(order.createdAt).getDate();
-      acc[day] = ((acc[day] || 0) + order.price) / 100;
-      return acc;
-    }, {});
+    console.log(filteredOrders);
 
-    if (!dailyTotals) return [];
+    const totalsByMonth: any = {};
 
-    return Object.values(dailyTotals);
+    filteredOrders?.forEach((order) => {
+      // Extraire l'année et le mois de la date de création
+      const month = new Date(order.createdAt).toISOString().slice(0, 7);
+
+      // Ajouter le prix à la somme totale pour le mois correspondant
+      if (!totalsByMonth[month]) {
+        totalsByMonth[month] = order.price / 100;
+      } else {
+        totalsByMonth[month] += order.price / 100;
+      }
+    });
+
+    return Object.values(totalsByMonth);
   }
 
   const currentDate = new Date();
@@ -64,17 +75,18 @@ export default function TotalRevenue() {
     },
   ];
 
+  console.log(currentMonth);
+
   const totalYearSum = TotalRevenueSeries.reduce((sum, series) => {
-    const seriesSum = series.data.reduce((seriesSum, amount) => seriesSum + amount, 0);
+    const seriesSum: any = series.data.reduce((seriesSum: any, amount: any) => seriesSum + amount, 0);
     return sum + seriesSum;
   }, 0);
 
-  const totalRunningMonthSum = runningMonthData?.reduce((sum, order) => sum + order.price, 0);
-  const totalLastMonthSum = lastMonthData?.reduce((sum, order) => sum + order.price, 0);
+  const totalRunningMonthSum: any = runningMonthData?.reduce((sum, order: any) => sum + order.price, 0);
+  const totalLastMonthSum: any = lastMonthData?.reduce((sum, order: any) => sum + order.price, 0);
 
   const averageChange = totalLastMonthSum ? (totalRunningMonthSum - totalLastMonthSum) / totalLastMonthSum : 0;
   const changePercentage = averageChange * 100;
-
 
   return (
     <section className="bg-slate-100 flex-1 flex flex-col rounded p-4 mt-8" id="chart">
@@ -99,7 +111,7 @@ export default function TotalRevenue() {
         </div>
       </div>
 
-      <ChartBar TotalRevenueSeries={TotalRevenueSeries} />
+      <ChartBar TotalRevenueSeries={TotalRevenueSeries as any} />
     </section>
   );
 }
