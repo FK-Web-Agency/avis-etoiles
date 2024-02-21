@@ -31,6 +31,13 @@ export default function ChooseNumberWinners() {
       !isNaN(Number(values.attempts)) &&
       Number(values.attempts) > 0
     ) {
+      if (Number(values.winners) > Number(values.attempts))
+        return toast({
+          title: 'error',
+          description: `Nombre de gagnants : ${values.winners} ne peut pas être supérieur à ${values.attempts}`,
+          variant: 'destructive',
+        });
+
       setGameConfig({ numberWinners: { winners: Number(values.winners), attempts: Number(values.attempts) } });
 
       setStep('chooseSecretCode');
