@@ -63,7 +63,7 @@ export default function Game({ params: { id } }: GameProps) {
     ],
   });
 
-  const { data: subscriberData } = useOne({
+  const { data: subscriberData, isLoading: subscriberLoading } = useOne({
     resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
     id,
   });
@@ -131,7 +131,7 @@ export default function Game({ params: { id } }: GameProps) {
     });
   }, [config]);
 
-  if (subscriberData?.data?.subscription?.status !== 'active')
+  if (subscriberData?.data?.subscription?.status !== 'active' && !subscriberLoading)
     return (
       <div className="flex-center h-screen wrapper">
         <h1 className="h3-bold">Cet QRCode est inaccesible merci de rééssayer plus tard</h1>
