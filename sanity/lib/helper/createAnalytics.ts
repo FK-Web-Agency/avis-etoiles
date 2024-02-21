@@ -19,6 +19,7 @@ export default async function createAnalytics() {
 
   // Create the analytics object
   const analytics = {
+    _type: 'analytics',
     year,
     months,
   };

@@ -58,7 +58,7 @@ const Icons = {
     // If logo, return image
     return (
       <Link href={props.hrefNull ? '#' : '/'} >
-        <Image src={'/logo.png'} alt="logo" className='object-cover' width={300} height={108} />
+        <Image src={'/Vector.svg'} alt="logo" className='object-cover' width={180} height={78} />
       </Link>
     );
   },
