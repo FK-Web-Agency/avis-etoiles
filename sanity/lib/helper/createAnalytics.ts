@@ -14,6 +14,7 @@ export default async function createAnalytics() {
       google: 0,
       instagram: 0,
       facebook: 0,
+      tiktok: 0,
     });
   }
 
