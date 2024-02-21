@@ -55,6 +55,7 @@ export default async function sendEmail(body: any) {
       return {
         status: 'error',
         message: "Une erreur s'est produite, merci de réessayer ultérieurement",
+        error
       };
     }
     return { status: 'success', message: 'Email envoyé avec succés', data };
@@ -63,6 +64,7 @@ export default async function sendEmail(body: any) {
     return {
       status: 'error',
       message: "Une erreur s'est produite, merci de réessayer ultérieurement",
+      error: err
     };
   }
 }

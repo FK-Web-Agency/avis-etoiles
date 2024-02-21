@@ -42,7 +42,7 @@ export default function CreateTeamForm() {
 
     const role = values?.role === Role.Commercial ? 'org:commercial' : 'org:admin';
 
-    await createMembership(clerkId, role);
+    await createMembership(clerkId!, role);
 
     mutate(
       {
@@ -51,12 +51,13 @@ export default function CreateTeamForm() {
       },
       {
         onSuccess: async () => {
-          const { status } = await sendEmail({
+          const { status, error } = await sendEmail({
             email: values?.email,
             firstName: values?.firstName,
             lastName: values?.lastName,
+            role: values?.role === Role.Commercial ? 'commercial(e)' : 'admin',
             subject: "Bienvenue dans l'équipe!",
-            emailTemplate: 'welcome',
+            emailTemplate: 'welcome-to-team',
             password,
           });
           status === 'success'
@@ -69,6 +70,9 @@ export default function CreateTeamForm() {
                 description: `Un email n'a pas pu être envoyé à ${values?.email} avec les informations de connexion`,
                 variant: 'destructive',
               });
+
+              console.log('error', error);
+              
           setLoading(false);
 
           return list('collaborators');

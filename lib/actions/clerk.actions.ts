@@ -75,19 +75,25 @@ export async function updateUserMetadata(id: string, sanityId: string) {
 
 // Create teams
 export async function createTeam(value: any) {
-  // Create user
-  const teamMember = await clerkClient.users.createUser({
-    emailAddress: [value.email],
-    password,
-    firstName: value.firstName,
-    lastName: value.lastName,
-    publicMetadata: {
-      phoneNumber: value.phoneNumber,
-      role: value.information?.role,
-    },
-  });
+  try {
+    // Create user
+    const teamMember = await clerkClient.users.createUser({
+      emailAddress: [value.email],
+      password,
+      firstName: value.firstName,
+      lastName: value.lastName,
+      publicMetadata: {
+        phoneNumber: value.phoneNumber,
+        role: value.information?.role,
+      },
+    });
 
-  return { clerkId: teamMember.id, password };
+    return { clerkId: teamMember.id, password };
+  } catch (error) {
+    console.log(error);
+
+    return { status: 'error', message: JSON.stringify(error) };
+  }
 }
 // Update email address
 export async function updateMemberEmail(id: string, user: any) {
