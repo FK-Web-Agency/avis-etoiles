@@ -9,10 +9,10 @@ export default defineType({
       name: 'year',
       title: 'Année',
       description: "Année de l'analytique",
-      type: 'date',
-      options: {
+      type: 'datetime',
+/*       options: {
         dateFormat: 'YYYY',
-      },
+      }, */
       // year value must be unique for each analytic
       validation: (Rule) =>
         Rule.custom((field, schema) => {
@@ -47,9 +47,9 @@ export default defineType({
               title: 'Mois',
               description: "Mois de l'analytique",
               type: 'date',
-              options: {
+             /*  options: {
                 dateFormat: 'MMM',
-              },
+              }, */
               validation: (Rule) =>
                 Rule.custom((field, schema) => {
                   const date = new Date(field as string);
