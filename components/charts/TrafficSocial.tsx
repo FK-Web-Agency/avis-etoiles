@@ -84,7 +84,7 @@ export default function TrafficSocial({ analytics }: any) {
   return (
     <section className="bg-slate-50 mt-8 rounded">
       <h2 className="p-regular-18 p-4">Traffic des réseaux sociaux</h2>
-      <Chart options={TotalRevenueOptions} series={series} type="bar" height={350} />
+      <Chart options={TotalRevenueOptions} series={series || []} type="bar" height={350} />
     </section>
   );
 }

@@ -20,7 +20,7 @@ export default async function createAnalytics() {
   // Create the analytics object
   const analytics = {
     _type: 'analytics',
-    year,
+    year: new Date().toISOString().slice(0, 4),
     months,
   };
 
