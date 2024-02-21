@@ -16,7 +16,7 @@ BEFORE LAUNCH GAME
   Verify which action the user has to do
 */
 import { z } from 'zod';
-import { useList, useUpdate } from '@refinedev/core';
+import { useList, useOne, useUpdate } from '@refinedev/core';
 
 import { ErrorActionDoesNotExist, Footer, LaunchWheel, Result, Starter } from '@/components/game';
 import { Icons } from '@/components/shared';
@@ -54,13 +54,18 @@ export default function Game({ params: { id } }: GameProps) {
 
   const { data: dataAnalytics } = useList({
     resource: 'gameAnalytics',
-    /*  filters: [
+    filters: [
       {
         field: 'user._ref',
         operator: 'contains',
         value: id,
       },
-    ], */
+    ],
+  });
+
+  const { data: subscriberData } = useOne({
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+    id,
   });
 
   const { data: defaultConfig, isLoading: defaultIsLoading } = useList({
@@ -126,6 +131,14 @@ export default function Game({ params: { id } }: GameProps) {
     });
   }, [config]);
 
+  if (subscriberData?.data?.subscription?.status !== 'active')
+    return (
+      <div className="flex-center h-screen wrapper">
+        <h1 className="h3-bold">Cet QRCode est inaccesible merci de rééssayer plus tard</h1>
+      </div>
+    );
+
+    
   return (
     <>
       {isLoading || defaultIsLoading ? (
@@ -141,11 +154,11 @@ export default function Game({ params: { id } }: GameProps) {
               backgroundRepeat: 'no-repeat',
             }}
             className="min-h-[calc(100vh-2rem)] pb-10">
-            <div className="container overflow-x-hidden">
+            <div className="container overflow-x-hidden flex-center flex-col h-screen gap-10">
               <div
                 className={classNames(
                   'flex justify-center items-center ',
-                  gameStep === GameStep.starter ? 'mb-10' : 'mb-1'
+                  gameStep === GameStep.starter ? 'mb-16' : 'mb-1'
                 )}>
                 <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
               </div>

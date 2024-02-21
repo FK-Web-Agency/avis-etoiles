@@ -127,6 +127,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       if (actions.includes('instagram') && actions.includes('google') && !actions.includes('facebook')) {
         return setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
       }
+      if (actions.includes('facebook') && actions.includes('instagram') && actions.includes('google')) {
+        return setCurrentAction({ title: 'tiktok', Icon: Icons.Tiktok });
+      }
     } else {
       setCurrentAction({ title: 'google', Icon: Icons.Google });
     }
