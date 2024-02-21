@@ -43,7 +43,7 @@ export default function TeamsNav() {
         teams.map((team) => (
           <li key={team.email}>
             <Button
-            onClick={() => go({ to: { resource: process.env.NEXT_PUBLIC_SANITY_TEAM_COLLABORATORS!, action: 'show', id: team._id } })}
+            onClick={() => go({ to: { resource: 'collaborators', action: 'show', id: team._id } })}
             variant={'ghost'} className={classNames('hover:bg-transparent')}>
               <Avatar >
                 <AvatarImage src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${team.firstName}`} />
