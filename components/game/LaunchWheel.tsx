@@ -75,7 +75,7 @@ export default function LaunchWheel({
           backgroundColor: `rgba(${color?.r}, ${color?.g}, ${color?.b}, 0.4)`,
           borderColor: `rgba(${color?.r}, ${color?.g}, ${color?.b}, 0.7)`,
         }}
-        className={`glassmorphism`}>
+        className={`glassmorphism w-4/5 mx-auto`}>
         <h1 className="p-semibold-20 text-center break-words invert">Lancer la roue et Découvrez votre cadeau</h1>
       </div>
       <WheelOfFortune options={rewards} onWinning={handleSpinStop} color={config?.color} id={config.id} />

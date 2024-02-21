@@ -138,7 +138,6 @@ export default function Game({ params: { id } }: GameProps) {
       </div>
     );
 
-    
   return (
     <>
       {isLoading || defaultIsLoading ? (
@@ -154,7 +153,11 @@ export default function Game({ params: { id } }: GameProps) {
               backgroundRepeat: 'no-repeat',
             }}
             className="min-h-[calc(100vh-2rem)] pb-10">
-            <div className="container overflow-x-hidden flex-center flex-col h-screen gap-10">
+            <div
+              className={classNames(
+                'container overflow-x-hidden flex items-center flex-col h-screen  mt-20 wrapper',
+                GameStep.starter === gameStep ? 'gap-28' : 'gap-10'
+              )}>
               <div
                 className={classNames(
                   'flex justify-center items-center ',

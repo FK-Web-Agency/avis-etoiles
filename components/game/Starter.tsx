@@ -107,7 +107,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
               <DrawerDescription>
                 {/* TODO - Ajouter pour instagram et facebook */}
                 {currentAction?.title === 'google' && (
-                  <ul className="text-left flex flex-col items-center gap-4">
+                  <ul className="text-left flex flex-col gap-4">
                     <li className="flex items-start space-x-5">
                       <span className="text-3xl animate-wiggle animate-infinite animate-duration-700">🎁</span>
                       <span className="block p-medium-16 invert">
