@@ -23,6 +23,10 @@ export default function layout({ children }: PropsWithChildren) {
     ],
   });
 
+
+  console.log(data);
+  
+
   /* 
   1) Changer le mot de passe
   2) Config du jeu
