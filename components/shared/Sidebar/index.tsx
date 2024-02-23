@@ -1,13 +1,14 @@
-"use client"
+'use client';
 
 import { PropsWithChildren } from 'react';
-import { SignedIn, UserButton } from '@clerk/nextjs';
+import { SignOutButton, SignedIn, UserButton } from '@clerk/nextjs';
 
 import Icons from '../Icons';
 import NavItems from './NavItems';
 import MobileNav from './MobileNav';
 import TeamsNav from './TeamsNav';
 import { useDashboardStore } from '@/store';
+import Link from 'next/link';
 
 export default function Sidebar({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
@@ -31,15 +32,21 @@ export default function Sidebar({ children }: PropsWithChildren) {
                   <li>
                     <TeamsNav />
                   </li>
-                ): undefined}
-                <li className="mt-auto">
-                  <a
-                    href="#"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <Icons.Logout className="h-6 w-6 shrink-0" aria-hidden="true" />
-                    Se déconnecter
-                  </a>
-                </li>
+                ) : undefined}
+                <div className="flex flex-col gap-4">
+                  <Link className="text-white " href="/">
+                    <div className="flex items-center gap-2">
+                      <Icons.HomeColor className="h-6 w-6 shrink-0" />
+                      Retour à l'accueil
+                    </div>
+                  </Link>
+                  <SignOutButton>
+                    <div className="flex items-center gap-2 text-white">
+                      <Icons.Logout className="h-6 w-6 shrink-0" aria-hidden="true" />
+                      Se déconnecter
+                    </div>
+                  </SignOutButton>
+                </div>
               </ul>
             </nav>
           </div>
