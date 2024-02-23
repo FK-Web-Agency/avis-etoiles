@@ -3,6 +3,8 @@ import { frFR } from '@clerk/localizations';
 import { PropsWithChildren } from 'react';
 import './styles/globals.css';
 
+
+
 export default function layout({ children }: PropsWithChildren) {
   return (
     <html lang="fr">
