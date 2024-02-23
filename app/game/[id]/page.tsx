@@ -102,7 +102,7 @@ export default function Game({ params: { id } }: GameProps) {
         resource: 'gameAnalytics',
         id: analytics?._id,
         values: {
-          analytics: [...userAnalytics, createAnalytics()],
+          analytics: [...userAnalytics, { visitors: userAnalytics.visitors + 1 }],
         },
       });
   }, [dataAnalytics]);
