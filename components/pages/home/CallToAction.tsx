@@ -3,13 +3,13 @@ import { urlForImage } from '@/sanity/lib';
 
 import { CallToActionProps } from '@/interfaces/sanity';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type CallToActionType = {
   call_to_action_section: CallToActionProps;
 };
 
 export default function CallToAction({ call_to_action_section }: CallToActionType) {
-
   return (
     <section className="yellow-section py-16">
       <div className="gap-8 items-center xl:gap-16 md:grid md:grid-cols-2 wrapper">
@@ -29,7 +29,9 @@ export default function CallToAction({ call_to_action_section }: CallToActionTyp
           <h2 className="h2-bold">{call_to_action_section?.title} </h2>
           <p>{call_to_action_section?.subtitle}</p>
 
-          <Button variant={'secondary'}>Voir une demo</Button>
+          <Button variant={'secondary'}>
+            <Link href="/contact">Voir une demo</Link>
+          </Button>
         </div>
       </div>
     </section>

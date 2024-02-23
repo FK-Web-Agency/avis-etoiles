@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { Button, TextGradient } from '@/components/ui';
 import { ItemFeature } from '@/components/pages/features';
 import { generateMetadataWithSanity } from '@/helper';
-import { client, queries } from '@/sanity/lib';
+import {  queries } from '@/sanity/lib';
 import { HowItWorksProps } from '@/interfaces/sanity';
 import Link from 'next/link';
 import { sanityFetch } from '@/sanity/lib/client';
@@ -44,7 +44,7 @@ export default async function Features() {
 
         <div className="flex-center flex-justify-start gap-5">
           <Button variant={'outline'} asChild>
-            <Link href="#">Voir une demo</Link>
+            <Link href="/contact">Voir une demo</Link>
           </Button>
 
           <Button asChild>

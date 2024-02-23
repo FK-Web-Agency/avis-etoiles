@@ -17,6 +17,7 @@ const navigation = {
     { name: 'Paramétre de jeu', href: '/dashboard/admin/game', icon: Icons.Game },
     { name: 'Création de chevalet', href: '/dashboard/admin/easel', icon: Icons.Easel },
     { name: 'Création de Jeu Test', href: '/dashboard/admin/sandbox', icon: Icons.Test },
+    { name: 'Demo App', href: '/dashboard/admin/features', icon: Icons.Test },
     /*  { name: 'Reports', href: '/dashboard/admin/report', icon: Icons.Reports, current: false }, */
   ],
   member: [
