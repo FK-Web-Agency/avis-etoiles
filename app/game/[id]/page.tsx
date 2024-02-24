@@ -156,7 +156,7 @@ export default function Game({ params: { id } }: GameProps) {
             <div
               className={classNames(
                 'container overflow-x-hidden flex items-center flex-col h-screen  mt-20 wrapper',
-                GameStep.starter === gameStep ? 'gap-28' : 'gap-10'
+               'gap-10'
               )}>
               <div
                 className={classNames(

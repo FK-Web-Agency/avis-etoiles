@@ -55,7 +55,7 @@ const useWheelOfFortune = ({ options, onWinning, color }: any) => {
             id: wheelData?.id,
             winningTime: Array.from(indices),
             winners: 0,
-            attempts: 0,
+            attempts: 1,
           },
         });
       }
