@@ -48,7 +48,7 @@ export default async function Features() {
           </Button>
 
           <Button asChild>
-            <Link href="/prices">S'abonner maintenant</Link>
+            <Link href="/prix">S'abonner maintenant</Link>
           </Button>
         </div>
       </section>

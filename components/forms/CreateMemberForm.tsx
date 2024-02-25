@@ -66,18 +66,18 @@ const MemberSchema = z.object({
     })
     .describe('Adresse Postale'),
   subscription: z.object({
-    free: z.boolean().default(false).describe('Abonnement gratuit').optional(),
+    free: z.boolean().default(false).describe('Abonnement gratuit').default(false).optional(),
     plan: z.enum(['essential', 'premium', 'enterprise']).default('essential'),
     recurring: z.nativeEnum(Recurring).default(Recurring.monthly).describe('Renouvellement'),
     startDate: z.date().describe('Date de début').default(new Date()),
-    expirationDate: z
+    /* expirationDate: z
       .date()
       .describe('Date de fin')
       .default(() => {
         const currentDate = new Date();
         const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
         return expirationDate;
-      }),
+      }), */
     price: z.string().default('0').describe('Prix'),
   }),
 });
@@ -100,8 +100,6 @@ export default function CreateMemberForm() {
 
   const seller = data?.data;
 
- 
-
   // Handle form submission
   const handleAction = async function (values: MemberProps) {
     setLoading(true);
@@ -115,7 +113,7 @@ export default function CreateMemberForm() {
     if (askConfirmation) {
       // Format start and expiration dates
       const startDate = formatToISOString(values?.subscription?.startDate);
-      const expirationDate = formatToISOString(values?.subscription?.expirationDate);
+      // const expirationDate = formatToISOString(values?.subscription?.expirationDate);
 
       // Create a new member in Clerk
       const response = await createMember({
@@ -127,7 +125,7 @@ export default function CreateMemberForm() {
         subscription: {
           ...values.subscription,
           startDate,
-          expirationDate,
+          // expirationDate,
         },
       });
 
@@ -154,8 +152,8 @@ export default function CreateMemberForm() {
             price: Number(values.subscription.price),
             recurring,
             startDate,
-            expirationDate,
-            status: 'incomplete'
+            // expirationDate,
+            status: values?.subscription?.free ? 'active' : 'incomplete',
           },
           seller: {
             _type: 'reference',
@@ -171,8 +169,8 @@ export default function CreateMemberForm() {
           },
           {
             onSuccess: async (data: any) => {
-              console.log("data", data);
-              
+              console.log('data', data);
+
               const order = {
                 id: data?.data?._id,
                 email: values?.information?.email,
@@ -189,38 +187,48 @@ export default function CreateMemberForm() {
                 }),
                 subscription: JSON.stringify({
                   ...values.subscription,
-                  status: false,
+                  status: values?.subscription?.free ? true : false,
                   recurring,
                   startDate,
-                  expirationDate,
+                  //  expirationDate,
                 }),
               };
+              if (!values?.subscription?.free) {
+                // Checkout the order
+                const { status, message } = await checkoutSubscription(order);
 
-              // Checkout the order
-              const { status, message } = await checkoutSubscription(order);
+                if (status === 'error') {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Uh oh! Une erreur est survenue',
+                    description: message,
+                  });
+                } else {
+                  toast({
+                    description: message,
+                  });
 
-              if (status === 'error') {
-                toast({
-                  variant: 'destructive',
-                  title: 'Uh oh! Something went wrong.',
-                  description: message,
-                });
-              } else {
-                toast({
-                  description: message,
-                });
-
-                setTimeout(() => {
-                  list('members');
-                }, 1000);
+                  setTimeout(() => {
+                    list('members');
+                  }, 1000);
+                }
               }
+
+              toast({
+                description: 'Votre membres a été créé avec succès!',
+              });
+
+              setTimeout(() => {
+                list('members');
+              }, 1000);
             },
           }
         );
-
-        setLoading(false);
       }
     }
+
+
+    setLoading(false);
   };
 
   return (

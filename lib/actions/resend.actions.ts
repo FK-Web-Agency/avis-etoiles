@@ -13,6 +13,7 @@ import {
   SandboxQRCode,
   MutualGiftWinner,
 } from '@/emails';
+import QrcodeTemplate from '@/emails/qrcode';
 
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY!);
 
@@ -36,6 +37,8 @@ function getEmailTemplate(templateName: string, data: any) {
       return SandboxQRCode(data);
     case 'mutual-gift-winner':
       return MutualGiftWinner(data);
+    case 'qrcode':
+      return QrcodeTemplate(data);
     default:
       throw new Error(`Email template ${templateName} not found.`);
   }
@@ -55,7 +58,7 @@ export default async function sendEmail(body: any) {
       return {
         status: 'error',
         message: "Une erreur s'est produite, merci de réessayer ultérieurement",
-        error
+        error,
       };
     }
     return { status: 'success', message: 'Email envoyé avec succés', data };
@@ -64,7 +67,7 @@ export default async function sendEmail(body: any) {
     return {
       status: 'error',
       message: "Une erreur s'est produite, merci de réessayer ultérieurement",
-      error: err
+      error: err,
     };
   }
 }

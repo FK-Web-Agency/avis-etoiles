@@ -38,7 +38,7 @@ export default async function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/prices" className="hover:underline">
+                  <Link href="/prix" className="hover:underline">
                     Tarif
                   </Link>
                 </li>

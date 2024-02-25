@@ -11,7 +11,9 @@ const STRIPE_SECRET_KEY =
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST!);
 const baseUrl =
   process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
-export const checkoutOrder = async (order: any) => {
+
+
+  export const checkoutOrder = async (order: any) => {
   try {
     const session = await stripe.checkout.sessions.create({
       customer_email: order.email,
@@ -39,8 +41,8 @@ export const checkoutOrder = async (order: any) => {
         frequency: order.frequency,
       },
       mode: 'subscription',
-      success_url: `${baseUrl}/prices/success`,
-      cancel_url: `${baseUrl}/prices?id=${order.sanityId}`,
+      success_url: `${baseUrl}/prix/success`,
+      cancel_url: `${baseUrl}/prix?id=${order.sanityId}`,
       locale: 'fr',
       // Expiration date of the session (1 days)
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
@@ -99,8 +101,8 @@ export const checkoutSubscription = async (order: any) => {
         frequency: order.frequency,
       },
       mode: 'subscription',
-      success_url: `${baseUrl}/prices/success`,
-      cancel_url: `${baseUrl}/prices/`,
+      success_url: `${baseUrl}/prix/success`,
+      cancel_url: `${baseUrl}/prix/`,
       locale: 'fr',
       // Expiration date of the session (1 days)
       expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,

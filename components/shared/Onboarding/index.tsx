@@ -16,7 +16,8 @@ import {
 import { createAnalytics, uploadFileToSanity } from '@/sanity/lib/helper';
 import { useOnboardingStore } from '@/store';
 import { Icons } from '@/components/shared';
-import { useCreate } from '@refinedev/core';
+import { useCreate, useOne } from '@refinedev/core';
+import sendEmail from '@/lib/actions/resend.actions';
 
 export default function Onboarding({ user }: { user: any }) {
   const [previousNavigation, setPreviousNavigation] = useState({
@@ -31,6 +32,10 @@ export default function Onboarding({ user }: { user: any }) {
 
   const { step, gameConfig, userIds, setStep, setGameConfig } = useOnboardingStore();
 
+  const { data } = useOne({
+    resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS,
+    id: userIds?.sanityId,
+  });
   // Components for each step
   const Content = step?.Content;
 
@@ -154,7 +159,19 @@ export default function Onboarding({ user }: { user: any }) {
       console.log(createAnalytics());
 
       const analytics = await createAnalytics();
-      mutate({ resource: 'gameAnalytics', values: { user, analytics } });
+      mutate(
+        { resource: 'gameAnalytics', values: { user, analytics } },
+        {
+          async onSuccess() {
+            await sendEmail({
+              email: data?.data?.email,
+              subject: 'Votre QR Code est prêt 🎉',
+              QRCode: copyGameConfig.qrCode,
+              emailTemplate: 'qrcode',
+            });
+          },
+        }
+      );
       toast({
         title: 'Succès',
         description: 'Votre jeu de la roulette a été configuré avec succès',

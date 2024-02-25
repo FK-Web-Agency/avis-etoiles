@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 const navigation = [
   { label: 'Accueil', route: '/' },
  // { label: 'Comment ça marche ?', route: '/features' },
- { label: 'A propos', route: '/about' },
-  { label: 'Tarifs', route: '/prices' },
+ { label: 'A propos', route: '/a-propos' },
+  { label: 'Tarifs', route: '/prix' },
   { label: 'Contact', route: '/contact' },
 ];
 

@@ -35,7 +35,7 @@ export async function createMember(value: any) {
           status: value.subscription?.free ? true : false,
           plan: value.subscription?.plan,
           startDate: value.subscription?.startDate ? formatDate(value.subscription?.startDate) : null,
-          expirationDate: value.subscription?.expirationDate ? formatDate(value.subscription?.expirationDate) : null,
+          //  expirationDate: value.subscription?.expirationDate ? formatDate(value.subscription?.expirationDate) : null,
         },
         seller: value.seller,
       },

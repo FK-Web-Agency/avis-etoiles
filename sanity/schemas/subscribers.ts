@@ -191,14 +191,14 @@ export default defineType({
             dateFormat: 'DD-MM-YYYY',
           },
         }),
-        defineField({
+        /* defineField({
           name: 'expirationDate',
           title: "Date d'expiration",
           type: 'datetime',
           options: {
             dateFormat: 'DD-MM-YYYY',
           },
-        }),
+        }), */
       ],
     }),
     defineField({

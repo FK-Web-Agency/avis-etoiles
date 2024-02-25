@@ -7,3 +7,4 @@ export {default as RequestForContact} from './request-for-contact';
 export {default as Winner} from './winner';
 export {default as SandboxQRCode} from './sandbox-qrcode';
 export {default as MutualGiftWinner} from './mutual-gift-winner';
+export {default as Qrcode} from './qrcode';
