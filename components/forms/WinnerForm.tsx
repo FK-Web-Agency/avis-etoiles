@@ -40,7 +40,15 @@ const WinnerFormSchema = z.object({
     }),
 });
 
-export default function WinnerForm({ color, id, formCompleted }: { color: any; id: string; formCompleted: any }) {
+export default function WinnerForm({
+  color,
+  id,
+  formCompleted,
+}: {
+  color: any;
+  id: string;
+  formCompleted: any;
+}) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { result } = useGameStore();
@@ -85,7 +93,9 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
     };
 
     const baseUrl =
-      process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
+      process.env.NODE_ENV === 'development'
+        ? process.env.NEXT_PUBLIC_LOCALHOST_URL
+        : process.env.NEXT_PUBLIC_BASE_URL;
     const token = await encodedValue({ id: allDataWinner?._id, winner });
     const qrCode = await QRCode.toDataURL(`${baseUrl}/game/retrieve/${token}`);
 
@@ -99,17 +109,18 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
       const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
-      winners.push(valuesWithoutAcceptTerms);
+      winners && winners.push(valuesWithoutAcceptTerms);
 
       mutate({
         resource: 'gameWinners',
         id: allDataWinner?._id,
         values: {
-          winners: winners,
+          winners: winners ? winners : [valuesWithoutAcceptTerms],
         },
         successNotification: (data, values: any, resource) => {
           const winnerWithQRCode = values?.values?.winners?.find(
-            (winner: any) => winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
+            (winner: any) =>
+              winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
           );
 
           console.log(winnerWithQRCode, 'winnerWithQRCode');
@@ -133,7 +144,8 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
       });
 
       toast({
-        description: 'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
+        description:
+          'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
       });
 
       setLoading(false);
@@ -173,7 +185,11 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
                   <DialogHeader>
                     <DialogTitle>Politique de confidentialité</DialogTitle>
                     <DialogDescription>
-                    {data?.data[0]?.privacyPolicy.content &&  <PortableText value={data?.data[0]?.privacyPolicy.content} />}
+                      {data?.data[0]?.privacyPolicy.content && (
+                        <PortableText
+                          value={data?.data[0]?.privacyPolicy.content}
+                        />
+                      )}
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -187,8 +203,16 @@ export default function WinnerForm({ color, id, formCompleted }: { color: any; i
         type="submit"
         disabled={loading}
         style={{ backgroundColor: color }}
-        className={classNames(colorIsLight(color) ? 'text-back' : 'text-white')}>
-        {loading && <Icons.Spinner className={classNames(loading ? 'animate-spin w-4 h-4 mr-2' : 'hidden')} />}
+        className={classNames(
+          colorIsLight(color) ? 'text-back' : 'text-white'
+        )}>
+        {loading && (
+          <Icons.Spinner
+            className={classNames(
+              loading ? 'animate-spin w-4 h-4 mr-2' : 'hidden'
+            )}
+          />
+        )}
         Confirmer
       </Button>
     </AutoForm>
