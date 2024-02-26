@@ -74,7 +74,7 @@ export default function Starter({ config }: { config: BaseRecord | undefined }) 
           borderColor: `rgba(${color?.r}, ${color?.g}, ${color?.b}, 0.7)`,
         }}
         className={`glassmorphism`}>
-        <h1 className="h3-bold text-center invert">{content?.starter_section?.title}</h1>
+        <h1 className="p-bold-20 text-center invert">{content?.starter_section?.title}</h1>
 
         <ul className="mt-8 font-mono flex flex-col space-y-8">
           {content?.starter_section?.procedure?.map((item: string, index: number) => (

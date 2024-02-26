@@ -155,15 +155,15 @@ export default function Game({ params: { id } }: GameProps) {
             className="min-h-[calc(100vh-2rem)] pb-10">
             <div
               className={classNames(
-                'container overflow-x-hidden flex items-center flex-col h-screen  mt-20 wrapper',
-               'gap-10'
+                'container overflow-x-hidden flex items-center flex-col h-screen mt-20 wrapper',
+               'gap-4'
               )}>
               <div
                 className={classNames(
                   'flex justify-center items-center ',
-                  gameStep === GameStep.starter ? 'mb-16' : 'mb-1'
+                  gameStep === GameStep.starter ? 'mb-5' : 'mb-1'
                 )}>
-                <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
+                <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={100} height={100} />
               </div>
               {!actionExists && <ErrorActionDoesNotExist />}
               {gameStep === GameStep.starter && actionExists && <Starter config={{ ...config, ...defaultSettings }} />}
