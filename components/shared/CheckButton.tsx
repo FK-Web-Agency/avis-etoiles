@@ -91,7 +91,9 @@ export default function CheckoutButton({ plan }: any) {
     }
 
     if (query.get('canceled')) {
-      console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+      console.log(
+        'Order canceled -- continue to shop around and checkout when you’re ready.'
+      );
     }
   }, []);
 
@@ -141,17 +143,20 @@ export default function CheckoutButton({ plan }: any) {
         sanityId: doc._id,
         id: plan._id,
         email: values.information?.email,
-        title: plan.title,
-        price: plan.price,
         frequency: plan.frequency,
-        buyer: JSON.stringify(buyer),
+        buyer: JSON.stringify({
+          _type: 'reference',
+          _ref: doc._id,
+        }),
         seller: JSON.stringify({
           _type: 'reference',
           _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
         }),
         subscription: JSON.stringify({
+          title: plan.title,
           startDate: new Date(),
           plan: plan.title,
+          price: plan.price,
         }),
       };
 
