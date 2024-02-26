@@ -29,7 +29,10 @@ const ContactSchema = z.object({
    * @messageError 'Merci de fournir votre nom'
    * @describe 'votre prénom'
    */
-  firstName: string({ messageError: 'Merci de fournir votre nom', describe: 'prénom' }),
+  firstName: string({
+    messageError: 'Merci de fournir votre nom',
+    describe: 'prénom',
+  }),
 
   /**
    * The last name field.
@@ -37,7 +40,10 @@ const ContactSchema = z.object({
    * @messageError 'Merci de fournir votre nom'
    * @describe 'votre nom'
    */
-  lastName: string({ messageError: 'Merci de fournir votre nom', describe: 'nom' }),
+  lastName: string({
+    messageError: 'Merci de fournir votre nom',
+    describe: 'nom',
+  }),
 
   /**
    * The company name field.
@@ -56,7 +62,10 @@ const ContactSchema = z.object({
    * @messageError 'Merci de fournir votre email'
    * @describe 'votre email'
    */
-  email: string({ messageError: 'Merci de fournir votre email', describe: 'email' }).email(),
+  email: string({
+    messageError: 'Merci de fournir votre email',
+    describe: 'email',
+  }).email(),
 
   /**
    * The phone number field.
@@ -92,7 +101,13 @@ export default function contactForm() {
 
   const handleAction = async function (values: ContactFormProps) {
     setLoading(true);
-    if (!recaptchaValue) return;
+    if (!recaptchaValue) {
+      toast({
+        title: 'Erreur 💥',
+        description: 'Veuillez cocher la case "Je ne suis pas un robot"',
+      });
+      return setLoading(false);
+    }
 
     const response: any = await sendEmail({
       ...values,
@@ -100,12 +115,19 @@ export default function contactForm() {
     });
 
     if (response.status === 'success') {
-      toast({ title: 'Message envoyé', description: 'Votre message a bien été envoyé' });
+      toast({
+        title: 'Message envoyé',
+        description: 'Votre message a bien été envoyé',
+      });
     } else {
       toast({
         title: 'Erreur 💥',
         description: 'Une erreur est survenue',
-        action: <ToastAction altText="Rééassayer plus tard">Rééassayer plus tard</ToastAction>,
+        action: (
+          <ToastAction altText="Rééassayer plus tard">
+            Rééassayer plus tard
+          </ToastAction>
+        ),
       });
     }
 
@@ -132,9 +154,16 @@ export default function contactForm() {
           fieldType: 'textarea',
         },
       }}>
-      <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={onChange} />
+      <ReCAPTCHA
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+        onChange={onChange}
+      />
       <AutoFormSubmit>
-        <Icons.Spinner className={`animate-spin w-4 h-4 mr-2 ${loading ? 'inline-block' : 'hidden'}`} />
+        <Icons.Spinner
+          className={`animate-spin w-4 h-4 mr-2 ${
+            loading ? 'inline-block' : 'hidden'
+          }`}
+        />
         Envoyer
       </AutoFormSubmit>
     </AutoForm>
