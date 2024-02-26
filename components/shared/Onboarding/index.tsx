@@ -177,6 +177,8 @@ export default function Onboarding({ user }: { user: any }) {
         { resource: 'gameConfig', values: { ...copyGameConfig } },
         {
           onSuccess: async ({ data: newData }) => {
+            console.log(newData);
+
             const { status } = await sendEmail({
               email: data?.data?.email,
               subject: 'Votre QR Code est prêt 🎉',
