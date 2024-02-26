@@ -117,56 +117,58 @@ export default function CheckoutButton({ plan }: any) {
     const { clerkId, status } = await createMember(buyer);
 
     if (status === 'error')
-      return toast({
+      toast({
         title: 'Erreur',
         description: `l'email ${values.information?.email} est déjà utilisé`,
       });
-    if (clerkId) {
-      const doc = await client.create({
-        _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-        clerkId,
-        role: 'member',
-        address: values.address,
-        ...values.information,
-        phone: values.information.phoneNumber,
-        subscription: {
-          plan: plan.title,
+    else {
+      if (clerkId) {
+        const doc = await client.create({
+          _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+          clerkId,
+          role: 'member',
+          address: values.address,
+          ...values.information,
+          phone: values.information.phoneNumber,
+          subscription: {
+            plan: plan.title,
+            price: plan.price,
+          },
+          seller: {
+            _type: 'reference',
+            _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
+          },
+          disabled: 'false',
+        });
+
+        await updateUserMetadata(clerkId!, doc._id);
+
+        const order = {
+          sanityId: doc._id,
+          id: plan._id,
+          email: values.information?.email,
           price: plan.price,
-        },
-        seller: {
-          _type: 'reference',
-          _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
-        },
-        disabled: 'false',
-      });
-
-      await updateUserMetadata(clerkId!, doc._id);
-
-      const order = {
-        sanityId: doc._id,
-        id: plan._id,
-        email: values.information?.email,
-        price: plan.price,
-        title: plan.title,
-        frequency: plan.frequency,
-        buyer: JSON.stringify({
-          _type: 'reference',
-          _ref: doc._id,
-        }),
-        seller: JSON.stringify({
-          _type: 'reference',
-          _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
-        }),
-        subscription: JSON.stringify({
           title: plan.title,
-          startDate: new Date(),
-          plan: plan.title,
-          price: plan.price,
           frequency: plan.frequency,
-        }),
-      };
+          buyer: JSON.stringify({
+            _type: 'reference',
+            _ref: doc._id,
+          }),
+          seller: JSON.stringify({
+            _type: 'reference',
+            _ref: 'd77d4b9b-1d14-4d5f-be84-1b6815b928a4',
+          }),
+          subscription: JSON.stringify({
+            title: plan.title,
+            startDate: new Date(),
+            plan: plan.title,
+            price: plan.price,
+            frequency: plan.frequency,
+          }),
+        };
 
-      await checkoutOrder(order);
+        await checkoutOrder(order);
+      }
     }
   };
 
