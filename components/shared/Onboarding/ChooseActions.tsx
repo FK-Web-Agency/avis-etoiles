@@ -1,9 +1,18 @@
-"use client"
+'use client';
 
 import { memo, useEffect, useState } from 'react';
 import { z } from 'zod';
 
-import { Button, Input, Label, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
+import {
+  Button,
+  Input,
+  Label,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  useToast,
+} from '@/components/ui';
 import { Icons } from '@/components/shared';
 import { classNames } from '@/helper';
 import { useOnboardingStore } from '@/store';
@@ -24,7 +33,11 @@ const actionSchema = z.object({
 // Infer the type of an action from the schema
 type Action = z.infer<typeof actionSchema>;
 
-type ActionFromConfig = { socialNetworkName: string; value: string; _key?: string };
+type ActionFromConfig = {
+  socialNetworkName: string;
+  value: string;
+  _key?: string;
+};
 
 // Define a list of actions
 const actionsList: Action[] = [
@@ -34,7 +47,8 @@ const actionsList: Action[] = [
     Description: () => (
       <small>
         Utilise le champ de recherche ci-dessous pour trouver votre lieu. <br />
-        Nous avons besoin du place ID de votre lieu pour pouvoir diriger les utilisateurs et récupérer les avis.
+        Nous avons besoin du place ID de votre lieu pour pouvoir diriger les
+        utilisateurs et récupérer les avis.
       </small>
     ),
     placeholder: 'Entrez votre Place ID',
@@ -45,7 +59,8 @@ const actionsList: Action[] = [
     Icon: Icons.Instagram,
     Description: () => (
       <small>
-        Renseigner l'URL de votre compte Instagram l'utilisateur sera rediriger vers ce lien lors de son seconde visite
+        Renseigner l'URL de votre compte Instagram l'utilisateur sera rediriger
+        vers ce lien lors de son seconde visite
       </small>
     ),
     placeholder: 'Entrez votre URL',
@@ -56,7 +71,8 @@ const actionsList: Action[] = [
     Icon: Icons.Facebook,
     Description: () => (
       <small>
-        Renseigner l'URL de votre page Facebook l'utilisateur sera rediriger vers ce lien lors de sa troisiéme visite
+        Renseigner l'URL de votre page Facebook l'utilisateur sera rediriger
+        vers ce lien lors de sa troisiéme visite
       </small>
     ),
     placeholder: 'Entrez votre URL',
@@ -67,7 +83,8 @@ const actionsList: Action[] = [
     Icon: Icons.Tiktok,
     Description: () => (
       <small>
-        Renseigner l'URL de votre page Tiktok l'utilisateur sera rediriger vers ce lien lors de sa quatriéme visite
+        Renseigner l'URL de votre page Tiktok l'utilisateur sera rediriger vers
+        ce lien lors de sa quatriéme visite
       </small>
     ),
     placeholder: 'Entrez votre URL',
@@ -75,10 +92,19 @@ const actionsList: Action[] = [
   },
 ];
 
-function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConfig[]) => void; actionsDb?: any[] }) {
+function ChooseActions({
+  onSave,
+  actionsDb,
+}: {
+  onSave: (actions: ActionFromConfig[]) => void;
+  actionsDb?: any[];
+}) {
   const [actions, setActions] = useState<Action[]>(actionsList);
   const [textEntered, setTextEntered] = useState('');
-  const [selectGoogle, setSelectGoogle] = useState<null | { description: string; place_id: string }>(null);
+  const [selectGoogle, setSelectGoogle] = useState<null | {
+    description: string;
+    place_id: string;
+  }>(null);
   const [togglePopover, setTogglePopover] = useState(false);
   const { gameConfig, setGameConfig, setStep } = useOnboardingStore();
   const { toast } = useToast();
@@ -93,7 +119,9 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
     if (actionsDb) {
       actionsDb.forEach((actionDb) => {
         const copyActions = [...actions];
-        const index = copyActions.findIndex((action) => action.title === actionDb.socialNetworkName);
+        const index = copyActions.findIndex(
+          (action) => action.title === actionDb.socialNetworkName
+        );
         if (index !== -1) {
           actions[index].value = actionDb.value;
 
@@ -104,7 +132,8 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
   }, [actionsDb]);
 
   // Handle input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTextEntered(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTextEntered(e.target.value);
 
   // Handle adding an action
   const handleAddAction = function (action: Action) {
@@ -130,7 +159,9 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
   // Handle editing an action
   const handleEditAction = function (action: Action) {
     if (action.title === 'google')
-      return alert("Pour modifier votre place ID, merci d'utiliser le champ de recherche Google ci-dessus");
+      return alert(
+        "Pour modifier votre place ID, merci d'utiliser le champ de recherche Google ci-dessus"
+      );
 
     const editText = prompt('Enter your modification', action.value);
 
@@ -155,7 +186,9 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
 
   // Handle deleting an action
   const handleDeleteAction = function (action: Action) {
-    const askConfirmation = confirm('Are you sure you want to delete this action?');
+    const askConfirmation = confirm(
+      'Are you sure you want to delete this action?'
+    );
     if (!askConfirmation) return;
 
     setActions((prevActions) => {
@@ -172,26 +205,35 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
 
   // Handle form submission
   const handleSubmit = function () {
-    const actionsWithValues = actions.filter((action) => action.value);
+    if (textEntered) {
+      toast({
+        title: 'Erreur',
+        description:
+          'Vous devez cliquer sur le bouton "Ajouter" pour enregistrer votre action',
+        variant: 'destructive',
+      });
+    } else {
+      const actionsWithValues = actions.filter((action) => action.value);
 
-    const socialNetworkData = actionsWithValues.map((action) => ({
-      socialNetworkName: action.title,
-      value: action.value as string,
-      _key: generate({
-        numbers: true,
-        length: 5,
-      }),
-    }));
+      const socialNetworkData = actionsWithValues.map((action) => ({
+        socialNetworkName: action.title,
+        value: action.value as string,
+        _key: generate({
+          numbers: true,
+          length: 5,
+        }),
+      }));
 
-    if (onSave) return onSave(socialNetworkData);
+      if (onSave) return onSave(socialNetworkData);
 
-    setGameConfig({ actions: socialNetworkData });
+      setGameConfig({ actions: socialNetworkData });
 
-    toast({
-      description: 'Les actions ont été enregistrées',
-    });
+      toast({
+        description: 'Les actions ont été enregistrées',
+      });
 
-    setStep('chooseNumberWinners');
+      setStep('chooseNumberWinners');
+    }
   };
 
   return (
@@ -199,9 +241,10 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
       <Tabs className="mt-5" defaultValue="google">
         <TabsList className="bg-transparent mb-8 flex-col max-[410px]:justify-center max-[410px]:w-full min-[410px]:flex-row">
           {actions.map((action, index) => {
-            const config: ActionFromConfig[] | undefined = gameConfig?.actions?.filter(
-              (a) => a.socialNetworkName === action.title
-            );
+            const config: ActionFromConfig[] | undefined =
+              gameConfig?.actions?.filter(
+                (a) => a.socialNetworkName === action.title
+              );
 
             return (
               <TabsTrigger
@@ -224,12 +267,16 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
         </TabsList>
 
         {actions.map((action, index) => {
-          const config: ActionFromConfig[] | undefined = gameConfig?.actions?.filter(
-            (a) => a.socialNetworkName === action.title
-          );
+          const config: ActionFromConfig[] | undefined =
+            gameConfig?.actions?.filter(
+              (a) => a.socialNetworkName === action.title
+            );
 
           return (
-            <TabsContent className="max-[410px]:pt-20" key={index} value={action.title}>
+            <TabsContent
+              className="max-[410px]:pt-20"
+              key={index}
+              value={action.title}>
               <action.Description />
 
               <div className="mt-4 flex flex-col gap-1">
@@ -251,12 +298,19 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
                       <div className="flex flex-col gap-4 z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 mt-4">
                         {placePredictions?.map((suggestion: any, index) => (
                           <div
-                            onClick={() => (setSelectGoogle(suggestion), setTogglePopover(!togglePopover))}
+                            onClick={() => (
+                              setSelectGoogle(suggestion),
+                              setTogglePopover(!togglePopover)
+                            )}
                             className="min-h-min p-2 rounded-md hover:bg-gray-200 cursor-pointer"
                             key={index}>
                             <div className="flex items-start flex-col gap-1 text-gray-900 hover:bg-gray-200 rounded">
-                              <p className="p-medium-14 text-gray-900 break-all">{suggestion.description}</p>
-                              <small className="text-xs block text-gray-600">Place ID :{suggestion.place_id}</small>
+                              <p className="p-medium-14 text-gray-900 break-all">
+                                {suggestion.description}
+                              </p>
+                              <small className="text-xs block text-gray-600">
+                                Place ID :{suggestion.place_id}
+                              </small>
                             </div>
                           </div>
                         ))}
@@ -278,18 +332,26 @@ function ChooseActions({ onSave, actionsDb }: { onSave: (actions: ActionFromConf
                   <p className="p-medium-12">
                     Valeur enregistrée :{' '}
                     <span className="text-gray-900">
-                      {selectGoogle?.description || action.value || (config && config[0]?.value)}
+                      {selectGoogle?.description ||
+                        action.value ||
+                        (config && config[0]?.value)}
                     </span>
                     .
                   </p>
 
                   <div className="flex items-center gap-4">
-                    <Button className="mt-4" onClick={() => handleEditAction(action)} variant="secondary">
+                    <Button
+                      className="mt-4"
+                      onClick={() => handleEditAction(action)}
+                      variant="secondary">
                       <Icons.Edit className="w-4 h-4 mr-2 font-semibold" />
                       Modifier
                     </Button>
 
-                    <Button className="mt-4" onClick={() => handleDeleteAction(action)} variant="destructive">
+                    <Button
+                      className="mt-4"
+                      onClick={() => handleDeleteAction(action)}
+                      variant="destructive">
                       <Icons.Delete className="w-4 h-4 mr-2 font-semibold" />
                       Supprimer
                     </Button>
