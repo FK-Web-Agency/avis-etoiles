@@ -144,6 +144,7 @@ export default function CheckoutButton({ plan }: any) {
         email: values.information?.email,
         price: plan.price,
         title: plan.title,
+        frequency: plan.frequency,
         buyer: JSON.stringify({
           _type: 'reference',
           _ref: doc._id,
