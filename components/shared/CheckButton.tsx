@@ -13,12 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  useToast,
 } from '@/components/ui';
 import { checkoutOrder } from '@/lib/actions';
 import { z } from 'zod';
 import { createMember, updateUserMetadata } from '@/lib/actions/clerk.actions';
 import { client } from '@/sanity/lib';
-
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -73,6 +73,7 @@ const InfoSchema = z.object({
 
 type InfoSchemaType = z.infer<typeof InfoSchema>;
 export default function CheckoutButton({ plan }: any) {
+  const { toast } = useToast();
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
@@ -113,10 +114,13 @@ export default function CheckoutButton({ plan }: any) {
       },
     };
 
-    const { clerkId } = await createMember(buyer);
+    const { clerkId, status } = await createMember(buyer);
 
-    console.log(clerkId);
-
+    if (status === 'error')
+      return toast({
+        title: 'Erreur',
+        description: `l'email ${values.information?.email} est déjà utilisé`,
+      });
     if (clerkId) {
       const doc = await client.create({
         _type: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
@@ -164,7 +168,6 @@ export default function CheckoutButton({ plan }: any) {
 
       await checkoutOrder(order);
     }
-
   };
 
   return (
