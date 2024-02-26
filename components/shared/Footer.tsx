@@ -33,8 +33,8 @@ export default async function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/features" className="hover:underline">
-                    Comment ça marche ?
+                  <Link href="/a-propos" className="hover:underline">
+                    À propos
                   </Link>
                 </li>
                 <li>
