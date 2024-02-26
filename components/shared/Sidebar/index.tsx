@@ -1,7 +1,7 @@
 'use client';
 
 import { PropsWithChildren } from 'react';
-import { SignOutButton, SignedIn, UserButton } from '@clerk/nextjs';
+import { SignOutButton, SignedIn, UserButton, useClerk } from '@clerk/nextjs';
 
 import Icons from '../Icons';
 import NavItems from './NavItems';
@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation';
 
 export default function Sidebar({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
-
+  const { signOut } = useClerk();
   return (
     <>
       <div>
@@ -43,6 +43,7 @@ export default function Sidebar({ children }: PropsWithChildren) {
                   </Link>
                   <SignOutButton
                     signOutCallback={() => {
+                      signOut();
                       redirect('/sign-in');
                     }}>
                     <div className="flex items-center gap-2 text-white cursor-pointer">

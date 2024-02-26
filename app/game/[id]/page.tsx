@@ -107,31 +107,6 @@ export default function Game({ params: { id } }: GameProps) {
   );
   const thisMonthAnalytics = thisYearAnalytics?.months?.at(monthIndex);
 
-  /*  useEffect(() => {
-    console.log(index);
-
-    if (index === -1)
-      mutate(
-        {
-          resource: 'gameAnalytics',
-          id: analytics?._id,
-          values: {
-            analytics: [
-              ...userAnalytics,
-              { visitors: userAnalytics.visitors + 1 },
-            ],
-          },
-        },
-        {
-          onSuccess() {
-            console.log('success');
-          },
-          onError(error) {
-            console.log('error', error);
-          },
-        }
-      );
-  }, [dataAnalytics]); */
 
   useEffect(() => {
     console.log(index, thisMonthAnalytics, done);
