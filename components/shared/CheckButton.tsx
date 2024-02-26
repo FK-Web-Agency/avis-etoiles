@@ -14,12 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui';
-import { checkoutOrder, checkoutSubscription } from '@/lib/actions';
+import { checkoutOrder } from '@/lib/actions';
 import { z } from 'zod';
 import { createMember, updateUserMetadata } from '@/lib/actions/clerk.actions';
 import { client } from '@/sanity/lib';
-import { kv } from '@vercel/kv';
-import { clerkClient } from '@clerk/nextjs';
+
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -143,6 +142,8 @@ export default function CheckoutButton({ plan }: any) {
         sanityId: doc._id,
         id: plan._id,
         email: values.information?.email,
+        price: plan.price,
+        title: plan.title,
         buyer: JSON.stringify({
           _type: 'reference',
           _ref: doc._id,
@@ -163,8 +164,6 @@ export default function CheckoutButton({ plan }: any) {
       await checkoutOrder(order);
     }
 
-    /*    const invoice = await kv.get('invoice');
-    console.log(invoice); */
   };
 
   return (
