@@ -18,6 +18,7 @@ import { useOnboardingStore } from '@/store';
 import { Icons } from '@/components/shared';
 import { useCreate, useOne } from '@refinedev/core';
 import sendEmail from '@/lib/actions/resend.actions';
+import { urlForImage } from '@/sanity/lib';
 
 export default function Onboarding({ user }: { user: any }) {
   const [previousNavigation, setPreviousNavigation] = useState({
@@ -162,11 +163,11 @@ export default function Onboarding({ user }: { user: any }) {
       mutate(
         { resource: 'gameAnalytics', values: { user, analytics } },
         {
-          async onSuccess() {
+          async onSuccess({ data: newData}) {
             await sendEmail({
               email: data?.data?.email,
               subject: 'Votre QR Code est prêt 🎉',
-              QRCode: copyGameConfig.qrCode,
+              QRCode: urlForImage(newData?.qrcode),
               emailTemplate: 'qrcode',
             });
           },

@@ -37,7 +37,7 @@ export default function Sidebar({ children }: PropsWithChildren) {
                   <Link className="text-white " href="/">
                     <div className="flex items-center gap-2">
                       <Icons.HomeColor className="h-6 w-6 shrink-0" />
-                      Retour à l'accueil
+                      Retour sur le site
                     </div>
                   </Link>
                   <SignOutButton>
