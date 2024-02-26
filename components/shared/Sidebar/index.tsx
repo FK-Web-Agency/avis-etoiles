@@ -45,7 +45,7 @@ export default function Sidebar({ children }: PropsWithChildren) {
                     signOutCallback={() => {
                       redirect('/sign-in');
                     }}>
-                    <div className="flex items-center gap-2 text-white">
+                    <div className="flex items-center gap-2 text-white cursor-pointer">
                       <Icons.Logout
                         className="h-6 w-6 shrink-0"
                         aria-hidden="true"
