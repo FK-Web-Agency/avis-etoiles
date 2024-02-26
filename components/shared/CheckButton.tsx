@@ -143,7 +143,6 @@ export default function CheckoutButton({ plan }: any) {
         sanityId: doc._id,
         id: plan._id,
         email: values.information?.email,
-        frequency: plan.frequency,
         buyer: JSON.stringify({
           _type: 'reference',
           _ref: doc._id,
@@ -157,6 +156,7 @@ export default function CheckoutButton({ plan }: any) {
           startDate: new Date(),
           plan: plan.title,
           price: plan.price,
+          frequency: plan.frequency,
         }),
       };
 
