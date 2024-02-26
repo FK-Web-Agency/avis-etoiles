@@ -42,7 +42,9 @@ export default async function Footer() {
                     Tarif
                   </Link>
                 </li>
+                <Link href="/contact">
                 <li>Demander une démo</li>
+                </Link>
               </ul>
             </div>
 
