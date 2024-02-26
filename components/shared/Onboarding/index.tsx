@@ -180,7 +180,7 @@ export default function Onboarding({ user }: { user: any }) {
             const { status } = await sendEmail({
               email: data?.data?.email,
               subject: 'Votre QR Code est prêt 🎉',
-              QRCode: urlForImage(newData?.qrcode),
+              QRCode: urlForImage(newData?.qrCode),
               emailTemplate: 'qrcode',
             });
 
