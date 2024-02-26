@@ -18,7 +18,13 @@ BEFORE LAUNCH GAME
 import { z } from 'zod';
 import { useList, useOne, useUpdate } from '@refinedev/core';
 
-import { ErrorActionDoesNotExist, Footer, LaunchWheel, Result, Starter } from '@/components/game';
+import {
+  ErrorActionDoesNotExist,
+  Footer,
+  LaunchWheel,
+  Result,
+  Starter,
+} from '@/components/game';
 import { Icons } from '@/components/shared';
 import { urlForImage } from '@/sanity/lib';
 import useGameStore, { GameStep } from '@/store/game.store';
@@ -78,7 +84,8 @@ export default function Game({ params: { id } }: GameProps) {
 
   useEffect(() => {
     const actionsTitle = config?.actions?.map(
-      (action: { socialNetworkName: string; value: string }) => action.socialNetworkName
+      (action: { socialNetworkName: string; value: string }) =>
+        action.socialNetworkName
     );
 
     if (actionsTitle?.includes(currentAction?.title)) {
@@ -90,38 +97,69 @@ export default function Game({ params: { id } }: GameProps) {
   const month = new Date().getMonth();
 
   const userAnalytics = analytics?.analytics;
-  const index = userAnalytics?.findIndex((item: any) => new Date(item.year).getFullYear() === year);
+  const index = userAnalytics?.findIndex(
+    (item: any) => new Date(item.year).getFullYear() === year
+  );
 
   const thisYearAnalytics = userAnalytics?.at(index);
-  const monthIndex = thisYearAnalytics?.months.findIndex((item: any) => new Date(item.month).getMonth() === month);
+  const monthIndex = thisYearAnalytics?.months.findIndex(
+    (item: any) => new Date(item.month).getMonth() === month
+  );
   const thisMonthAnalytics = thisYearAnalytics?.months?.at(monthIndex);
 
-  useEffect(() => {
-    if (index === -1 && !done)
-      mutate({
-        resource: 'gameAnalytics',
-        id: analytics?._id,
-        values: {
-          analytics: [...userAnalytics, { visitors: userAnalytics.visitors + 1 }],
+  /*  useEffect(() => {
+    console.log(index);
+
+    if (index === -1)
+      mutate(
+        {
+          resource: 'gameAnalytics',
+          id: analytics?._id,
+          values: {
+            analytics: [
+              ...userAnalytics,
+              { visitors: userAnalytics.visitors + 1 },
+            ],
+          },
         },
-      });
-  }, [dataAnalytics]);
+        {
+          onSuccess() {
+            console.log('success');
+          },
+          onError(error) {
+            console.log('error', error);
+          },
+        }
+      );
+  }, [dataAnalytics]); */
 
   useEffect(() => {
+    console.log(index, thisMonthAnalytics, done);
+
     if (index === -1 || !thisMonthAnalytics) return;
-    if (!done) return setDone(true);
+    if (done) return;
 
     thisMonthAnalytics.visitors += 1;
 
-    mutate({
-      resource: 'gameAnalytics',
-      values: {
-        analytics: userAnalytics,
+    mutate(
+      {
+        resource: 'gameAnalytics',
+        values: {
+          analytics: userAnalytics,
+        },
+        id: analytics?._id,
       },
-      id: analytics?._id,
-    });
-    setDone(true);
-  }, [thisMonthAnalytics]);
+      {
+        onSuccess() {
+          console.log('success');
+          setDone(true);
+        },
+        onError(error) {
+          console.log('error', error);
+        },
+      }
+    );
+  }, [dataAnalytics]);
 
   useEffect(() => {
     setWheelData({
@@ -131,10 +169,15 @@ export default function Game({ params: { id } }: GameProps) {
     });
   }, [config]);
 
-  if (subscriberData?.data?.subscription?.status !== 'active' && !subscriberLoading)
+  if (
+    subscriberData?.data?.subscription?.status !== 'active' &&
+    !subscriberLoading
+  )
     return (
       <div className="flex-center h-screen wrapper">
-        <h1 className="h3-bold">Cet QRCode est inaccesible merci de rééssayer plus tard</h1>
+        <h1 className="h3-bold">
+          Cet QRCode est inaccesible merci de rééssayer plus tard
+        </h1>
       </div>
     );
 
@@ -148,7 +191,9 @@ export default function Game({ params: { id } }: GameProps) {
         <>
           <main
             style={{
-              backgroundImage: `url(${defaultSettings && urlForImage(defaultSettings?.background)})`,
+              backgroundImage: `url(${
+                defaultSettings && urlForImage(defaultSettings?.background)
+              })`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
             }}
@@ -156,17 +201,24 @@ export default function Game({ params: { id } }: GameProps) {
             <div
               className={classNames(
                 'container overflow-x-hidden flex items-center flex-col h-screen mt-4 wrapper',
-               'gap-4'
+                'gap-4'
               )}>
               <div
                 className={classNames(
                   'flex justify-center items-center ',
                   gameStep === GameStep.starter ? 'mb-5' : 'mb-1'
                 )}>
-                <Image src={urlForImage(config?.logo)} alt="Picture of the author" width={150} height={150} />
+                <Image
+                  src={urlForImage(config?.logo)}
+                  alt="Picture of the author"
+                  width={150}
+                  height={150}
+                />
               </div>
               {!actionExists && <ErrorActionDoesNotExist />}
-              {gameStep === GameStep.starter && actionExists && <Starter config={{ ...config, ...defaultSettings }} />}
+              {gameStep === GameStep.starter && actionExists && (
+                <Starter config={{ ...config, ...defaultSettings }} />
+              )}
               {gameStep === GameStep.launchWheel && actionExists && (
                 <LaunchWheel
                   config={{ ...config, ...defaultSettings }}
@@ -175,7 +227,9 @@ export default function Game({ params: { id } }: GameProps) {
                   analytics={analytics}
                 />
               )}
-              {gameStep === GameStep.result && actionExists && <Result config={defaultSettings} id={id} />}
+              {gameStep === GameStep.result && actionExists && (
+                <Result config={defaultSettings} id={id} />
+              )}
             </div>
           </main>
 
