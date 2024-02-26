@@ -74,8 +74,8 @@ export default function Content() {
     });
 
   const onSaveRewards = (rewards: string[]) => updateGameConfig({ rewards });
-  const onSaveActions = (rewards: { _key?: string; socialNetworkName: string; value: string }[]) =>
-    updateGameConfig({ rewards });
+  const onSaveActions = (actions: { _key?: string; socialNetworkName: string; value: string }[]) =>
+    updateGameConfig({ actions });
 
   const onSaveSecretCode = (secretCode: string) => updateGameConfig({ secretCode });
 
