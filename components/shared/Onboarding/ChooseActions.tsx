@@ -38,7 +38,7 @@ const actionsList: Action[] = [
       </small>
     ),
     placeholder: 'Entrez votre Place ID',
-    label: 'Place ID',
+    label: 'Identifiant Google',
   },
   {
     title: 'instagram',

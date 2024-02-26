@@ -30,7 +30,7 @@ export const RewardTemplate = (values: any) => (
 
           <Text style={footer}>
             <Link href="https://www.avisetoiles.com" target="_blank" className="underline" style={{ color: '#898989' }}>
-              Avis Étole
+              Avis Étoiles
             </Link>
             , tous droit réservés
           </Text>

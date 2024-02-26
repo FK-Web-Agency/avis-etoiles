@@ -71,6 +71,7 @@ export default function GenerateQRCode({ onSave, sandbox }: any) {
 
       {!sandbox && (
         <>
+        <p className="text-center">Votre QR Code est prêt, cliquez sur "terminer" pour le recevoir par mail.</p>
           <Image src={qrCode!} alt="QR Code" className="shadow" width={200} height={200} />
           <Button asChild variant={'secondary'}>
             <a href={qrCode!} download="qrcode.png">
