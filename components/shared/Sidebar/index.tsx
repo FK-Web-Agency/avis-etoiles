@@ -9,6 +9,7 @@ import MobileNav from './MobileNav';
 import TeamsNav from './TeamsNav';
 import { useDashboardStore } from '@/store';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default function Sidebar({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
@@ -40,9 +41,15 @@ export default function Sidebar({ children }: PropsWithChildren) {
                       Retour sur le site
                     </div>
                   </Link>
-                  <SignOutButton>
+                  <SignOutButton
+                    signOutCallback={() => {
+                      redirect('/sign-in');
+                    }}>
                     <div className="flex items-center gap-2 text-white">
-                      <Icons.Logout className="h-6 w-6 shrink-0" aria-hidden="true" />
+                      <Icons.Logout
+                        className="h-6 w-6 shrink-0"
+                        aria-hidden="true"
+                      />
                       Se déconnecter
                     </div>
                   </SignOutButton>
