@@ -77,9 +77,7 @@ export default function WinnerForm({
   const allDataWinner = winnersData?.data[0];
   const winners = allDataWinner?.winners;
 
-
   console.log(allDataWinner);
-  
 
   const handleAction = async function (values: any) {
     setLoading(true);
@@ -113,27 +111,27 @@ export default function WinnerForm({
       const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
-     winners.push(valuesWithoutAcceptTerms);
+      winners && winners.push(valuesWithoutAcceptTerms);
 
       mutate(
         {
           resource: 'gameWinners',
           id: allDataWinner?._id,
           values: {
-            winners: winners
+            winners: winners ? winners : [valuesWithoutAcceptTerms],
           },
         },
         {
-          async onSuccess() {
-            const winnerWithQRCode = values?.values?.winners?.find(
+          async onSuccess({ data }) {
+            console.log(data, 'data');
+            const winnerWithQRCode = data?.winners?.find(
               (winner: any) =>
                 winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
             );
 
-            console.log(winnerWithQRCode, 'winnerWithQRCode');
-
             const { status } = await sendEmail({
               ...winner,
+              email: winner.email,
               subject: 'Votre lot est prêt',
               emailTemplate: 'winner',
               address: userData?.data?.address,
@@ -156,12 +154,13 @@ export default function WinnerForm({
               description:
                 'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
             });
+
+            formCompleted();
           },
         }
       );
 
       setLoading(false);
-      formCompleted();
     } catch (error) {
       console.log(error, 'error');
 
