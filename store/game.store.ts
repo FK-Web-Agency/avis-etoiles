@@ -55,7 +55,7 @@ const useGameStore = create<GameProps>((set) => ({
   canPlay: true,
   currentAction: undefined,
   userLocalStorage: () => [undefined, () => {}],
-  gameStep: GameStep.starter,
+  gameStep: GameStep.result,
   result: 'lait',
   gameConfig: undefined,
   wheelData: undefined,

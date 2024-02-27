@@ -70,7 +70,7 @@ export default function KPIGame({ analytics }: any) {
     return calc;
   });
 
-  console.log(monthlyVisits);
+  console.log(analytics);
   
 
   while (monthlyVisits?.length < 12) {

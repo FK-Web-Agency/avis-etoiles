@@ -172,6 +172,7 @@ export default function Onboarding({ user }: { user: any }) {
     try {
       const analytics = await createAnalytics();
       mutate({ resource: 'gameAnalytics', values: { user, analytics } });
+      mutate({ resource: 'gameWinners', values: { user, winners: [] } });
       // const { status, message, gameConfig: config } = await createGameConfig({ ...copyGameConfig, _type: 'gameConfig' });
       mutate(
         { resource: 'gameConfig', values: { ...copyGameConfig } },

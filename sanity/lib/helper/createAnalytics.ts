@@ -1,15 +1,14 @@
-// Create the createAnalytics function
 export default async function createAnalytics() {
-  const year = new Date().toISOString();
-  const month = new Date().toISOString().slice(5, 7);
+  const currentYear = new Date().getFullYear();
   const months = [];
-  for (let i = 0; i <= 12 - Number(month); i++) {
-    const currentMonth = new Date();
-    currentMonth.setMonth(currentMonth.getMonth() + i);
-    const monthName = currentMonth.toISOString()
 
+  for (let i = 0; i < 12; i++) {
+    const year = currentYear.toString();
+    const month = (i + 1).toString().padStart(2, '0'); // Add leading zero if needed
+    const date = new Date(`${year}-${month}-01`);
+    const formattedDate = date.toISOString().slice(0, 7); // Format to YYYY-MM
     months.push({
-      month: monthName,
+      month: formattedDate,
       visitors: 0,
       google: 0,
       instagram: 0,
@@ -18,15 +17,16 @@ export default async function createAnalytics() {
     });
   }
 
-  // Create the analytics object
   const analytics = [
     {
       _type: 'analytic',
-      year,
+      year: currentYear.toString(),
       months,
     },
   ];
 
-  // Return the createAnalytics result
+  console.log(analytics);
   return analytics;
 }
+
+createAnalytics();

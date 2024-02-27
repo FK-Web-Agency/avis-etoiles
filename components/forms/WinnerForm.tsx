@@ -77,6 +77,10 @@ export default function WinnerForm({
   const allDataWinner = winnersData?.data[0];
   const winners = allDataWinner?.winners;
 
+
+  console.log(allDataWinner);
+  
+
   const handleAction = async function (values: any) {
     setLoading(true);
     const winner: any = {
@@ -109,44 +113,52 @@ export default function WinnerForm({
       const valuesWithoutAcceptTerms = { ...values, qrCode: qrCodeUpload };
       delete valuesWithoutAcceptTerms.accepterLesConditions;
 
-      winners && winners.push(valuesWithoutAcceptTerms);
+     winners.push(valuesWithoutAcceptTerms);
 
-      mutate({
-        resource: 'gameWinners',
-        id: allDataWinner?._id,
-        values: {
-          winners: winners ? winners : [valuesWithoutAcceptTerms],
+      mutate(
+        {
+          resource: 'gameWinners',
+          id: allDataWinner?._id,
+          values: {
+            winners: winners
+          },
         },
-        successNotification: (data, values: any, resource) => {
-          const winnerWithQRCode = values?.values?.winners?.find(
-            (winner: any) =>
-              winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
-          );
+        {
+          async onSuccess() {
+            const winnerWithQRCode = values?.values?.winners?.find(
+              (winner: any) =>
+                winner.qrCode?.asset?._ref === qrCodeUpload?.asset?._ref
+            );
 
-          console.log(winnerWithQRCode, 'winnerWithQRCode');
+            console.log(winnerWithQRCode, 'winnerWithQRCode');
 
-          sendEmail({
-            ...winner,
-            subject: 'Votre lot est prêt',
-            emailTemplate: 'winner',
-            address: userData?.data?.address,
-            ownerName: userData?.data?.companyName,
-            QRCode: urlForImage(winnerWithQRCode?.qrCode),
-          }).then(() => {
-            console.log('Email sent');
-          });
-          return {
-            message: ``,
-            description: '',
-            type: 'success',
-          };
-        },
-      });
+            const { status } = await sendEmail({
+              ...winner,
+              subject: 'Votre lot est prêt',
+              emailTemplate: 'winner',
+              address: userData?.data?.address,
+              ownerName: userData?.data?.companyName,
+              QRCode: urlForImage(winnerWithQRCode?.qrCode),
+            });
 
-      toast({
-        description:
-          'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
-      });
+            if (status === 'error') {
+              setLoading(false);
+              return toast({
+                title: 'Erreur',
+                description:
+                  "Une erreur s'est produite, merci de réessayer ultérieurement",
+                variant: 'destructive',
+              });
+            }
+
+            setLoading(false);
+            toast({
+              description:
+                'Votre lot est prêt, vous allez recevoir un email avec votre QR Code',
+            });
+          },
+        }
+      );
 
       setLoading(false);
       formCompleted();
