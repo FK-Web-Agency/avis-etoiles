@@ -10,6 +10,7 @@ import TeamsNav from './TeamsNav';
 import { useDashboardStore } from '@/store';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { Button } from '@/components/ui';
 
 export default function Sidebar({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
@@ -41,11 +42,9 @@ export default function Sidebar({ children }: PropsWithChildren) {
                       Retour sur le site
                     </div>
                   </Link>
-                  <SignOutButton
-                    signOutCallback={() => {
-                      signOut();
-                      redirect('/sign-in');
-                    }}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() => signOut(() => redirect('/sign-in'))}>
                     <div className="flex items-center gap-2 text-white cursor-pointer">
                       <Icons.Logout
                         className="h-6 w-6 shrink-0"
@@ -53,7 +52,7 @@ export default function Sidebar({ children }: PropsWithChildren) {
                       />
                       Se déconnecter
                     </div>
-                  </SignOutButton>
+                  </Button>
                 </div>
               </ul>
             </nav>
