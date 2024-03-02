@@ -6,6 +6,7 @@ export default function page() {
       <h1 className="h1-bold">Paiment réçu</h1>
 
       <p>Merci pour votre achat, vous recevrez un email de confirmation.</p>
+      <p>Vous allez recevoir vos informations de connexion par email sous peu.</p>
     </div>
   );
 }

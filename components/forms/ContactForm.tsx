@@ -111,6 +111,8 @@ export default function contactForm() {
 
     const response: any = await sendEmail({
       ...values,
+      email: values.email,
+      subject: 'Nouveau message de contact',
       emailTemplate: 'contact',
     });
 
@@ -123,11 +125,6 @@ export default function contactForm() {
       toast({
         title: 'Erreur 💥',
         description: 'Une erreur est survenue',
-        action: (
-          <ToastAction altText="Rééassayer plus tard">
-            Rééassayer plus tard
-          </ToastAction>
-        ),
       });
     }
 
