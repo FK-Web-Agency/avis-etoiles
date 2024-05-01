@@ -69,7 +69,7 @@ export default function Content({ id }: { id: string }) {
 
   return (
     <div>
-      <div className="flex justify-between flex-wrap items-center gap-4 mb-8">
+      <div className="flex justify-between sm:flex-wrap items-center gap-4 mb-8">
         <Card >
           <CardHeader>
             <CardTitle>
