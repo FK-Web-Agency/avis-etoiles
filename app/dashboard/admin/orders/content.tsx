@@ -32,6 +32,11 @@ export default function Content() {
   const collaboratorsList = collaborators?.data;
   const subscribersList = subscribers?.data;
 
+  // order by recently created
+  orders?.sort((a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <>
       <h1 className="h4-medium text-white">Les Ventes</h1>
@@ -67,7 +72,7 @@ export default function Content() {
                 </TableCell>
                 <TableCell>{formatDate(order.createdAt)}</TableCell>
                 <TableCell>
-                  <Link href={order?.invoice?.url || "#"} target="_blank">
+                  <Link href={order?.invoice?.url || '#'} target="_blank">
                     <Icons.Eye className="h-6 w-6" />
                   </Link>
                 </TableCell>
