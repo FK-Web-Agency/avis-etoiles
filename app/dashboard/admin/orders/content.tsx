@@ -37,6 +37,10 @@ export default function Content() {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
+  /* 
+  Check if the order has a buyer and a seller
+  */
+
   return (
     <>
       <h1 className="h4-medium text-white">Les Ventes</h1>

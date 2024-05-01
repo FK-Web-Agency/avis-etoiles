@@ -22,7 +22,7 @@ export default async function Features() {
     <main className="wrapper main">
       {/* ------------------------------ Introduction ------------------------------ */}
       <section>
-        <TextGradient component="h1" className="h1-bold" segments={introduction_section?.title} />
+        <TextGradient component="h1" className="h1-bold text-white!" segments={introduction_section?.title} />
         <p className="mt-8">{introduction_section?.subtitle}</p>
       </section>
 
