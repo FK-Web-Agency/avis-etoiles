@@ -38,7 +38,7 @@ export default async function Features() {
       </section>
 
       {/* ------------------------------ CTA ------------------------------ */}
-      <section className="flex flex-col gap-5">
+      <section className="flex flex-col gap-5 text-white">
         <h2 className="h2-bold">{cta?.title}</h2>
         <p>{cta?.subtitle} </p>
 
