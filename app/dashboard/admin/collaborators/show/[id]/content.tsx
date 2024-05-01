@@ -62,6 +62,11 @@ export default function Content({ id }: { id: string }) {
   const orders = data?.data;
   const collaborator = dataCollaborator?.data;
 
+  // order by recently created
+  orders?.sort((a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center gap-4 mb-8">
