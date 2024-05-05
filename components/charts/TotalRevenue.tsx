@@ -82,9 +82,10 @@ export default function TotalRevenue() {
     return sum + seriesSum;
   }, 0);
 
-  const totalRunningMonthSum: any = runningMonthData?.reduce((sum, order: any) => sum + order.price, 0);
-  const totalLastMonthSum: any = lastMonthData?.reduce((sum, order: any) => sum + order.price, 0);
+  const totalRunningMonthSum: any = runningMonthData?.reduce((sum, order: any) => sum + order, 0);
+  const totalLastMonthSum: any = lastMonthData?.reduce((sum, order: any) => sum + order, 0);
 
+  
   const averageChange = totalLastMonthSum ? (totalRunningMonthSum - totalLastMonthSum) / totalLastMonthSum : 0;
   const changePercentage = averageChange * 100;
 
@@ -97,14 +98,14 @@ export default function TotalRevenue() {
           <h5 className="h5-bold">{totalYearSum!} €</h5>
 
           <div className="flex items-center gap-1">
-            {changePercentage <= 0 ? (
+            {changePercentage >= 0 ? (
               <Icons.ArrowUp className="w-4 h-4 text-green-500" />
             ) : (
               <Icons.ArrowDown className="w-4 h-4 text-red-500" />
             )}
 
             <div className="flex flex-col">
-              <span className="text-green-500 p-semibold-14">{changePercentage.toFixed(1)}%</span>
+              <span className={`${changePercentage >= 0 ? "text-green-500": "text-red-500"} p-semibold-14`}>{changePercentage.toFixed(1)}%</span>
               <span className="p-medium-12">Depuis le dernier mois</span>
             </div>
           </div>
