@@ -10,7 +10,7 @@ export default function Page() {
       <h4 className='text-white text-center'>
         Cette page est réservé aux membres uniquement, si vous n'êtes pas encore
         membre vous pouvez nous rejoindre des maintenant en cliquant sur ce{' '}
-        <Link href="/prix">lien</Link>
+        <Link className='text-primary' href="/prix">lien</Link>
       </h4>
       <SignIn
         appearance={{
