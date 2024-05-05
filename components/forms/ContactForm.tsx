@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ToastAction, useToast } from '../ui';
 import sendEmail from '@/lib/actions/resend.actions';
 import { Icons } from '../shared';
+import { form } from 'sanity/structure';
 
 type StringProps = { messageError: string; describe: string };
 
@@ -121,6 +122,10 @@ export default function contactForm() {
         title: 'Message envoyé',
         description: 'Votre message a bien été envoyé',
       });
+
+ 
+      // TODO : reset le formulaire
+
     } else {
       toast({
         title: 'Erreur 💥',

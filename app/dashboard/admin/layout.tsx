@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import '../../styles/globals.css';
 import { Sidebar } from '@/components/shared';
 import { Toaster } from '@/components/ui';
@@ -10,9 +10,11 @@ import { redirect } from 'next/navigation';
 export default function layout({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
 
-  if (!role) redirect('/login');
+  useEffect(() => {
+    if (!role) redirect('/login');
 
-  if (role === 'member') redirect('/dashboard/member/overview');
+    if (role === 'member') redirect('/dashboard/member/overview');
+  }, [role]);
 
   return (
     <html lang="fr" className="min-h-screen">
