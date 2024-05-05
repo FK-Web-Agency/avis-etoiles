@@ -180,6 +180,8 @@ export default function Onboarding({ user }: { user: any }) {
           onSuccess: async ({ data: newData }) => {
             console.log(newData);
 
+            console.log('email', data?.data?.email);
+
             const { status } = await sendEmail({
               email: data?.data?.email,
               subject: 'Votre QR Code est prêt 🎉',
