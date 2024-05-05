@@ -8,7 +8,7 @@ const DashboardSchema = z.object({
       sanityId: z.string(),
     })
     .optional(),
-  role: z.enum(['admin', 'member']).optional(),
+  role: z.enum(['admin', 'member', 'null']).optional(),
 
   setUserIds: z
     .function()
@@ -22,7 +22,7 @@ const DashboardSchema = z.object({
 
   setRole: z
     .function()
-    .args(z.enum(['admin', 'member']))
+    .args(z.enum(['admin', 'member', 'null']))
     .returns(z.void()),
 });
 

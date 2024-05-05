@@ -54,6 +54,7 @@ export default function RefineProvider({ children }: PropsWithChildren) {
     fetch('/api/user')
       .then((res) => res.json())
       .then(({ role }) => {
+        if(!role) return setRole("null")
         setRole(role);
       });
   }, []);

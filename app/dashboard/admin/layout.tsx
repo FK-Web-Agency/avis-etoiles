@@ -11,9 +11,8 @@ export default function layout({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
 
   useEffect(() => {
-    if (!role) redirect('/login');
-
     if (role === 'member') redirect('/dashboard/member/overview');
+    if (role === 'null') redirect('/login');
   }, [role]);
 
   return (

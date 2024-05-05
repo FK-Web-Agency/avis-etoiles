@@ -7,7 +7,7 @@ export default function Page() {
     <div className="flex-center min-h-screen w-full background-body gap-4 flex-col">
       <Icons.Logo />
 
-      <h4 className='text-white text-lg font-semibold text-center'>
+      <h4 className='w-4/5 mx-auto mb-8 text-white text-lg font-semibold text-center'>
         Cette page est réservé aux membres uniquement, si vous n'êtes pas encore
         membre vous pouvez nous rejoindre des maintenant en cliquant sur ce{' '}
         <Link className='text-primary' href="/prix">lien</Link>

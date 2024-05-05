@@ -5,7 +5,11 @@ import { z } from 'zod';
 import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { useOnboardingStore } from '@/store';
 
-export default function ChooseNumberWinners() {
+export default function ChooseNumberWinners({
+  onSave,
+}: {
+  onSave?: (winners: any) => void;
+}) {
   const { gameConfig, setGameConfig, setStep } = useOnboardingStore();
   const { toast } = useToast();
 
@@ -14,15 +18,25 @@ export default function ChooseNumberWinners() {
       .string()
       .min(1)
       .describe('Nombre de gagnants')
-      .default(gameConfig.numberWinners?.winners ? (String(gameConfig.numberWinners?.winners) as string) : ''),
+      .default(
+        gameConfig.numberWinners?.winners
+          ? (String(gameConfig.numberWinners?.winners) as string)
+          : ''
+      ),
     attempts: z
       .string()
       .min(1)
       .describe('Sur combien de tentatives')
-      .default(gameConfig.numberWinners?.attempts ? (String(gameConfig.numberWinners?.attempts) as string) : ''),
+      .default(
+        gameConfig.numberWinners?.attempts
+          ? (String(gameConfig.numberWinners?.attempts) as string)
+          : ''
+      ),
   });
 
-  type ChooseNumberWinnersSchemaType = z.infer<typeof ChooseNumberWinnersSchema>;
+  type ChooseNumberWinnersSchemaType = z.infer<
+    typeof ChooseNumberWinnersSchema
+  >;
 
   const handleSubmit = function (values: ChooseNumberWinnersSchemaType) {
     if (
@@ -38,7 +52,14 @@ export default function ChooseNumberWinners() {
           variant: 'destructive',
         });
 
-      setGameConfig({ numberWinners: { winners: Number(values.winners), attempts: Number(values.attempts) } });
+      const winners = {
+        numberWinners: {
+          winners: Number(values.winners),
+          attempts: Number(values.attempts),
+        },
+      };
+      if (onSave) onSave(winners);
+      setGameConfig(winners);
 
       setStep('chooseSecretCode');
 
