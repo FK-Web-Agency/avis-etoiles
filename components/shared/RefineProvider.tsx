@@ -44,9 +44,8 @@ const resources = {
 };
 
 export default function RefineProvider({ children }: PropsWithChildren) {
-  const { role, setRole } = useDashboardStore();
+  const { role, setRole, setUserIds: setMemberIds, } = useDashboardStore();
   const { user } = useUser();
-  const { setUserIds: setMemberIds } = useDashboardStore();
   const { setUserIds } = useOnboardingStore();
 
   const public_metadata = user?.publicMetadata;

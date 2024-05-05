@@ -107,15 +107,12 @@ export default function Game({ params: { id } }: GameProps) {
   );
   const thisMonthAnalytics = thisYearAnalytics?.months?.at(monthIndex);
 
-
-  useEffect(() => {
-    console.log(index, thisMonthAnalytics, done);
-
+  const incrementVisitors = () => {
     if (index === -1 || !thisMonthAnalytics) return;
     if (done) return;
 
     thisMonthAnalytics.visitors += 1;
-
+    // thisMonthAnalytics[currentAction?.title as string] += 1;
     mutate(
       {
         resource: 'gameAnalytics',
@@ -134,7 +131,7 @@ export default function Game({ params: { id } }: GameProps) {
         },
       }
     );
-  }, [dataAnalytics]);
+  };
 
   useEffect(() => {
     setWheelData({
@@ -192,7 +189,10 @@ export default function Game({ params: { id } }: GameProps) {
               </div>
               {!actionExists && <ErrorActionDoesNotExist />}
               {gameStep === GameStep.starter && actionExists && (
-                <Starter config={{ ...config, ...defaultSettings }} />
+                <Starter
+                  config={{ ...config, ...defaultSettings }}
+                  incrementVisitors={incrementVisitors}
+                />
               )}
               {gameStep === GameStep.launchWheel && actionExists && (
                 <LaunchWheel

@@ -16,14 +16,20 @@ enum AnalyticMonthValue {
   tiktok = 'tiktok',
 }
 
-const IconOverview = ({ Icon, backgroundColor }: { Icon: any; backgroundColor: string }) => (
+const IconOverview = ({
+  Icon,
+  backgroundColor,
+}: {
+  Icon: any;
+  backgroundColor: string;
+}) => (
   <div className={classNames('p-3 rounded-full', backgroundColor)}>
     <Icon className="w-5 h-5 text-slate-50" />
   </div>
 );
 
 export default function Content() {
-  const { userIds } = useDashboardStore();
+  const { userIds,  } = useDashboardStore();
 
   const { data, isLoading } = useList({
     resource: 'gameAnalytics',
@@ -51,9 +57,13 @@ export default function Content() {
 
   const currentYear = new Date().getFullYear();
 
+  const numberOfCurrentMonth = new Date().getMonth();
+
   const retrieveValue = (target: AnalyticMonthValue) => {
     return analytics?.reduce(
-      (acc: number, curr: IAnalyticItem) => getYear(curr.year) === currentYear && acc + curr.months[0][target],
+      (acc: number, curr: IAnalyticItem) =>
+        getYear(curr.year) === currentYear &&
+        acc + curr.months[numberOfCurrentMonth][target],
       0
     );
   };
@@ -72,10 +82,11 @@ export default function Content() {
   const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // const allTiktokReviews = retrieveValue(AnalyticMonthValue.tiktok);
   // Calculate the total number of reviews without Google reviews
-  const totalReviewsWithoutGoogle = allFacebookReviews + allInstagramReviews + allTiktokReviews;
+  const totalReviewsWithoutGoogle =
+    allFacebookReviews + allInstagramReviews + allTiktokReviews;
 
   // Get the total number of winners
-  const allWinners = 0;
+  const allWinners = winners?.data[0].winners.reduce((acc: number, curr: any) => acc + 1, 0);
 
   return (
     <>
@@ -89,7 +100,9 @@ export default function Content() {
           Icon={
             <IconOverview
               Icon={Icons.Stats}
-              backgroundColor={'bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900'}
+              backgroundColor={
+                'bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900'
+              }
             />
           }
         />
@@ -109,17 +122,23 @@ export default function Content() {
           Icon={
             <IconOverview
               Icon={Icons.Share}
-              backgroundColor={'bg-[conic-gradient(at_right,_var(--tw-gradient-stops))] from-indigo-200 via-slate-600 to-indigo-200'}
+              backgroundColor={
+                'bg-[conic-gradient(at_right,_var(--tw-gradient-stops))] from-indigo-200 via-slate-600 to-indigo-200'
+              }
             />
           }
         />
-        <PieChart title="Gagnants" value={allWinners! || 0}
-         Icon={
-          <IconOverview
-            Icon={Icons.Gift}
-            backgroundColor={'bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-700'}
-          />
-        }
+        <PieChart
+          title="Gagnants"
+          value={allWinners! || 0}
+          Icon={
+            <IconOverview
+              Icon={Icons.Gift}
+              backgroundColor={
+                'bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-700'
+              }
+            />
+          }
         />
       </section>
 
