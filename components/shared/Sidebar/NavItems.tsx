@@ -24,7 +24,7 @@ const navigation = {
     { name: 'Dashboard', href: '/dashboard/member/overview', icon: Icons.Dashboard },
     { name: 'Jeu', href: '/dashboard/member/game', icon: Icons.Game },
     { name: 'Reports', href: '/dashboard/member/reports', icon: Icons.Reports },
-    { name: 'Abonnement', href: process.env.NEXT_PUBLIC_STRIPE_PORTAL_HANDLE_SUBSCRIPTION!, icon: Icons.Document },
+    { name: 'Mon Abonnement', href: '/dashboard/member/subscription', icon: Icons.Document },
   ],
 };
 

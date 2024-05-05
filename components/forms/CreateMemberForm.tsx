@@ -6,7 +6,15 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import { useCreate, useList, useNavigation, useOne } from '@refinedev/core';
 
-import { AutoFormSubmit, AutoForm, FormItem, FormControl, FormLabel, FormDescription, useToast } from '@/components/ui';
+import {
+  AutoFormSubmit,
+  AutoForm,
+  FormItem,
+  FormControl,
+  FormLabel,
+  FormDescription,
+  useToast,
+} from '@/components/ui';
 import { createMember } from '@/lib/actions/clerk.actions';
 import { AutoFormInputComponentProps } from '../ui/auto-form/types';
 import { formatToISOString } from '@/helper';
@@ -66,9 +74,17 @@ const MemberSchema = z.object({
     })
     .describe('Adresse Postale'),
   subscription: z.object({
-    free: z.boolean().default(false).describe('Abonnement gratuit').default(false).optional(),
+    free: z
+      .boolean()
+      .default(false)
+      .describe('Abonnement gratuit')
+      .default(false)
+      .optional(),
     plan: z.enum(['essential', 'premium', 'enterprise']).default('essential'),
-    recurring: z.nativeEnum(Recurring).default(Recurring.monthly).describe('Renouvellement'),
+    recurring: z
+      .nativeEnum(Recurring)
+      .default(Recurring.monthly)
+      .describe('Renouvellement'),
     startDate: z.date().describe('Date de début').default(new Date()),
     /* expirationDate: z
       .date()
@@ -107,14 +123,42 @@ export default function CreateMemberForm() {
     // Ask for confirmation if the subscription price is 0
     const askConfirmation =
       values?.subscription?.price == '0' || !values?.subscription?.price
-        ? confirm('The subscription price is 0€, are you sure you want to continue?')
+        ? confirm(
+            'The subscription price is 0€, are you sure you want to continue?'
+          )
         : true;
 
     if (askConfirmation) {
       // Format start and expiration dates
       const startDate = formatToISOString(values?.subscription?.startDate);
       // const expirationDate = formatToISOString(values?.subscription?.expirationDate);
-
+      // Check if all values are not empty
+      if (
+        !(
+          values?.address?.city &&
+          values?.address?.country &&
+          values?.address?.street &&
+          values?.address?.zipCode &&
+          values?.information?.companyName &&
+          values?.information?.email &&
+          values?.information?.firstName &&
+          values?.information?.lastName &&
+          values?.information?.phone &&
+          values?.information?.siret &&
+          values?.subscription?.plan &&
+          values?.subscription?.price &&
+          values?.subscription?.recurring &&
+          values?.subscription?.startDate
+        )
+      ) {
+        toast({
+          title: 'Error',
+          description: 'Veuillez remplir tous les champs',
+          variant: 'destructive',
+        });
+      }
+      const recurring =
+      values.subscription.recurring === 'Mois' ? 'mois' : 'année';
       // Create a new member in Clerk
       const response = await createMember({
         ...values,
@@ -125,6 +169,7 @@ export default function CreateMemberForm() {
         subscription: {
           ...values.subscription,
           startDate,
+          recurring
           // expirationDate,
         },
       });
@@ -139,7 +184,8 @@ export default function CreateMemberForm() {
 
         setLoading(false);
       } else {
-        const recurring = values.subscription.recurring === 'Mois' ? 'month' : 'year';
+        const recurring =
+          values.subscription.recurring === 'Mois' ? 'month' : 'year';
 
         // Create a new subscriber in Sanity
         const user = {
@@ -176,7 +222,9 @@ export default function CreateMemberForm() {
                 email: values?.information?.email,
                 title: values?.subscription?.plan,
                 frequency: recurring,
-                price: values?.subscription?.free ? 0 : values?.subscription?.price,
+                price: values?.subscription?.free
+                  ? 0
+                  : values?.subscription?.price,
                 buyer: JSON.stringify({
                   _type: 'reference',
                   _ref: data?.data?._id,
@@ -227,7 +275,6 @@ export default function CreateMemberForm() {
       }
     }
 
-
     setLoading(false);
   };
 
@@ -243,14 +290,24 @@ export default function CreateMemberForm() {
             },
           },
           phone: {
-            fieldType: ({ label, isRequired, field, fieldConfigItem, fieldProps }: AutoFormInputComponentProps) => (
+            fieldType: ({
+              label,
+              isRequired,
+              field,
+              fieldConfigItem,
+              fieldProps,
+            }: AutoFormInputComponentProps) => (
               <FormItem className="flex flex-col items-start space-y-3 rounded-md">
                 <div className="space-y-1 leading-none">
                   <FormLabel>
                     {label}
                     {isRequired && <span className="text-destructive"> *</span>}
                   </FormLabel>
-                  {fieldConfigItem.description && <FormDescription>{fieldConfigItem.description}</FormDescription>}
+                  {fieldConfigItem.description && (
+                    <FormDescription>
+                      {fieldConfigItem.description}
+                    </FormDescription>
+                  )}
                 </div>
                 <FormControl>
                   <PhoneInput
