@@ -24,7 +24,7 @@ export default function Starter({
   incrementVisitors,
 }: {
   config: BaseRecord | undefined;
-  incrementVisitors: () => void;
+  incrementVisitors?: () => void;
 }) {
   // Get necessary data and functions from the game store
   const { currentAction, gameStep, setGameStep, userLocalStorage } =
@@ -58,7 +58,7 @@ export default function Starter({
   // Handle the user action
   const handleAction = function () {
     // Increment the number of visitors
-    incrementVisitors();
+    incrementVisitors && incrementVisitors();
 
     // Save the user's action history
     const user = {
