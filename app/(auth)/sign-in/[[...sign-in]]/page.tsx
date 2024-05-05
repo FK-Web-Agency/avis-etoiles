@@ -10,7 +10,7 @@ export default function Page() {
       <h4>
         Cette page est réservé aux membres uniquement, si vous n'êtes pas encore
         membre vous pouvez nous rejoindre des maintenant en cliquant sur ce{' '}
-        <Link href="/prices">lien</Link>
+        <Link href="/prix">lien</Link>
       </h4>
       <SignIn
         appearance={{

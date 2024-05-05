@@ -3,7 +3,7 @@ import { PortableText } from '@portabletext/react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, TextGradient } from '@/components/ui';
 import { client, queries } from '@/sanity/lib';
-import { ListPrices } from '@/components/pages/prices';
+import { ListPrices } from '@/components/pages/prix';
 import { generateMetadataWithSanity } from '@/helper';
 import { sanityFetch } from '@/sanity/lib/client';
 import { usePathname, useSearchParams } from 'next/navigation';
