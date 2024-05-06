@@ -161,7 +161,7 @@ export default defineType({
           type: 'string',
           options: {
             list: [
-              { title: 'Essentiel', value: 'essential' },
+              { title: 'Essentiel', value: 'essentiel' },
               { title: 'Pro', value: 'premium' },
               { title: 'Étoile', value: 'etoile' },
             ],
@@ -173,8 +173,8 @@ export default defineType({
           type: 'string',
           options: {
             list: [
-              { title: 'Mensuel', value: 'month' },
-              { title: 'Annuel', value: 'year' },
+              { title: 'Mensuel', value: 'mois' },
+              { title: 'Annuel', value: 'an' },
             ],
           },
         }),

@@ -45,7 +45,10 @@ export default function layout({ children }: PropsWithChildren) {
       </div>
     );
 
-  if (data?.total === 0) {
+  if (data?.total === 0 && !isLoading) {
+    console.log('====================================');
+    console.log("No data");
+    console.log('====================================');
     return (
       <html lang="fr" className="min-h-screen">
         <head>

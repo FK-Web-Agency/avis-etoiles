@@ -34,7 +34,9 @@ export async function createMember(value: any) {
           free: value.subscription?.free,
           status: value.subscription?.free ? true : false,
           plan: value.subscription?.plan,
-          startDate: value.subscription?.startDate ? formatDate(value.subscription?.startDate) : null,
+          startDate: value.subscription?.startDate
+            ? formatDate(value.subscription?.startDate)
+            : null,
           //  expirationDate: value.subscription?.expirationDate ? formatDate(value.subscription?.expirationDate) : null,
         },
         seller: value.seller,
@@ -60,7 +62,8 @@ export async function createMember(value: any) {
     };
   } catch (error: any) {
     console.log(error);
-
+    if (error.status === 422)
+      return { status: 'error', message: "L'adresse email existe déjà." };
     return { status: 'error', message: JSON.stringify(error) };
   }
 }
@@ -101,7 +104,9 @@ export async function updateMemberEmail(id: string, user: any) {
     const { emailAddresses } = await clerkClient.users.getUser(id);
     let emailId;
 
-    const emailExist = emailAddresses.find((email) => email.emailAddress === user.email);
+    const emailExist = emailAddresses.find(
+      (email) => email.emailAddress === user.email
+    );
     emailId = emailExist?.id;
 
     // Create new email address, this method will return an object with the id of the new email address
@@ -114,11 +119,18 @@ export async function updateMemberEmail(id: string, user: any) {
 
       emailId = newEmail.id;
     }
-    const params = { primaryEmailAddressID: emailId, firstName: user.firstName, lastName: user.lastName };
+    const params = {
+      primaryEmailAddressID: emailId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
 
     await clerkClient.users.updateUser(id, params);
 
-    return { status: 'success', message: "L'adresse email a été modifiée avec succès." };
+    return {
+      status: 'success',
+      message: "L'adresse email a été modifiée avec succès.",
+    };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
@@ -129,7 +141,10 @@ export async function changeMemberPassword(id: string, password: string) {
   try {
     await clerkClient.users.updateUser(id, { password });
 
-    return { status: 'success', message: 'Le mot de passe a été modifié avec succès.' };
+    return {
+      status: 'success',
+      message: 'Le mot de passe a été modifié avec succès.',
+    };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
@@ -150,7 +165,10 @@ export async function updateMemberInformation(id: string, user: any) {
 
     await clerkClient.users.updateUserMetadata(id, params);
 
-    return { status: 'success', message: 'Les informations ont été modifiées avec succès.' };
+    return {
+      status: 'success',
+      message: 'Les informations ont été modifiées avec succès.',
+    };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }
@@ -211,7 +229,10 @@ export async function deleteMember(id: string) {
   try {
     await clerkClient.users.deleteUser(id);
 
-    return { status: 'success', message: 'Le membre a été supprimé avec succès.' };
+    return {
+      status: 'success',
+      message: 'Le membre a été supprimé avec succès.',
+    };
   } catch (error: any) {
     return { status: 'error', message: JSON.stringify(error) };
   }

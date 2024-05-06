@@ -156,122 +156,123 @@ export default function CreateMemberForm() {
           description: 'Veuillez remplir tous les champs',
           variant: 'destructive',
         });
-      }
-      const recurring =
-      values.subscription.recurring === 'Mois' ? 'mois' : 'année';
-      // Create a new member in Clerk
-      const response = await createMember({
-        ...values,
-        seller: {
-          _type: 'reference',
-          _ref: seller?._id,
-        },
-        subscription: {
-          ...values.subscription,
-          startDate,
-          recurring
-          // expirationDate,
-        },
-      });
-
-      // If there is an error, display the error message
-      if (response.status === 'error') {
-        toast({
-          title: 'Error',
-          description: response.message,
-          variant: 'destructive',
-        });
-
-        setLoading(false);
       } else {
         const recurring =
-          values.subscription.recurring === 'Mois' ? 'month' : 'year';
-
-        // Create a new subscriber in Sanity
-        const user = {
-          clerkId: response.clerkId,
-          role: 'member',
-          address: values.address,
-          ...values.information,
-          subscription: {
-            ...values.subscription,
-            price: Number(values.subscription.price),
-            recurring,
-            startDate,
-            // expirationDate,
-            status: values?.subscription?.free ? 'active' : 'incomplete',
-          },
+          values.subscription.recurring === 'Mois' ? 'mois' : 'année';
+        // Create a new member in Clerk
+        const response = await createMember({
+          ...values,
           seller: {
             _type: 'reference',
             _ref: seller?._id,
           },
-          disabled: 'false',
-        };
-
-        mutate(
-          {
-            resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
-            values: user,
+          subscription: {
+            ...values.subscription,
+            startDate,
+            recurring,
+            // expirationDate,
           },
-          {
-            onSuccess: async (data: any) => {
-              console.log('data', data);
+        });
 
-              const order = {
-                id: data?.data?._id,
-                email: values?.information?.email,
-                title: values?.subscription?.plan,
-                frequency: recurring,
-                price: values?.subscription?.free
-                  ? 0
-                  : values?.subscription?.price,
-                buyer: JSON.stringify({
-                  _type: 'reference',
-                  _ref: data?.data?._id,
-                }),
-                seller: JSON.stringify({
-                  _type: 'reference',
-                  _ref: seller?._id,
-                }),
-                subscription: JSON.stringify({
-                  ...values.subscription,
-                  status: values?.subscription?.free ? true : false,
-                  recurring,
-                  startDate,
-                  //  expirationDate,
-                }),
-              };
-              if (!values?.subscription?.free) {
-                // Checkout the order
-                const { status, message } = await checkoutSubscription(order);
+        // If there is an error, display the error message
+        if (response.status === 'error') {
+          toast({
+            title: 'Error',
+            description: response.message,
+            variant: 'destructive',
+          });
 
-                if (status === 'error') {
-                  toast({
-                    variant: 'destructive',
-                    title: 'Uh oh! Une erreur est survenue',
-                    description: message,
-                  });
-                } else {
-                  toast({
-                    description: message,
-                  });
+          setLoading(false);
+        } else {
+          const recurring =
+            values.subscription.recurring === 'Mois' ? 'month' : 'year';
 
-                  setTimeout(() => {
-                    list('members');
-                  }, 1000);
-                }
-              }
-
-              toast({
-                description: 'Votre membres a été créé avec succès!',
-              });
-
-              setTimeout(() => {
-                list('members');
-              }, 1000);
+          // Create a new subscriber in Sanity
+          const user = {
+            clerkId: response.clerkId,
+            role: 'member',
+            address: values.address,
+            ...values.information,
+            subscription: {
+              ...values.subscription,
+              price: Number(values.subscription.price),
+              recurring,
+              startDate,
+              // expirationDate,
+              status: values?.subscription?.free ? 'active' : 'incomplete',
             },
-          }
-        );
+            seller: {
+              _type: 'reference',
+              _ref: seller?._id,
+            },
+            disabled: 'false',
+          };
+
+          mutate(
+            {
+              resource: process.env.NEXT_PUBLIC_SANITY_SUBSCRIBERS!,
+              values: user,
+            },
+            {
+              onSuccess: async (data: any) => {
+                console.log('data', data);
+
+                const order = {
+                  id: data?.data?._id,
+                  email: values?.information?.email,
+                  title: values?.subscription?.plan,
+                  frequency: recurring,
+                  price: values?.subscription?.free
+                    ? 0
+                    : values?.subscription?.price,
+                  buyer: JSON.stringify({
+                    _type: 'reference',
+                    _ref: data?.data?._id,
+                  }),
+                  seller: JSON.stringify({
+                    _type: 'reference',
+                    _ref: seller?._id,
+                  }),
+                  subscription: JSON.stringify({
+                    ...values.subscription,
+                    status: values?.subscription?.free ? true : false,
+                    recurring,
+                    startDate,
+                    //  expirationDate,
+                  }),
+                };
+                if (!values?.subscription?.free) {
+                  // Checkout the order
+                  const { status, message } = await checkoutSubscription(order);
+
+                  if (status === 'error') {
+                    toast({
+                      variant: 'destructive',
+                      title: 'Uh oh! Une erreur est survenue',
+                      description: message,
+                    });
+                  } else {
+                    toast({
+                      description: message,
+                    });
+
+                    setTimeout(() => {
+                      list('members');
+                    }, 1000);
+                  }
+                }
+
+                toast({
+                  description: 'Votre membres a été créé avec succès!',
+                });
+
+                setTimeout(() => {
+                  list('members');
+                }, 1000);
+              },
+            }
+          );
+        }
       }
     }
 

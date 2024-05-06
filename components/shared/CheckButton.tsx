@@ -98,6 +98,7 @@ export default function CheckoutButton({ plan }: any) {
   }, []);
 
   const onCheckout = async function (values: InfoSchemaType) {
+    const recurring = plan.frequency === 'month' ? 'mois' : 'année';
     const buyer = {
       information: values.information,
       role: 'member',
@@ -107,6 +108,7 @@ export default function CheckoutButton({ plan }: any) {
         startDate: new Date(),
         plan: plan.title,
         price: plan.price,
+        recurring,
       },
       seller: {
         _type: 'reference',
@@ -133,6 +135,7 @@ export default function CheckoutButton({ plan }: any) {
           subscription: {
             plan: plan.title,
             price: plan.price,
+            startDate: new Date(),
           },
           seller: {
             _type: 'reference',

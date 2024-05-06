@@ -13,6 +13,7 @@ import '../styles/globals.css';
 import { Icons } from '@/components/shared';
 import { UserHistoryProps } from '@/store/game.store';
 import { Toaster } from '@/components/ui';
+import { useParams } from 'next/navigation';
 
 // Incognito Content
 function IncognitoContent() {
@@ -20,12 +21,15 @@ function IncognitoContent() {
     <main className="wrapper ">
       <h1 className="h1-bold text-red-700">Navigation Privée</h1>
       <p className="p-semibold-16 mt-10">
-        Nous avons détecté que vous utilisez actuellement le mode de navigation privée. Malheureusement, notre site Web
-        n'est pas entièrement fonctionnel dans ce mode pour des raisons de performance et de sécurité. <br />
-        <br /> Pour profiter pleinement de toutes les fonctionnalités de notre site, nous vous recommandons de
-        désactiver le mode de navigation privée ou de visiter notre site dans une fenêtre de navigateur standard. <br />
-        <br /> Nous nous excusons pour tout désagrément que cela pourrait causer et vous remercions de votre
-        compréhension.
+        Nous avons détecté que vous utilisez actuellement le mode de navigation
+        privée. Malheureusement, notre site Web n'est pas entièrement
+        fonctionnel dans ce mode pour des raisons de performance et de sécurité.{' '}
+        <br />
+        <br /> Pour profiter pleinement de toutes les fonctionnalités de notre
+        site, nous vous recommandons de désactiver le mode de navigation privée
+        ou de visiter notre site dans une fenêtre de navigateur standard. <br />
+        <br /> Nous nous excusons pour tout désagrément que cela pourrait causer
+        et vous remercions de votre compréhension.
       </p>
     </main>
   );
@@ -38,12 +42,12 @@ function UserCanNotPlay() {
       <div className="wrapper">
         <h1 className="h1-bold text-red-700 mb-8">🕒 Attendez un peu !</h1>
         <p className="p-semibold-16">
-          Nous sommes ravis de voir votre enthousiasme, mais il semble que vous ayez accédé à cette fonctionnalité très
-          récemment.
+          Nous sommes ravis de voir votre enthousiasme, mais il semble que vous
+          ayez accédé à cette fonctionnalité très récemment.
           <br />
           <br />
-          Pour assurer une expérience équilibrée pour tous nos utilisateurs, nous avons mis en place une période
-          d'attente de 24 heures.
+          Pour assurer une expérience équilibrée pour tous nos utilisateurs,
+          nous avons mis en place une période d'attente de 24 heures.
         </p>
       </div>
     </main>
@@ -57,8 +61,8 @@ function LargeDeviceContent() {
       <div className="wrapper">
         <h1 className="h1-bold text-red-700">Grand écran</h1>
         <p className="p-semibold-16">
-          Optimisée pour les smartphones, notre page offre une expérience utilisateur exceptionnelle sur tous les
-          appareils mobiles et tablette.
+          Optimisée pour les smartphones, notre page offre une expérience
+          utilisateur exceptionnelle sur tous les appareils mobiles et tablette.
         </p>
       </div>
     </main>
@@ -84,15 +88,25 @@ function MainContent({ children }: PropsWithChildren) {
   );
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isPrivateMode, setIsPrivateMode] = useState(false);
   const [isSmallDevice, setIsSmallDevice] = useState(false);
-  const [userHistory, saveUserHistory] = useLocalStorage<UserHistoryProps | undefined>(
-    process.env.NEXT_PUBLIC_USER_LOCAL_STORAGE_KEY!,
+  // Get id params from the url
+  const params = useParams();
+
+  const [userHistory, saveUserHistory] = useLocalStorage<
+    UserHistoryProps | undefined
+  >(
+    `${process.env.NEXT_PUBLIC_USER_LOCAL_STORAGE_KEY!}-${params?.id}`,
     undefined
   );
   const size = useWindowSize();
-  const { canPlay, setCanPlay, setCurrentAction, setUserLocalStorage } = useGameStore();
+  const { canPlay, setCanPlay, setCurrentAction, setUserLocalStorage } =
+    useGameStore();
 
   useEffect(() => {
     // Verify the user don't use private navigation
@@ -107,27 +121,47 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if (userHistory?.lastGamePlayed) {
       const today = new Date();
       // Verify the last date played is not today
-      const todayFormat = today.toLocaleString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' });
-      const lastGamePlayedFormat = new Date(userHistory?.lastGamePlayed).toLocaleString('fr-FR', {
+      const todayFormat = today.toLocaleString('fr-FR', {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+      });
+      const lastGamePlayedFormat = new Date(
+        userHistory?.lastGamePlayed
+      ).toLocaleString('fr-FR', {
         day: 'numeric',
         month: 'numeric',
         year: 'numeric',
       });
 
-      todayFormat === lastGamePlayedFormat ? setCanPlay(false) : setCanPlay(true);
+      todayFormat === lastGamePlayedFormat
+        ? setCanPlay(false)
+        : setCanPlay(true);
     }
 
     // Verify the action the user has to do
     if (userHistory?.actions) {
       const actions = userHistory?.actions;
 
-      if (actions.includes('google') && !actions.includes('facebook') && !actions.includes('instagram')) {
+      if (
+        actions.includes('google') &&
+        !actions.includes('facebook') &&
+        !actions.includes('instagram')
+      ) {
         return setCurrentAction({ title: 'instagram', Icon: Icons.Instagram });
       }
-      if (actions.includes('instagram') && actions.includes('google') && !actions.includes('facebook')) {
+      if (
+        actions.includes('instagram') &&
+        actions.includes('google') &&
+        !actions.includes('facebook')
+      ) {
         return setCurrentAction({ title: 'facebook', Icon: Icons.Facebook });
       }
-      if (actions.includes('facebook') && actions.includes('instagram') && actions.includes('google')) {
+      if (
+        actions.includes('facebook') &&
+        actions.includes('instagram') &&
+        actions.includes('google')
+      ) {
         return setCurrentAction({ title: 'tiktok', Icon: Icons.Tiktok });
       }
     } else {

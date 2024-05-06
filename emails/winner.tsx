@@ -3,12 +3,12 @@
 import { Body, Container, Head, Heading, Html, Img, Link, Preview, Tailwind, Text } from '@react-email/components';
 import * as React from 'react';
 
-function calculate24HoursEnd(date: Date) {
+function calculate24HoursEnd(date:Date) {
   const givenDate = new Date(date);
   // Ajoute 24 heures à la date donnée
   const endDate = new Date(givenDate.getTime() + 24 * 60 * 60 * 1000);
 
-  // Formate la date et l'heure de fin
+  // Formate la date et l'heure de fin en français
   const endDateString = endDate.toLocaleString('fr-FR', {
     year: 'numeric',
     month: '2-digit',
@@ -18,7 +18,8 @@ function calculate24HoursEnd(date: Date) {
     hour12: false,
   });
 
-  return endDateString;
+  // Convertit "dd/mm/yyyy, hh:mm" en "dd/mm/yyyy à hh:mm"
+  return endDateString.replace(',', ' à');
 }
 
 export const RewardTemplate = (values: any) => (
