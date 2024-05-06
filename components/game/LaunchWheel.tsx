@@ -48,7 +48,7 @@ export default function LaunchWheel({
   });
 
   function handleSpinStop(result: any) {
-    if (!sandbox) {
+/*     if (!sandbox) {
       if (thisMonthAnalytics) {
         thisMonthAnalytics[currentAction?.title!] += 1;
       }
@@ -60,7 +60,7 @@ export default function LaunchWheel({
         },
         id: analytics?._id,
       });
-    }
+    } */
 
     setResult(result?.label);
 

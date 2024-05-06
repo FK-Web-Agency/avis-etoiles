@@ -25,8 +25,8 @@ export default function Sidebar({ children }: PropsWithChildren) {
             <div className="flex h-16 shrink-0 items-center">
               <Icons.Logo hrefNull />
             </div>
-            <nav className="flex justify-between flex-1 flex-col">
-              <ul role="list" className="flex flex-1 flex-col gap-y-7">
+            <nav className="flex  flex-1 flex-col">
+              <ul role="list" className="flex flex-1 justify-between flex-col gap-y-7">
                 <li>
                   <NavItems />
                 </li>
@@ -44,8 +44,9 @@ export default function Sidebar({ children }: PropsWithChildren) {
                   </Link>
                   <Button
                     variant={'ghost'}
+                    className='items-start justify-start p-0'
                     onClick={() => signOut(() => redirect('/sign-in'))}>
-                    <div className="flex items-center gap-2 text-white cursor-pointer">
+                    <div className="flex gap-2 text-white cursor-pointer">
                       <Icons.Logout
                         className="h-6 w-6 shrink-0"
                         aria-hidden="true"

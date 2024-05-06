@@ -112,6 +112,7 @@ export default function Game({ params: { id } }: GameProps) {
     if (done) return;
 
     thisMonthAnalytics.visitors += 1;
+    thisMonthAnalytics[currentAction?.title!] += 1;
     // thisMonthAnalytics[currentAction?.title as string] += 1;
     mutate(
       {
@@ -123,7 +124,6 @@ export default function Game({ params: { id } }: GameProps) {
       },
       {
         onSuccess() {
-          console.log('success');
           setDone(true);
         },
         onError(error) {
