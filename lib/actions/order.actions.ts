@@ -70,14 +70,36 @@ export const checkoutOrder = async (order: any) => {
   }
 };
 
-
 export const updateSubscription = async (order: any) => {
-  const subscriptions = await stripe.subscriptions.list();
+  const subscriptions = await stripe.subscriptions.list({
+    customer: order.customer_id,
+  });
 
-  console.log('subscriptions', subscriptions);
-  
-}
+  console.log('subscriptions', subscriptions.data[0].items.data[0].plan);
 
+  let frequency = order?.frequency === 'Month' ? 'month' : 'year';
+
+  const price = await stripe.prices.create({
+    currency: 'eur',
+    unit_amount: order.price * 100,
+    recurring: {
+      interval: frequency as 'month' | 'year',
+    },
+    product_data: {
+      name: frequency,
+    },
+  //  product: subscriptions.data[0].items.data[0].plan.product as string,
+  });
+
+  await stripe.subscriptions.update(subscriptions.data[0].id, {
+    items: [
+      {
+        id: subscriptions.data[0].items.data[0].id,
+        price: price.id,
+      },
+    ],
+  });
+};
 
 export const checkoutSubscription = async (order: any) => {
   const startDate = new Date(JSON.parse(order.subscription).startDate);

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { checkoutOrder, updateSubscription } from '@/lib/actions/order.actions';
 import sendEmail from '@/lib/actions/resend.actions';
-import { sub } from 'date-fns';
+import { client } from '@/sanity/lib';
 enum Recurring {
   monthly = 'Mois',
   yearly = 'Année',
@@ -44,48 +44,53 @@ export default function EditSubscription({ user }: any) {
 
   // Handle form actions
   const handleAction = async function (values: EditSubscriptionProps) {
-    console.log(user, "values");
-    
     let resend;
-
-
 
     try {
       if (!values.free) {
-        // Create A link Stripe for payment
         const order = {
-          id: user._id,
-          title: values?.plan,
+          customer_id: user?.stripeId,
           price: values?.price,
-          subscription: user?.subscription,
-          metadata: {
-            buyer: JSON.stringify({
-              _id: user?._id,
-              email: user?.email,
-              companyName: user?.companyName,
-            }),
-            seller: JSON.stringify({
-              _id: process.env.NEXT_PUBLIC_SANITY_CLERK_ID,
-              email: process.env.NEXT_PUBLIC_SANITY_CLERK_EMAIL,
-              companyName: process.env.NEXT_PUBLIC_SANITY_CLERK_COMPANY_NAME,
-            }),
-            plan: values?.plan,
-            frequency: values?.recurring,
-          },
+          recurring: values?.recurring === 'Mois' ? 'month' : 'year',
+          title: values?.plan === 'essential' ? 'essentiel' : values?.plan,
         };
 
-        const url = await updateSubscription(order);
+        await updateSubscription(order);
+
+        const plan = values?.plan === 'essential' ? 'essentiel' : values?.plan;
+
+        await client
+          .patch(user._id)
+          .set({
+            subscription: {
+              ...user?.subscription,
+              plan,
+              recurring: values?.recurring === 'Mois' ? 'mois' : 'an',
+              price: Number(values?.price),
+            },
+          })
+          .commit();
 
         // Send a email to the user with the link Stripe
-        resend = await sendEmail({
+     /*    resend = await sendEmail({
           email: user?.email,
           subject: 'Paiement de votre abonnement',
           emailTemplate: 'payment',
           companyName: user?.companyName,
           url,
-        });
+        }); */
       } else {
+        const order = {
+          customer_id: user?.stripeId,
+          price: 0,
+          recurring: values?.recurring === 'Mois' ? 'month' : 'year',
+          title: values?.plan === 'essential' ? 'essentiel' : values?.plan,
+        };
+
+        await updateSubscription(order);
         // Send a email to the user for confirm the subscription
+
+        // TODO create a new email template for this
         resend = await sendEmail({
           email: user?.email,
           subject: 'Confirmation de votre abonnement',
