@@ -41,10 +41,10 @@ export default function Content() {
             </p>
           </div>
 
-          {/* <div>
+          <div>
             <h3 className=" text-sm">Début</h3>
             <p className=" text-sm">{formatDate((subscription?.startDate))}</p>
-          </div> */}
+          </div>
         </div>
       </div>
 
