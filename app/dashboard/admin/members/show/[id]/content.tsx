@@ -53,9 +53,13 @@ export default function Content({ id }: { id: string }) {
 
   const currentYear = new Date().getFullYear();
 
+  
+  const numberOfCurrentMonth = new Date().getMonth();
   const retrieveValue = (target: AnalyticMonthValue) => {
     return analytics?.reduce(
-      (acc: number, curr: IAnalyticItem) => getYear(curr.year) === currentYear && acc + curr.months[0][target],
+      (acc: number, curr: IAnalyticItem) =>
+        getYear(curr.year) === currentYear &&
+        acc + curr.months[numberOfCurrentMonth][target],
       0
     );
   };
