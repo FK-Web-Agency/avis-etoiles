@@ -7,13 +7,16 @@ import { kv } from '@vercel/kv';
 import { redirect } from 'next/navigation';
 
 const STRIPE_SECRET_KEY =
-  process.env.NODE_ENV === 'development' ? process.env.STRIPE_SECRET_KEY_TEST : process.env.STRIPE_SECRET;
+  process.env.NODE_ENV === 'development'
+    ? process.env.STRIPE_SECRET_KEY_TEST
+    : process.env.STRIPE_SECRET;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST!);
 const baseUrl =
-  process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_LOCALHOST_URL : process.env.NEXT_PUBLIC_BASE_URL;
+  process.env.NODE_ENV === 'development'
+    ? process.env.NEXT_PUBLIC_LOCALHOST_URL
+    : process.env.NEXT_PUBLIC_BASE_URL;
 
-
-  export const checkoutOrder = async (order: any) => {
+export const checkoutOrder = async (order: any) => {
   try {
     const session = await stripe.checkout.sessions.create({
       customer_email: order.email,
@@ -67,12 +70,23 @@ const baseUrl =
   }
 };
 
+
+export const updateSubscription = async (order: any) => {
+  const subscriptions = await stripe.subscriptions.list();
+
+  console.log('subscriptions', subscriptions);
+  
+}
+
+
 export const checkoutSubscription = async (order: any) => {
   const startDate = new Date(JSON.parse(order.subscription).startDate);
   const now = new Date();
 
   const compareNowAndStartDate = startDate.getTime() <= now.getTime();
-  const billingCycleAnchor = compareNowAndStartDate ? undefined : Math.floor(startDate.getTime() / 1000);
+  const billingCycleAnchor = compareNowAndStartDate
+    ? undefined
+    : Math.floor(startDate.getTime() / 1000);
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -137,7 +151,10 @@ export const checkoutSubscription = async (order: any) => {
       },
     });
 
-    await client.patch(JSON.parse(order.buyer)._ref).set({ stripeSessionId: session.id }).commit();
+    await client
+      .patch(JSON.parse(order.buyer)._ref)
+      .set({ stripeSessionId: session.id })
+      .commit();
     // Send email
     const { status } = await sendEmail({
       email: order.email,
@@ -147,8 +164,16 @@ export const checkoutSubscription = async (order: any) => {
     });
 
     return status === 'success'
-      ? { status: 'success', message: 'Abonné crée avec success, un email a été envoyé', data: session }
-      : { status: 'error', message: "Une erreur s'est produite, merci de réessayer ultérieurement" };
+      ? {
+          status: 'success',
+          message: 'Abonné crée avec success, un email a été envoyé',
+          data: session,
+        }
+      : {
+          status: 'error',
+          message:
+            "Une erreur s'est produite, merci de réessayer ultérieurement",
+        };
   } catch (error) {
     throw error;
   }

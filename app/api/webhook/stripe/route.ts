@@ -50,10 +50,14 @@ export async function POST(request: Request) {
       console.log('====================================');
       console.log(metadata);
       console.log('====================================');
+
+      console.log('event.data.object', event.data.object);
+
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
 
       const invoice = await kv.get('invoice');
+      const customer = await kv.get('customer');
 
       // Création de l'objet de commande
       const order = {
@@ -84,6 +88,7 @@ export async function POST(request: Request) {
             recurring: metadata?.frequency === 'month' ? 'mois' : 'an',
             status: 'active',
           },
+          stripeId: customer,
         })
         .commit();
 
@@ -94,17 +99,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'OK', order: newOrder });
     } else if (event.type === 'payment_intent.succeeded') {
       console.log('payment_intent.succeeded');
+      const { customer} = event.data.object;
+
+      await kv.set('customer', customer);
     } else if (event.type === 'customer.subscription.created') {
       console.log('customer.subscription.created');
       const { id, metadata } = event.data.object;
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
-      const member = {
+/*       const member = {
         stripeId: id,
         buyer,
         seller,
         createdAt: new Date().toISOString(),
-      };
+      }; */
       ///const newMember = await createMember(member);
       return NextResponse.json({ message: 'OK', data: event.data.object });
     }

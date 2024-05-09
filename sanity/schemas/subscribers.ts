@@ -78,7 +78,10 @@ export default defineType({
 
             const duplicateEmails = await client.fetch(filter, params);
             // @ts-ignore
-            if (duplicateEmails.length > 0 && !schema?.document._id.includes(duplicateEmails[0]._id)) {
+            if (
+              duplicateEmails.length > 0 &&
+              !schema?.document._id.includes(duplicateEmails[0]._id)
+            ) {
               return 'Email already exists';
             }
 
@@ -206,6 +209,11 @@ export default defineType({
       title: 'Stripe Session Id',
       type: 'string',
       readOnly: true,
+    }),
+    defineField({
+      name: 'stripeId',
+      title: 'Stripe Id',
+      type: 'string',
     }),
   ],
   preview: {
