@@ -54,14 +54,12 @@ export async function POST(request: Request) {
       const seller = JSON.parse(metadata?.seller as string);
 
       const invoice = await kv.get('invoice');
-      let plan = metadata?.plan;
-      if (plan === 'essential') plan = 'essentiel';
 
       // Création de l'objet de commande
       const order = {
         stripeId: id,
-        plan,
-        frequency: (metadata?.frequency === 'month' ? 'mois' : 'an') || '',
+        plan: metadata?.plan || '',
+        frequency: metadata?.frequency || '',
         buyer,
         seller,
         price: amount_total,
@@ -71,19 +69,23 @@ export async function POST(request: Request) {
 
       // Création de la commande dans la base de données
       const newOrder = await createOrder(order);
+
+      let plan = metadata?.plan;
+
+      if (plan === 'essential') plan = 'Essentiel';
+
       await client
         .patch(buyer._ref)
         .set({
           subscription: {
             price: amount_total! / 100,
             startDate: new Date().toISOString(),
-            plan: metadata?.plan || '',
-            recurring: metadata?.frequency || '',
+            plan,
+            recurring: metadata?.frequency === 'month' ? 'mois' : 'an',
             status: 'active',
           },
         })
-        .commit()
-        .then((res) => console.log(res, 'subscription updated'));
+        .commit();
 
       await kv.del('invoice');
       await kv.del(`subscriber:${buyer.email}`);
