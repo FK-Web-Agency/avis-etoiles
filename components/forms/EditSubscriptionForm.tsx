@@ -21,7 +21,7 @@ export default function EditSubscription({ user }: any) {
       .default(user?.subscription?.free)
       .optional(),
     plan: z
-      .enum(['essential', 'premium', 'enterprise'])
+      .enum(['essential', 'premium', 'etoile'])
       .default(user?.subscription?.plan)
       .optional(),
     // @ts-ignore

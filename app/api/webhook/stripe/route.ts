@@ -54,12 +54,14 @@ export async function POST(request: Request) {
       const seller = JSON.parse(metadata?.seller as string);
 
       const invoice = await kv.get('invoice');
+      let plan = metadata?.plan;
+      if (plan === 'essential') plan = 'essentiel';
 
       // Création de l'objet de commande
       const order = {
         stripeId: id,
-        plan: metadata?.plan || '',
-        frequency: metadata?.frequency || '',
+        plan,
+        frequency: (metadata?.frequency === 'month' ? 'mois' : 'an') || '',
         buyer,
         seller,
         price: amount_total,
@@ -73,7 +75,7 @@ export async function POST(request: Request) {
         .patch(buyer._ref)
         .set({
           subscription: {
-           price: amount_total!/100,
+            price: amount_total! / 100,
             startDate: new Date().toISOString(),
             plan: metadata?.plan || '',
             recurring: metadata?.frequency || '',
