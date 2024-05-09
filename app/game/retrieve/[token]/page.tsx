@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
-import { useList, useUpdate } from '@refinedev/core';
+import { useList, useOne, useUpdate } from '@refinedev/core';
 import { jwtDecode } from 'jwt-decode';
 import bcrypt from 'bcryptjs-react';
 
@@ -40,19 +40,13 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
   const tokenDecoded: any = jwtDecode(token);
   const { mutate } = useUpdate();
 
-console.log('====================================');
-console.log(tokenDecoded, 'tokenDecoded');
-console.log('====================================');
+  console.log('====================================');
+  console.log(tokenDecoded, 'tokenDecoded');
+  console.log('====================================');
 
-  const { data, isLoading } = useList({
+  const { data, isLoading } = useOne({
     resource: 'gameWinners',
-    filters: [
-      {
-        field: 'user._ref',
-        operator: 'contains',
-        value: tokenDecoded?.id as string,
-      },
-    ],
+    id: tokenDecoded?.id as string,
   });
 
   const { data: dataConfig } = useList({
@@ -66,12 +60,16 @@ console.log('====================================');
     ],
   });
 
-  console.log('====================================');
-  console.log(data);
-  console.log('====================================');
-  const winners = data?.data[0]?.winners;
-  const winner = winners?.find((winner: any) => winner.winnerEmail === tokenDecoded?.winner.email);
+
+  const winners = data?.data?.winners;
+  const winner = winners?.find(
+    (winner: any) => winner.winnerEmail === tokenDecoded?.winner.email
+  );
   const config = dataConfig?.data[0];
+
+console.log('====================================');
+console.log('winner', tokenDecoded);
+console.log('====================================');
 
   useEffect(() => {
     if (winner?.createdAt) {
@@ -103,17 +101,24 @@ console.log('====================================');
       <main className="min-h-screen background-body">
         <div className="wrapper">
           <h1 className="p-semibold-18 text-center text-white mb-8">
-            Vous devez attendre 24 heures avant de pouvoir récupérer votre récompense
+            Vous devez attendre 24 heures avant de pouvoir récupérer votre
+            récompense
           </h1>
 
-          <p>La récompense sera disponible le {calculate24HoursEnd(winner?.createdAt)} </p>
+          <p>
+            La récompense sera disponible le{' '}
+            {calculate24HoursEnd(winner?.createdAt)}{' '}
+          </p>
         </div>
       </main>
     );
   }
 
   const handleSubmit = async function () {
-    const secretCodeIsCorrect = await bcrypt.compare(textEntered, config?.secretCode);
+    const secretCodeIsCorrect = await bcrypt.compare(
+      textEntered,
+      config?.secretCode
+    );
 
     if (secretCodeIsCorrect)
       return toast({
@@ -150,14 +155,16 @@ console.log('====================================');
           </div>
         ) : (
           <>
-            <h1 className="h5-bold text-center text-white">Récupération de récompense</h1>
+            <h1 className="h5-bold text-center text-white">
+              Récupération de récompense
+            </h1>
 
             <div className="mt-20">
               <p className="p-bold-24 text-center">
                 <span className="uppercase">
                   {winner?.winnerFirstName} {winner?.winnerLastName}{' '}
                 </span>
-                a gagné 1 {winner?.reward?.rewardName}
+                a gagné 1 {tokenDecoded?.reward?.rewardName}
               </p>
 
               <Image
@@ -170,19 +177,26 @@ console.log('====================================');
 
               <Dialog>
                 <DialogTrigger className="w-full absolute bottom-8 left-0 right-0 px-4">
-                  <Button variant={'gradient'} className="w-full py-6 p-medium-18 uppercase mt-10">
+                  <Button
+                    variant={'gradient'}
+                    className="w-full py-6 p-medium-18 uppercase mt-10">
                     Recuperer
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle className="p-semibold-20">
-                      Pour confirmer la récupération de la récompense merci de saissir votre code secret
+                      Pour confirmer la récupération de la récompense merci de
+                      saissir votre code secret
                     </DialogTitle>
                     <DialogDescription>
                       <div className="mt-8">
                         <Label htmlFor="code">Code secret</Label>
-                        <Input onChange={(e) => setTextEntered(e.target.value)} value={textEntered} type="password" />
+                        <Input
+                          onChange={(e) => setTextEntered(e.target.value)}
+                          value={textEntered}
+                          type="password"
+                        />
                       </div>
                       <DialogClose>
                         <Button
