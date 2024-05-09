@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
       let plan = metadata?.plan;
 
-      if (plan === 'essential') plan = 'Essentiel';
+      if (plan === 'essential') plan = 'essentiel';
 
       await client
         .patch(buyer._ref)
