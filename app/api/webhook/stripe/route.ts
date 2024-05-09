@@ -69,6 +69,7 @@ export async function POST(request: Request) {
         .patch(buyer._ref)
         .set({
           subscription: {
+            ...buyer.subscription,
             status: 'active',
           },
         })

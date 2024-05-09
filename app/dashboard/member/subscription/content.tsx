@@ -21,7 +21,7 @@ export default function Content() {
   const subscription = data?.data?.subscription;
 
   console.log('====================================');
-  console.log('subscription', subscription?.startDate);
+  console.log('subscription', data);
   console.log('====================================');
   return (
     <div>
