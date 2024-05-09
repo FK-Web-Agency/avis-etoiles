@@ -12,7 +12,9 @@ export async function POST(request: Request) {
   // Récupération de la signature Stripe depuis les en-têtes de la requête
   const sig = request.headers.get('stripe-signature') as string;
   const endpout =
-    process.env.NODE_ENV === 'development' ? 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F' : 'we_1OlDmXJ4ZeV5iA6Rl0GVbYPQ'; // Secret de l'endpoint, à garder sécurisé
+    process.env.NODE_ENV === 'development'
+      ? 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F'
+      : 'we_1OlDmXJ4ZeV5iA6Rl0GVbYPQ'; // Secret de l'endpoint, à garder sécurisé
   const endpointSecret = 'whsec_WxJevKl88mrxDGXgLJ1Xkf3gh4omPD2F';
 
   try {
@@ -45,7 +47,9 @@ export async function POST(request: Request) {
 
       // Traitement pour une session de paiement terminée
       const { id, amount_total, metadata } = event.data.object;
-
+      console.log('====================================');
+      console.log(metadata);
+      console.log('====================================');
       const buyer = JSON.parse(metadata?.buyer as string);
       const seller = JSON.parse(metadata?.seller as string);
 
@@ -69,7 +73,7 @@ export async function POST(request: Request) {
         .patch(buyer._ref)
         .set({
           subscription: {
-            ...buyer.subscription,
+            ...(metadata?.subscription as any),
             status: 'active',
           },
         })

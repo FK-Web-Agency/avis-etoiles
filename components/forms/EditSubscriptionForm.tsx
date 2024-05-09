@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { AutoForm, AutoFormSubmit, useToast } from '@/components/ui';
 import { checkoutOrder } from '@/lib/actions/order.actions';
 import sendEmail from '@/lib/actions/resend.actions';
+import { sub } from 'date-fns';
 enum Recurring {
   monthly = 'Mois',
   yearly = 'Année',
@@ -13,13 +14,31 @@ export default function EditSubscription({ user }: any) {
   const { toast } = useToast();
 
   const EditSubscriptionSchema = z.object({
-    free: z.boolean().default(false).describe('Abonnement gratuit').default(user?.subscription?.free).optional(),
-    plan: z.enum(['essential', 'premium', 'enterprise']).default(user?.subscription?.plan).optional(),
+    free: z
+      .boolean()
+      .default(false)
+      .describe('Abonnement gratuit')
+      .default(user?.subscription?.free)
+      .optional(),
+    plan: z
+      .enum(['essential', 'premium', 'enterprise'])
+      .default(user?.subscription?.plan)
+      .optional(),
     // @ts-ignore
-    recurring: z.nativeEnum(Recurring).default(Recurring[user?.subscription?.recurring]).describe('Renouvellement'),
+    recurring: z
+      .nativeEnum(Recurring)
+
+      // @ts-ignore
+      .default(Recurring[user?.subscription?.recurring])
+      .describe('Renouvellement'),
     //startDate: z.date().describe('Date de début').default(new Date(user?.subscription?.startDate)),
     //expirationDate: z.date().describe('Date de fin').default(new Date(user?.subscription?.expirationDate)),
-    price: z.string().default(user?.subscription?.price).describe('Prix').default(user?.subscription?.price),
+    price: z
+      .string()
+      .default(user?.subscription?.price)
+      .describe('Prix')
+      .default(user?.subscription?.price),
+
   });
 
   type EditSubscriptionProps = z.infer<typeof EditSubscriptionSchema>;
@@ -34,6 +53,7 @@ export default function EditSubscription({ user }: any) {
         id: user._id,
         title: values?.plan,
         price: values?.price,
+        subscription: user?.subscription,
       };
 
       const url = await checkoutOrder(order);
@@ -60,7 +80,9 @@ export default function EditSubscription({ user }: any) {
     return resend?.status === 'success'
       ? toast({
           title: 'Abonnement mis à jour',
-          description: values?.free ? 'Un email de paiement a été envoyé' : 'Un email de confirmation a été envoyé',
+          description: values?.free
+            ? 'Un email de paiement a été envoyé'
+            : 'Un email de confirmation a été envoyé',
         })
       : toast({
           variant: 'destructive',
@@ -73,7 +95,11 @@ export default function EditSubscription({ user }: any) {
     <section>
       <h4 className="subtile-dashboard">Gérer l'abonnement</h4>
       <AutoForm
-        onAction={handleAction as unknown as (values: EditSubscriptionProps) => Promise<void>}
+        onAction={
+          handleAction as unknown as (
+            values: EditSubscriptionProps
+          ) => Promise<void>
+        }
         formSchema={EditSubscriptionSchema}>
         <AutoFormSubmit variant={'secondary'} className="text-gray-900">
           Mettre à jour
