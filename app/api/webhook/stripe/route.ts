@@ -82,7 +82,8 @@ export async function POST(request: Request) {
             status: 'active',
           },
         })
-        .commit();
+        .commit()
+        .then((res) => console.log(res, 'subscription updated'));
 
       await kv.del('invoice');
       await kv.del(`subscriber:${buyer.email}`);
