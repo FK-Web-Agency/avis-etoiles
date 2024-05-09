@@ -164,7 +164,7 @@ console.log('====================================');
                 <span className="uppercase">
                   {winner?.winnerFirstName} {winner?.winnerLastName}{' '}
                 </span>
-                a gagné 1 {tokenDecoded?.reward?.rewardName}
+                a gagné 1 {tokenDecoded?.winner?.reward?.rewardName}
               </p>
 
               <Image
@@ -172,7 +172,7 @@ console.log('====================================');
                 src="/winner.png"
                 alt="winner"
                 width={400}
-                height={600}
+                height={500}
               />
 
               <Dialog>

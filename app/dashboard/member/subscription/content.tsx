@@ -2,7 +2,7 @@
 
 import { Spinner } from '@/components/shared';
 import { Button } from '@/components/ui';
-import { formatDate } from '@/helper';
+import { formatDate, formatToISOString } from '@/helper';
 import { useDashboardStore } from '@/store';
 import { useOne } from '@refinedev/core';
 import Link from 'next/link';
@@ -20,6 +20,9 @@ export default function Content() {
 
   const subscription = data?.data?.subscription;
 
+  console.log('====================================');
+  console.log('subscription', subscription?.startDate);
+  console.log('====================================');
   return (
     <div>
       <div className="bg-muted p-4 rounded-xl mb-10">
@@ -40,7 +43,7 @@ export default function Content() {
 
           <div>
             <h3 className=" text-sm">Début</h3>
-            <p className=" text-sm">{formatDate(subscription?.startDate)}</p>
+            <p className=" text-sm">{formatDate((subscription?.startDate))}</p>
           </div>
         </div>
       </div>

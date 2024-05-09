@@ -27,7 +27,7 @@ export default function Footer() {
         </div>
       </Button>
 
-      <p className="text-gray-400">
+      <p className="text-gray-400 text-sm">
         © Avis Étoiles {new Date().getFullYear()} - Développé par{' '}
         <Link href="https://www.tuumagency.com/">Tuum Agency</Link>
       </p>
