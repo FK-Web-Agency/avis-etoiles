@@ -39,6 +39,11 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
   const { toast } = useToast();
   const tokenDecoded: any = jwtDecode(token);
   const { mutate } = useUpdate();
+
+console.log('====================================');
+console.log(tokenDecoded, 'tokenDecoded');
+console.log('====================================');
+
   const { data, isLoading } = useList({
     resource: 'gameWinners',
     filters: [
@@ -61,7 +66,10 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
     ],
   });
 
-  const winners = data?.data[0].winners;
+  console.log('====================================');
+  console.log(data);
+  console.log('====================================');
+  const winners = data?.data[0]?.winners;
   const winner = winners?.find((winner: any) => winner.winnerEmail === tokenDecoded?.winner.email);
   const config = dataConfig?.data[0];
 
@@ -147,7 +155,7 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
             <div className="mt-20">
               <p className="p-bold-24 text-center">
                 <span className="uppercase">
-                  {winner.winnerFirstName} {winner.winnerLastName}{' '}
+                  {winner?.winnerFirstName} {winner?.winnerLastName}{' '}
                 </span>
                 a gagné 1 {winner?.reward?.rewardName}
               </p>
