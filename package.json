@@ -10,7 +10,7 @@
     "email": "email dev --port 3002"
   },
   "dependencies": {
-    "@clerk/localizations": "^1.26.13",
+    "@clerk/localizations": "^1.28.4",
     "@clerk/nextjs": "^4.29.3",
     "@clerk/themes": "^1.7.9",
     "@hookform/resolvers": "^3.3.4",

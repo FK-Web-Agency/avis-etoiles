@@ -7,12 +7,25 @@ import InformationFooter from './InformationFooter';
 import { sanityFetch } from '@/sanity/lib/client';
 
 export default async function Footer() {
-  const { address, email, phone, legalNotice, termsAndConditions, termsOfUse, privacyPolicy } = await sanityFetch<any>({
+  const {
+    address,
+    email,
+    phone,
+    legalNotice,
+    termsAndConditions,
+    termsOfUse,
+    privacyPolicy,
+  } = await sanityFetch<any>({
     query: queries.GET_GENERAL,
     tags: ['page'],
   });
 
-  const informations = [legalNotice, termsAndConditions, termsOfUse, privacyPolicy];
+  const informations = [
+    legalNotice,
+    termsAndConditions,
+    termsOfUse,
+    privacyPolicy,
+  ];
 
   return (
     <footer className="p-4 mt-10 sm:p-6 wrapper">
@@ -25,7 +38,9 @@ export default async function Footer() {
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 ">
             {/* ------------------------------- Ressources ------------------------------- */}
             <div>
-              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">Resources</h5>
+              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">
+                Resources
+              </h5>
               <ul className="text-gray-400  flex flex-col gap-4">
                 <li>
                   <Link href="/dashboard" className="hover:underline">
@@ -43,18 +58,23 @@ export default async function Footer() {
                   </Link>
                 </li>
                 <Link href="/contact">
-                <li>Demander une démo</li>
+                  <li>Demander une démo</li>
                 </Link>
               </ul>
             </div>
 
             {/* --------------------------------- Contact -------------------------------- */}
             <div>
-              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">Contact</h5>
+              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">
+                Contact
+              </h5>
               <address>
                 <ul className="text-gray-400 flex flex-col gap-4">
                   <li className="flex gap-4">
-                    <Icons.BuildingOffice className="h-7 w-6 text-gray-400" aria-hidden="true" />
+                    <Icons.BuildingOffice
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
                     <p className="hover:underline ">
                       {address?.street}
                       <br />
@@ -63,13 +83,19 @@ export default async function Footer() {
                     </p>
                   </li>
                   <li className="flex items-center gap-4">
-                    <Icons.Envelope className="h-7 w-6 text-gray-400" aria-hidden="true" />
+                    <Icons.Envelope
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
                     <Link href={`mailto:${email}`} className="hover:underline">
                       {email}
                     </Link>
                   </li>
                   <li className="flex items-center gap-4">
-                    <Icons.Phone className="h-7 w-6 text-gray-400" aria-hidden="true" />
+                    <Icons.Phone
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
                     <Link href={`tel:${phone}`} className="hover:underline">
                       {phone}
                     </Link>
@@ -80,7 +106,9 @@ export default async function Footer() {
 
             {/* ------------------------------ Mention Legal ----------------------------- */}
             <div>
-              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">Légal</h5>
+              <h5 className="mb-6 text-sm font-semibold text-yellow-300 uppercase">
+                Légal
+              </h5>
               <ul className="text-gray-400 flex flex-col gap-4 ">
                 <InformationFooter {...{ informations }} />
               </ul>
@@ -88,6 +116,11 @@ export default async function Footer() {
           </div>
         </div>
       </div>
+
+      <p className="text-gray-400">
+        © Avis Étoiles {new Date().getFullYear()} - Développé par{' '}
+        <Link href="https://www.tuumagency.com/">Tuum Agency</Link>
+      </p>
     </footer>
   );
 }

@@ -11,10 +11,11 @@ import { useDashboardStore } from '@/store';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui';
+import Footer from './Footer';
 
 export default function Sidebar({ children }: PropsWithChildren) {
   const { role } = useDashboardStore();
-  const { signOut } = useClerk();
+ 
   return (
     <>
       <div>
@@ -26,7 +27,9 @@ export default function Sidebar({ children }: PropsWithChildren) {
               <Icons.Logo hrefNull />
             </div>
             <nav className="flex  flex-1 flex-col">
-              <ul role="list" className="flex flex-1 justify-between flex-col gap-y-7">
+              <ul
+                role="list"
+                className="flex flex-1 justify-between flex-col gap-y-7">
                 <li>
                   <NavItems />
                 </li>
@@ -35,26 +38,7 @@ export default function Sidebar({ children }: PropsWithChildren) {
                     <TeamsNav />
                   </li>
                 ) : undefined}
-                <div className="flex flex-col gap-4">
-                  <Link className="text-white " href="/">
-                    <div className="flex items-center gap-2">
-                      <Icons.HomeColor className="h-6 w-6 shrink-0" />
-                      Retour sur le site
-                    </div>
-                  </Link>
-                  <Button
-                    variant={'ghost'}
-                    className='items-start justify-start p-0'
-                    onClick={() => signOut(() => redirect('/sign-in'))}>
-                    <div className="flex gap-2 text-white cursor-pointer">
-                      <Icons.Logout
-                        className="h-6 w-6 shrink-0"
-                        aria-hidden="true"
-                      />
-                      Se déconnecter
-                    </div>
-                  </Button>
-                </div>
+                <Footer />
               </ul>
             </nav>
           </div>
@@ -82,4 +66,6 @@ export default function Sidebar({ children }: PropsWithChildren) {
       </div>
     </>
   );
+
+
 }
