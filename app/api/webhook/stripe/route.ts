@@ -73,7 +73,10 @@ export async function POST(request: Request) {
         .patch(buyer._ref)
         .set({
           subscription: {
-            ...(metadata?.subscription as any),
+           price: amount_total!/100,
+            startDate: new Date().toISOString(),
+            plan: metadata?.plan || '',
+            recurring: metadata?.frequency || '',
             status: 'active',
           },
         })
