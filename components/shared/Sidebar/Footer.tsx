@@ -27,9 +27,9 @@ export default function Footer() {
         </div>
       </Button>
 
-      <p className="text-gray-400 text-sm">
-        © Avis Étoiles {new Date().getFullYear()} - Développé par{' '}
-        <Link href="https://www.tuumagency.com/">Tuum Agency</Link>
+      <p className="text-gray-400 text-xs">
+        © Avis Étoiles {new Date().getFullYear()} - par{' '}
+        <Link className='text-primary' href="https://www.tuumagency.com/">Tuum Agency</Link>
       </p>
     </div>
   );

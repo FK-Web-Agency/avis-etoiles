@@ -58,6 +58,11 @@ export default function Content() {
   const members = data?.data || [];
   const collaborators = collaboratorsData?.data || [];
 
+  // List by last created
+  members.sort((a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   const maxPage = Math.ceil(data?.total! / 10);
 
   /*  useEffect(() => {
