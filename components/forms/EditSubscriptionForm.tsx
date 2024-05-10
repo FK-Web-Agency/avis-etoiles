@@ -72,13 +72,15 @@ export default function EditSubscription({ user }: any) {
           .commit();
 
         // Send a email to the user with the link Stripe
-     /*    resend = await sendEmail({
+        resend = await sendEmail({
           email: user?.email,
-          subject: 'Paiement de votre abonnement',
-          emailTemplate: 'payment',
-          companyName: user?.companyName,
-          url,
-        }); */
+          subject: 'Mise à jour de votre abonnement',
+          emailTemplate: 'update-subscription',
+          lastName: user?.lastName,
+          firstName: user?.firstName,
+          price: values?.price,
+          frequency: values?.recurring,
+        });
       } else {
         const order = {
           customer_id: user?.stripeId,
@@ -93,9 +95,12 @@ export default function EditSubscription({ user }: any) {
         // TODO create a new email template for this
         resend = await sendEmail({
           email: user?.email,
-          subject: 'Confirmation de votre abonnement',
-          emailTemplate: 'confirm-subscription',
-          companyName: user?.companyName,
+          subject: 'Mise à jour de votre abonnement',
+          emailTemplate: 'update-subscription',
+          lastName: user?.lastName,
+          firstName: user?.firstName,
+          price: values?.price,
+          frequency: values?.recurring,
         });
       }
 
@@ -112,10 +117,12 @@ export default function EditSubscription({ user }: any) {
             title: 'Uh oh! Quelque chose a mal tourné.',
             description: resend?.message,
           });
-    } catch (error) {
-      console.log('====================================');
-      console.log('update subscription error', error);
-      console.log('====================================');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Quelque chose a mal tourné.',
+        description: error?.message,
+      });
     }
   };
 

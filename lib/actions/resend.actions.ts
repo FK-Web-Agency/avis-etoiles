@@ -12,6 +12,7 @@ import {
   WelcomeToTeam,
   SandboxQRCode,
   MutualGiftWinner,
+  UpdateSubscription,
 } from '@/emails';
 import QrcodeTemplate from '@/emails/qrcode';
 
@@ -39,6 +40,8 @@ function getEmailTemplate(templateName: string, data: any) {
       return MutualGiftWinner(data);
     case 'qrcode':
       return QrcodeTemplate(data);
+    case 'update-subscription':
+      return UpdateSubscription(data);
     default:
       throw new Error(`Email template ${templateName} not found.`);
   }
