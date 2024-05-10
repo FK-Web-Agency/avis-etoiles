@@ -68,12 +68,12 @@ export default function Retrieve({ params: { token } }: RetrieveProps) {
   const config = dataConfig?.data[0];
 
 console.log('====================================');
-console.log('winner', tokenDecoded);
+console.log('tokenDecoded', tokenDecoded);
 console.log('====================================');
 
   useEffect(() => {
-    if (winner?.createdAt) {
-      setRemainingTime(check24HoursPast(winner?.createdAt));
+    if (tokenDecoded?.winner?.createAt) {
+      setRemainingTime(check24HoursPast(tokenDecoded?.winner?.createAt));
     }
   }, [data]);
 
@@ -95,6 +95,7 @@ console.log('====================================');
   }
 
   // Verify if it has been 24 hours
+console.log(remainingTime, 'remainingTime');
 
   if (remainingTime?.includes('restantes')) {
     return (
@@ -107,7 +108,7 @@ console.log('====================================');
 
           <p>
             La récompense sera disponible le{' '}
-            {calculate24HoursEnd(winner?.createdAt)}{' '}
+            {calculate24HoursEnd(tokenDecoded?.winner?.createAt)}{' '}
           </p>
         </div>
       </main>
